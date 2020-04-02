@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const opinionSchema = new mongoose.Schema({
-  user: userSchema,
-  restaurant: restaurantSchema,
-  plan: planSchema,
+  user: Schema.Types.ObjectId,
+  restaurant: Schema.Types.ObjectId,
+  plan: Schema.Types.ObjectId,
   date: Date,
   text: String,
   rating: {

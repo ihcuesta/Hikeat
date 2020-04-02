@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const restaurantSchema = new mongoose.Schema({
-  name: String,
-  owner: userSchema,
+  name: {
+    type: String,
+    unique: true,
+  },
+  owner: { type: Schema.Types.ObjectId, ref: 'user' },
   kind: {
     type: String,
     enum: [
@@ -19,7 +23,8 @@ const restaurantSchema = new mongoose.Schema({
   schedule: Date,
   location: String,
   pics: Array,
-  opinions: Array
+  opinions: Array,
+  allergenCard: Boolean
 });
 
 module.exports = mongoose.model('restaurant', restaurantSchema);

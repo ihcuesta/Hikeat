@@ -1,33 +1,44 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const planSchema = new mongoose.Schema({
-  hikename: String,
-  restaurant: restaurantSchema,
-  owner: userSchema,
+  name: {
+    type: String,
+    unique: true
+  },
+  restaurant: { type: Schema.Types.ObjectId, ref: "restaurant" },
+  owner: { type: Schema.Types.ObjectId, ref: "user" },
   hikelevel: {
     type: String,
-    enum: [
-        "Easy peasy",
-        "Challenging",
-        "Hard",
-        "Mountain Goat"
-    ]
+    enum: ["Easy peasy", "Challenging", "Hard", "Mountain Goat"]
   },
-  details: String,
+  shortDescr: String,
+  longDescr: String,
   startpoint: String,
-  endpoint: String,
   kms: Number,
-  date: Date,
   starttime: Date,
   lunchtime: Date,
   kids: Boolean,
-  kidsmenu: Boolean,
-  dogshike: Boolean,
-  dogsrestaurant: Boolean,
-  breakfast: Boolean,
+  kidsMenu: Boolean,
+  dogsHike: Boolean,
+  dogsRestaurant: Boolean,
   brunch: Boolean,
   maxBookings: Number,
-  bookings: Array
+  bookings: Array,
+  optVegan: Boolean,
+  optCeliac: Boolean,
+  pics: Array,
+  breakfast: Boolean,
+  firstCourse: Array,
+  secondCourse: Array,
+  dessert: Array,
+  drinks: Boolean,
+  bread: Boolean,
+  coffee: Boolean,
+  status: {
+    type: String,
+    enum: ["publish", "draft"]
+  }
 });
 
-module.exports = mongoose.model('plan', planSchema);
+module.exports = mongoose.model("plan", planSchema);
