@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios from "axios";
 
 const authService = axios.create({
-  baseURL: 'http://localhost:4000/auth',
+  baseURL: "http://localhost:4000/auth",
   withCredentials: true
 });
 
-export const signup = async ({ username, password, description, role }) => {
+export const signup = async ({ username, password, role, description }) => {
   try {
-    const { data } = await authService.post('/signup', {
+    const { data } = await authService.post("/signup", {
       username,
       password,
-      description,
-      role
+      role,
+      description
     });
     return data.user;
   } catch (error) {
@@ -20,17 +20,17 @@ export const signup = async ({ username, password, description, role }) => {
 };
 
 export const login = async ({ username, password }) => {
-  const { data } = await authService.post('/login', { username, password });
+  const { data } = await authService.post("/login", { username, password });
   return data;
 };
 
 export const logout = async () => {
-  const response = await authService.post('/logout');
+  const response = await authService.post("/logout");
   return response;
 };
 
 export const isLoggedIn = async () => {
-  const { data } = await authService.get('/loggedin');
+  const { data } = await authService.get("/loggedin");
 
   return data;
 };
