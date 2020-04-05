@@ -70,8 +70,8 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-// LOGGEDIN
-router.get("/loggedin", (req, res, next) => {
+// WHO AM I
+router.get("/whoami", (req, res, next) => {
   if (req.isAuthenticated()) {
     console.log(req.user.username, " is logged");
     return res.status(200).json({ user: req.user });

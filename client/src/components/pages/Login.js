@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
-import { login } from "../../service/authService";
+import React from "react";
+import { doLogin, useUserSetter } from "../../service/authService";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../context/authContext";
+import { Form } from "../styled/Form";
 
-export default function Login({ history }) {
+export const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm();
-  const { setUser } = useContext(AuthContext);
+  const setUser = useUserSetter();
   const onSubmit = async data => {
-    const response = await login(data);
+    const response = await doLogin(data);
     if (response.user) {
       setUser(response.user);
       history.push("/"); //redirect to home after login
@@ -17,22 +17,22 @@ export default function Login({ history }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <input
         type="text"
         placeholder="Username"
-        name="Username"
+        name="username"
         ref={register({ required: true, maxLength: 15 })}
       />
       <input
         type="text"
         placeholder="Password"
-        name="Password"
+        name="password"
         type="password"
         ref={register({ required: true, maxLength: 12 })}
       />
 
       <input type="submit" />
-    </form>
+    </Form>
   );
-}
+};
