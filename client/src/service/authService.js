@@ -44,7 +44,7 @@ export const doSignup = async ({ username, password, role, description }) => {
       role,
       description
     });
-    return data.user;
+    return data;
   } catch (error) {
     return error.response.data;
   }

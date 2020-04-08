@@ -7,7 +7,7 @@ export const theme = createMuiTheme({
       contrastText: "#FFF"
     },
     secondary: {
-      main: "#E33E7F",
+      main: "#ff5722",
       contrastText: "#FFF"
     },
     lightGrey: {
@@ -22,9 +22,30 @@ export const theme = createMuiTheme({
   },
   typography: {
     fontFamily: ["Montserrat", "sans-serif"].join(","),
-    fontSize: 16
+    fontSize: 16,
+    button: {
+      fontSize: "1rem",
+      textTransform: "none"
+    },
+    h1: {
+      fontSize: "5rem",
+      fontWeight: 500
+    },
+    h2: {
+      fontSize: "3rem"
+    },
+    h3: {
+      fontSize: "1.3rem"
+    },
+    h4: {
+      fontSize: "1.15rem"
+    },
+    body1: {
+      fontSize: "1rem"
+    }
   },
   shape: {
     borderRadius: 5
-  }
+  },
+  spacing: 1
 });

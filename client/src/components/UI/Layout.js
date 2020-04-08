@@ -7,7 +7,6 @@ export const Layout = ({ children }) => {
   const user = useUser();
   return (
     <>
-      {user && <h1>Welcome {user.username}</h1>}
       <Header />
       <section className="container">{children}</section>
       <Footer />

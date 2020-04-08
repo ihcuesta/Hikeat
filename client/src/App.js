@@ -8,12 +8,11 @@ import { Login } from "./components/pages/Login";
 import { Signup } from "./components/pages/Signup";
 import { Layout } from "./components/UI/Layout";
 import { withAuthentication } from "./context/withAuthentication";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { theme } from "./components/styled/createMuiTheme";
+import { GlobalStyles } from "./components/styled/globalStyles";
 
 export const App = withAuthentication(() => (
-  <ThemeProvider theme={theme}>
-    <Router>
+  <Router>
+    <GlobalStyles>
       <Layout>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -21,8 +20,8 @@ export const App = withAuthentication(() => (
           <Route path="/login" component={Login} />
         </Switch>
       </Layout>
-    </Router>
-  </ThemeProvider>
+    </GlobalStyles>
+  </Router>
 ));
 
 export default App;
