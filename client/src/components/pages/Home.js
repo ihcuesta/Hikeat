@@ -19,7 +19,7 @@ export const Home = () => {
     <>
       <HomeHead></HomeHead>
       <Divider></Divider>
-      <Searcher></Searcher>
+      {/* <Searcher></Searcher> */}
     </>
   );
 };

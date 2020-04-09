@@ -16,26 +16,28 @@ export const Searcher = () => {
     <SearcherCont>
       <Grid container>
         <Grid item xs={12} sm={10}>
-          {/* <TextField
-            id="search"
-            name="search"
-            label="Search"
-            type="text"
-            variant="outlined"
-            size="medium"
-            fullWidth="true"
-            inputRef={register({ required: true })}
-            InputProps={
-              ({
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <LocationOnOutlinedIcon />
-                  </InputAdornment>
-                )
-              },
-              txtField)
-            }
-          /> */}
+          {
+            // <TextField
+            //   id="search"
+            //   name="search"
+            //   label="Search"
+            //   type="text"
+            //   variant="outlined"
+            //   size="medium"
+            //   fullWidth="true"
+            //   inputRef={register({ required: true })}
+            //   InputProps={
+            //     ({
+            //       startAdornment: (
+            //         <InputAdornment position="start">
+            //           <LocationOnOutlinedIcon />
+            //         </InputAdornment>
+            //       )
+            //     },
+            //     txtField)
+            //   }
+            // />
+          }
         </Grid>
         <Grid item xs={12} sm={2}>
           <Button color="primary" variant="contained">

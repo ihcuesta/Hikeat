@@ -11,6 +11,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
+const axios = require("axios");
 
 mongoose
   .connect("mongodb://localhost/hike", { useNewUrlParser: true })

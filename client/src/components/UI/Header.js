@@ -61,9 +61,22 @@ export const Header = () => {
                   </WelcomeMsg>
                 )}
                 {session.user.role === "Restaurant Owner" && (
-                  <WelcomeMsg>
-                    {session.user.username}, let's cook a plan!{" "}
-                  </WelcomeMsg>
+                  <>
+                    <WelcomeMsg>
+                      {session.user.username}, let's cook a plan!{" "}
+                    </WelcomeMsg>
+                    <Button
+                      style={{ marginRight: 15 }}
+                      component={Link}
+                      size="small"
+                      pr={10}
+                      variant="contained"
+                      color={"secondary"}
+                      to="/restaurant/new"
+                    >
+                      Create Plan
+                    </Button>
+                  </>
                 )}
 
                 <Button component={Link} color="primary" to="#">

@@ -54,7 +54,7 @@ router.get("/:id", async (req, res, next) => {
       _id: req.params.id
     });
     return res.status(200).json({ restaurantId });
-  } catch (err) {
+  } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res
       .status(500)
