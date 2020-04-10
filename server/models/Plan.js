@@ -28,8 +28,8 @@ const planSchema = new mongoose.Schema(
     secondCourse: Array,
     dessert: Array,
     drinks: Boolean,
-    bread: Boolean,
     coffee: Boolean,
+    bread: Boolean,
     status: {
       type: String,
       enum: ["publish", "draft"]

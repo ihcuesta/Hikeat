@@ -416,7 +416,7 @@ export const NewRestaurant = ({ history }) => {
               Not now
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={() => history.push("/plan/new")}
               color="secondary"
               variant="contained"
               autoFocus

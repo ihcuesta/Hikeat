@@ -23,3 +23,9 @@ export const txtField = {
     marginBottom: "7%"
   }
 };
+
+export const txtFieldAlt = {
+  style: {
+    color: s.dark
+  }
+};
