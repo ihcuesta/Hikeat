@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { newRestaurant } from "../../service/restaurantService";
 import { regions } from "../../service/api";
 import { useForm } from "react-hook-form";
@@ -18,12 +18,7 @@ import {
   Switch,
   FormLabel,
   FormControlLabel,
-  FormGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
+  FormGroup
 } from "@material-ui/core";
 import { s, txtField } from "../styled/globalStyles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -36,37 +31,14 @@ const getRegions = async () => {
 };
 
 export const NewRestaurant = ({ history }) => {
-  const [name, setName] = useState("");
-  const [kind, setKind] = useState("");
-  const [descr, setDescr] = useState("");
-  const [region, setRegion] = useState("");
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [website, setWebsite] = useState("");
-  const [dogs, setDogs] = useState(false);
-  const [terrace, setTerrace] = useState(false);
-  const [allergenCard, setAllergenCard] = useState(false);
-  const [kids, setKids] = useState(false);
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = async data => {
+  const { register, handleSubmit, errors } = useForm();
+  const onSubmit = async data => {
     console.log(data);
     const response = await newRestaurant(data);
-    console.log("Guardado");
     if (response) {
-      handleClickOpen(); //mostrar pop up para ir al creador de plan o a la página de restaurante
+      history.push("/"); //mostrar pop up para ir al creador de plan o a la página de restaurante
     } else {
-      console.log("Algo ha fallado");
+      console.log(errors);
     }
   };
 
@@ -91,8 +63,7 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              value={name}
-              onChange={e => setName(e.target.value)}
+              inputRef={register({ required: true })}
               InputProps={txtField}
             />
             <FormControl
@@ -106,10 +77,9 @@ export const NewRestaurant = ({ history }) => {
                 labelId="restaurantKind"
                 id="restaurantKind"
                 name="kind"
+                inputRef={register({ required: true })}
                 label="Kind"
                 fullWidth
-                value={kind}
-                onChange={e => setKind(e.target.value)}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -124,17 +94,27 @@ export const NewRestaurant = ({ history }) => {
             <TextField
               required
               id="descrRestaurant"
-              name="descrRestaurant"
+              name="desdescrRestaurantcription"
               label="Description"
               multiline
               rows="4"
               fullWidth="true"
               placeholder="Write about your awesome restaurant 🍽"
               variant="outlined"
-              value={descr}
-              onChange={e => setDescr(e.target.value)}
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Description required"
+                },
+                maxLength: 100
+              })}
               InputProps={txtField}
             />
+            {errors.description ? (
+              <span>{errors.description.message}</span>
+            ) : (
+              ""
+            )}
           </>
         );
       case 1:
@@ -145,13 +125,13 @@ export const NewRestaurant = ({ history }) => {
               id="region"
               options={provincias}
               getOptionLabel={option => option.nm}
-              style={{ width: "100%", marginBottom: 40 }}
-              onChange={(event, value) => setRegion(value.nm)}
+              style={{ width: "100%" }}
+              inputRef={register({ required: true })}
+              style={{ marginBottom: 40 }}
               renderInput={params => (
                 <TextField
                   {...params}
                   label="Region"
-                  value={region}
                   required
                   variant="outlined"
                 />
@@ -164,12 +144,11 @@ export const NewRestaurant = ({ history }) => {
               type="text"
               name="city"
               label="City"
-              value={city}
-              onChange={e => setCity(e.target.value)}
               variant="outlined"
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              inputRef={register({ required: true })}
             />
             <TextField
               required
@@ -178,12 +157,11 @@ export const NewRestaurant = ({ history }) => {
               type="text"
               name="address"
               label="Address"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
               variant="outlined"
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              inputRef={register({ required: true })}
             />
 
             <TextField
@@ -193,12 +171,11 @@ export const NewRestaurant = ({ history }) => {
               type="number"
               name="phone"
               label="Phone"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
               variant="outlined"
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              inputRef={register({ required: true })}
             />
 
             <TextField
@@ -208,12 +185,11 @@ export const NewRestaurant = ({ history }) => {
               type="email"
               name="email"
               label="Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
               variant="outlined"
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              inputRef={register({ required: true })}
             />
 
             <TextField
@@ -222,12 +198,11 @@ export const NewRestaurant = ({ history }) => {
               type="text"
               name="website"
               label="Website"
-              value={website}
-              onChange={e => setWebsite(e.target.value)}
               variant="outlined"
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              inputRef={register({ required: true })}
             />
           </>
         );
@@ -241,17 +216,13 @@ export const NewRestaurant = ({ history }) => {
                 <FormControlLabel
                   control={<Switch color="primary" name="dogs" />}
                   label="Dogs allowed"
-                  value={dogs}
-                  checked={dogs}
-                  onChange={e => setDogs(!dogs)}
+                  inputRef={register({ required: true })}
                 />
                 <br />
                 <FormControlLabel
                   control={<Switch color="primary" name="terrace" />}
                   label="Terrace"
-                  value={terrace}
-                  checked={terrace}
-                  onChange={e => setTerrace(!terrace)}
+                  inputRef={register({ required: true })}
                 />
                 <br />
               </Grid>
@@ -259,17 +230,13 @@ export const NewRestaurant = ({ history }) => {
                 <FormControlLabel
                   control={<Switch color="primary" name="allergenCard" />}
                   label="Allergens card"
-                  value={allergenCard}
-                  checked={allergenCard}
-                  onChange={e => setAllergenCard(!allergenCard)}
+                  inputRef={register({ required: true })}
                 />
                 <br />
                 <FormControlLabel
                   control={<Switch color="primary" name="kids" />}
                   label="Menu for kids"
-                  value={kids}
-                  checked={kids}
-                  onChange={e => setKids(!kids)}
+                  inputRef={register({ required: true })}
                 />
                 <br />
               </Grid>
@@ -283,40 +250,10 @@ export const NewRestaurant = ({ history }) => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    console.log(
-      name,
-      kind,
-      descr,
-      region,
-      city,
-      address,
-      phone,
-      email,
-      website,
-      dogs,
-      terrace,
-      allergenCard,
-      kids
-    );
   };
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
-    console.log(
-      name,
-      kind,
-      descr,
-      region,
-      city,
-      address,
-      phone,
-      email,
-      website,
-      dogs,
-      terrace,
-      allergenCard,
-      kids
-    );
   };
 
   const handleReset = () => {
@@ -324,108 +261,55 @@ export const NewRestaurant = ({ history }) => {
   };
 
   return (
-    <>
-      <FormBg>
-        <FormTitle>New Restaurant</FormTitle>
-        <FormCont style={{ paddingTop: 30 }}>
-          <Form
-            onSubmit={e => {
-              e.preventDefault();
-              handleSubmit({
-                name,
-                kind,
-                descr,
-                region,
-                city,
-                address,
-                phone,
-                email,
-                website,
-                dogs,
-                terrace,
-                kids,
-                allergenCard
-              });
-            }}
-          >
+    <FormBg>
+      <FormTitle>New Restaurant</FormTitle>
+      <FormCont style={{ paddingTop: 30 }}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map(label => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
             <div>
-              <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map(label => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-              <div>
-                {activeStep === steps.length ? (
+              {activeStep === steps.length ? (
+                <div>
+                  <Typography>All steps completed</Typography>
+                  <Button onClick={handleReset}>Reset</Button>
+                </div>
+              ) : (
+                <div>
+                  {getStepContent(activeStep)}
                   <div>
-                    <Typography style={{ marginTop: 30, marginBottom: 30 }}>
-                      Is all the information correct?{" "}
-                    </Typography>
-                    {/* <Button onClick={handleReset}>Reset</Button> */}
                     <Button disabled={activeStep === 0} onClick={handleBack}>
                       Back
                     </Button>
-                    <Button variant="contained" color="secondary" type="submit">
-                      Create
-                    </Button>
-                  </div>
-                ) : (
-                  <div>
-                    {getStepContent(activeStep)}
-                    <div>
-                      <Button disabled={activeStep === 0} onClick={handleBack}>
-                        Back
+                    {activeStep === steps.length - 1 ? (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        type="submit"
+                      >
+                        Create
                       </Button>
-                      {activeStep === steps.length ? (
-                        <></>
-                      ) : (
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={handleNext}
-                        >
-                          Next
-                        </Button>
-                      )}
-                    </div>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNext}
+                      >
+                        Next
+                      </Button>
+                    )}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-          </Form>
-        </FormCont>
-      </FormBg>
-      <div>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Restaurant created!"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              The fun has only just begun! Do you wanna create a Hikeat plan?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => history.push("/")} color="primary">
-              Not now
-            </Button>
-            <Button
-              onClick={handleClose}
-              color="secondary"
-              variant="contained"
-              autoFocus
-            >
-              Let's create a plan!
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    </>
+          </div>
+        </Form>
+      </FormCont>
+    </FormBg>
   );
 };

@@ -11,15 +11,14 @@ const planSchema = new mongoose.Schema(
     owner: { type: Schema.Types.ObjectId, ref: "user" },
     hikelevel: {
       type: String,
-      enum: ["Easy peasy", "Challenging", "Hard", "Mountain Goat"]
+      enum: ["Easy peasy", "Challenging", "Hard", "Mountain runner"]
     },
     shortDescr: String,
     longDescr: String,
-    startpoint: String,
     kms: Number,
+    date: Date,
     starttime: Date,
     lunchtime: Date,
-    kids: Boolean,
     brunch: Boolean,
     maxBookings: Number,
     bookings: Array,

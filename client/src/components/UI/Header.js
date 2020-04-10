@@ -72,7 +72,7 @@ export const Header = () => {
                       pr={10}
                       variant="contained"
                       color={"secondary"}
-                      to="/restaurant/new"
+                      to="/plan/new"
                     >
                       Create Plan
                     </Button>

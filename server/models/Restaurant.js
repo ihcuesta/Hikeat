@@ -12,16 +12,19 @@ const restaurantSchema = new mongoose.Schema(
       type: String,
       enum: ["Traditional", "Tapas", "Asian", "Italian", "American"]
     },
+    descr: String,
     phone: Number,
     website: String,
     email: String,
-    location: String,
+    region: String,
+    city: String,
+    address: String,
     pics: Array,
     opinions: Array,
     allergenCard: Boolean,
     dogs: Boolean,
     terrace: Boolean,
-    kidsMenu: Boolean
+    kids: Boolean
   },
   {
     timestamps: true

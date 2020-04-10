@@ -12,12 +12,14 @@ router.post("/new", async (req, res, next) => {
     phone,
     website,
     email,
-    location,
+    region,
+    city,
+    address,
     pics,
     allergenCard,
     dogs,
     terrace,
-    kidsMenu
+    kids
   } = req.body;
   try {
     // Check if the restaurant already exists
@@ -34,13 +36,15 @@ router.post("/new", async (req, res, next) => {
       phone,
       website,
       email,
-      location,
+      region,
+      city,
+      address,
       pics,
       opinions: [],
       allergenCard,
       dogs,
       terrace,
-      kidsMenu
+      kids
     });
     console.log("Restaurant created");
     return res.status(200).json({ newRestaurant });
@@ -97,12 +101,14 @@ router.put("/:id/edit", async (req, res, next) => {
     phone,
     website,
     email,
-    location,
+    region,
+    city,
+    address,
     pics,
     allergenCard,
     dogs,
     terrace,
-    kidsMenu
+    kids
   } = req.body;
   try {
     const planToEdit = await Plan.findOne({
@@ -121,12 +127,14 @@ router.put("/:id/edit", async (req, res, next) => {
             phone,
             website,
             email,
-            location,
+            region,
+            city,
+            address,
             pics,
             allergenCard,
             dogs,
             terrace,
-            kidsMenu
+            kids
           }
         }
       );
