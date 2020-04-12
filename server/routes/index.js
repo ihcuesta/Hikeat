@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const uploader = require("../cloudinary/cloudinary.config");
 
 // routes middlewares
 const auth = require("./auth");
@@ -48,6 +49,30 @@ router.get("/cities/:region", async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+//Image Upload
+router.post("/upload", uploader.single("imageUrl"), async (req, res, next) => {
+  const imageUpload = req.file.secure_url;
+
+  if (!req.file) {
+    next(new Error("No existe ningún archivo para subir"));
+    return;
+  }
+  // if (req.user) {
+  //   await User.findByIdAndUpdate(
+  //     req.user._id,
+  //     {
+  //       image: imageUpload
+  //     },
+  //     { new: true }
+  //   );
+  // }
+  return res.json({
+    secure_url: imageUpload,
+    status: 200,
+    message: "Subida de imagen satisfactoria"
+  });
 });
 
 module.exports = router;

@@ -686,42 +686,43 @@ export const NewPlan = ({ history }) => {
             <Typography variant="h4" component="h4">
               Also included:
             </Typography>
+            <Container style={{ marginTop: 20, marginBottom: "7%" }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    name="bread"
+                    color="primary"
+                    checked={bread}
+                    onChange={e => setBread(!bread)}
+                  />
+                }
+                label="Bread 🥖"
+              />
 
-            <FormControlLabel
-              control={
-                <Switch
-                  name="bread"
-                  color="primary"
-                  checked={bread}
-                  onChange={e => setBread(!bread)}
-                />
-              }
-              label="Bread 🥖"
-            />
+              <FormControlLabel
+                control={
+                  <Switch
+                    name="drinks"
+                    color="primary"
+                    checked={drinks}
+                    onChange={e => setDrinks(!drinks)}
+                  />
+                }
+                label="Drinks 🍺"
+              />
 
-            <FormControlLabel
-              control={
-                <Switch
-                  name="drinks"
-                  color="primary"
-                  checked={drinks}
-                  onChange={e => setDrinks(!drinks)}
-                />
-              }
-              label="Drinks 🍺"
-            />
-
-            <FormControlLabel
-              control={
-                <Switch
-                  name="coffee"
-                  color="primary"
-                  checked={coffee}
-                  onChange={e => setCoffee(!coffee)}
-                />
-              }
-              label="Coffee ☕️"
-            />
+              <FormControlLabel
+                control={
+                  <Switch
+                    name="coffee"
+                    color="primary"
+                    checked={coffee}
+                    onChange={e => setCoffee(!coffee)}
+                  />
+                }
+                label="Coffee ☕️"
+              />
+            </Container>
           </>
         );
 
@@ -738,9 +739,9 @@ export const NewPlan = ({ history }) => {
       longDescr,
       hikelevel,
       kms,
-      date,
-      startTime,
-      lunchTime,
+      typeof date,
+      typeof startTime,
+      typeof lunchTime,
       maxBookings,
       breakfast,
       brunch,

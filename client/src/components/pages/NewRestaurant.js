@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { newRestaurant } from "../../service/restaurantService";
+import { uploadPhoto } from "../../service/uploadService";
 import { regions } from "../../service/api";
 import { useForm } from "react-hook-form";
 import { Form, FormBg, FormCont, FormTitle } from "../styled/Forms";
@@ -49,6 +50,16 @@ export const NewRestaurant = ({ history }) => {
   const [terrace, setTerrace] = useState(false);
   const [allergenCard, setAllergenCard] = useState(false);
   const [kids, setKids] = useState(false);
+  const [image1, setImage1] = useState("");
+  const [image2, setImage2] = useState("");
+  const [image3, setImage3] = useState("");
+  const [image4, setImage4] = useState("");
+  const [image5, setImage5] = useState("");
+  const [imagePreview1, setImagePreview1] = useState("");
+  const [imagePreview2, setImagePreview2] = useState("");
+  const [imagePreview3, setImagePreview3] = useState("");
+  const [imagePreview4, setImagePreview4] = useState("");
+  const [imagePreview5, setImagePreview5] = useState("");
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -59,7 +70,32 @@ export const NewRestaurant = ({ history }) => {
     setOpen(false);
   };
 
+  const handleChangeFile = async (e, setImg, setImgPreview) => {
+    // setImg(e.target.files[0]);
+    setImgPreview(URL.createObjectURL(e.target.files[0]));
+    const imgForm = new FormData();
+    imgForm.append("imageUrl", e.target.files[0]);
+    const resp = await uploadPhoto(imgForm);
+    if (resp) {
+      setImg(resp.data.secure_url);
+    }
+  };
+
+  // const CloudinarySubmit = async (img, setImg) => {
+  //   const imgForm = new FormData();
+  //   imgForm.append("imageUrl", img);
+  //   const resp = await uploadPhoto(imgForm);
+  //   if (resp) {
+  //     setImg(resp.data.secure_url);
+  //   }
+
+  //   console.log(resp.data.secure_url);
+  // };
+
   const handleSubmit = async data => {
+    // CloudinarySubmit(image1, setImage1);
+    // CloudinarySubmit(image2, setImage2);
+
     console.log(data);
     const response = await newRestaurant(data);
     console.log("Guardado");
@@ -232,7 +268,21 @@ export const NewRestaurant = ({ history }) => {
           </>
         );
       case 2:
-        return "This is the bit I really care about!";
+        return (
+          <>
+            <input
+              type="file"
+              onChange={e => handleChangeFile(e, setImage1, setImagePreview1)}
+            />
+            <img src={imagePreview1} />
+
+            <input
+              type="file"
+              onChange={e => handleChangeFile(e, setImage2, setImagePreview2)}
+            />
+            <img src={imagePreview2} />
+          </>
+        );
       case 3:
         return (
           <>
@@ -341,6 +391,11 @@ export const NewRestaurant = ({ history }) => {
                 phone,
                 email,
                 website,
+                image1,
+                image2,
+                image3,
+                image4,
+                image5,
                 dogs,
                 terrace,
                 kids,

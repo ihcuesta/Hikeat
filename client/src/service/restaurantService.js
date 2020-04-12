@@ -14,6 +14,11 @@ export const newRestaurant = async ({
   email,
   region,
   city,
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
   address,
   pics,
   allergenCard,
@@ -22,6 +27,7 @@ export const newRestaurant = async ({
   kids
 }) => {
   try {
+    console.log("llega");
     const { data } = await restaurantService.post("/new", {
       name,
       kind,
@@ -31,6 +37,11 @@ export const newRestaurant = async ({
       email,
       region,
       city,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
       address,
       pics,
       allergenCard,
@@ -38,9 +49,11 @@ export const newRestaurant = async ({
       terrace,
       kids
     });
+    console.log("tmb llega");
     return data;
   } catch (error) {
-    return error.response.data;
+    console.log("llega a error");
+    return error;
   }
 };
 
@@ -65,6 +78,11 @@ export const editRestaurant = async (
     email,
     region,
     city,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
     address,
     pics,
     allergenCard,
@@ -81,8 +99,13 @@ export const editRestaurant = async (
       phone,
       website,
       email,
-      region,
       city,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      region,
       address,
       pics,
       allergenCard,
