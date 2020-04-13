@@ -11,6 +11,7 @@ import { withAuthentication } from "./context/withAuthentication";
 import { GlobalStyles } from "./components/styled/globalStyles";
 import { NewRestaurant } from "./components/pages/NewRestaurant";
 import { NewPlan } from "./components/pages/NewPlan";
+import { Admin } from "./components/pages/Admin";
 
 export const App = withAuthentication(() => (
   <Router>
@@ -22,6 +23,7 @@ export const App = withAuthentication(() => (
           <Route path="/login" component={Login} />
           <Route path="/restaurant/new" component={NewRestaurant} />
           <Route path="/plan/new" component={NewPlan} />
+          <Route path="/admin" component={Admin} />
         </Switch>
       </Layout>
     </GlobalStyles>

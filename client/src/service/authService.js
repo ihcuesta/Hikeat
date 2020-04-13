@@ -36,13 +36,20 @@ const authService = axios.create({
   withCredentials: true
 });
 
-export const doSignup = async ({ username, password, role, description }) => {
+export const doSignup = async ({
+  username,
+  password,
+  role,
+  description,
+  image
+}) => {
   try {
     const { data } = await authService.post("/signup", {
       username,
       password,
       role,
-      description
+      description,
+      image
     });
     return data;
   } catch (error) {

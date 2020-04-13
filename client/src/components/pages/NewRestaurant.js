@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { newRestaurant } from "../../service/restaurantService";
-import { uploadPhoto } from "../../service/uploadService";
+import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import { regions } from "../../service/api";
 import { useForm } from "react-hook-form";
 import { Form, FormBg, FormCont, FormTitle } from "../styled/Forms";
@@ -24,11 +24,21 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Container,
+  Fab
 } from "@material-ui/core";
-import { s, txtField } from "../styled/globalStyles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { provincias } from "../../service/regions";
+import {
+  AddImg,
+  ContAddImg,
+  ContIcon,
+  s,
+  txtField
+} from "../styled/globalStyles";
+import placeholder from "../../images/placeholder.jpg";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const getRegions = async () => {
   const reg = await regions();
@@ -70,6 +80,18 @@ export const NewRestaurant = ({ history }) => {
     setOpen(false);
   };
 
+  const deleteImage = async (img, setImg) => {
+    let public_id = img.split("/hikeat");
+    public_id = "hikeat" + public_id[1];
+    public_id = public_id.slice(0, -4);
+    console.log(public_id);
+    const resp = await deletePhoto({ public_id });
+    if (resp) {
+      console.log("Image deleted in Cloudinary");
+    }
+    setImg("");
+  };
+
   const handleChangeFile = async (e, setImg, setImgPreview) => {
     // setImg(e.target.files[0]);
     setImgPreview(URL.createObjectURL(e.target.files[0]));
@@ -77,25 +99,16 @@ export const NewRestaurant = ({ history }) => {
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
     if (resp) {
-      setImg(resp.data.secure_url);
+      console.log(resp);
+      let cloudimage = resp.data.secure_url;
+      cloudimage = cloudimage.split("upload/");
+      cloudimage =
+        cloudimage[0] + "upload/c_scale,h_525,w_700/" + cloudimage[1];
+      setImg(cloudimage);
     }
   };
 
-  // const CloudinarySubmit = async (img, setImg) => {
-  //   const imgForm = new FormData();
-  //   imgForm.append("imageUrl", img);
-  //   const resp = await uploadPhoto(imgForm);
-  //   if (resp) {
-  //     setImg(resp.data.secure_url);
-  //   }
-
-  //   console.log(resp.data.secure_url);
-  // };
-
   const handleSubmit = async data => {
-    // CloudinarySubmit(image1, setImage1);
-    // CloudinarySubmit(image2, setImage2);
-
     console.log(data);
     const response = await newRestaurant(data);
     console.log("Guardado");
@@ -270,17 +283,169 @@ export const NewRestaurant = ({ history }) => {
       case 2:
         return (
           <>
-            <input
-              type="file"
-              onChange={e => handleChangeFile(e, setImage1, setImagePreview1)}
-            />
-            <img src={imagePreview1} />
+            <Typography
+              component="h3"
+              align="center"
+              color="primary"
+              style={{ marginTop: 15, marginBottom: 15 }}
+            >
+              Images
+            </Typography>
+            <ContAddImg>
+              <Grid container spacing={10}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  style={{ cursor: "pointer" }}
+                >
+                  <AddImg>
+                    <label for="file-input1">
+                      <img src={image1 === "" ? placeholder : image1} />
+                    </label>
 
-            <input
-              type="file"
-              onChange={e => handleChangeFile(e, setImage2, setImagePreview2)}
-            />
-            <img src={imagePreview2} />
+                    <input
+                      id="file-input1"
+                      type="file"
+                      onChange={e =>
+                        handleChangeFile(e, setImage1, setImagePreview1)
+                      }
+                    />
+                    <ContIcon>
+                      {image1 === "" ? (
+                        ""
+                      ) : (
+                        <Fab
+                          size="small"
+                          color="secondary"
+                          onClick={() => deleteImage(image1, setImage1)}
+                        >
+                          <DeleteIcon color="#FFF"></DeleteIcon>
+                        </Fab>
+                      )}
+                    </ContIcon>
+                  </AddImg>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4} lg={4}>
+                  <AddImg>
+                    <label for="file-input2">
+                      <img src={image2 === "" ? placeholder : image2} />
+                    </label>
+
+                    <input
+                      id="file-input2"
+                      type="file"
+                      onChange={e =>
+                        handleChangeFile(e, setImage2, setImagePreview2)
+                      }
+                    />
+
+                    <ContIcon>
+                      {image2 === "" ? (
+                        ""
+                      ) : (
+                        <Fab
+                          size="small"
+                          color="secondary"
+                          onClick={() => deleteImage(image2, setImage2)}
+                        >
+                          <DeleteIcon color="#FFF"></DeleteIcon>
+                        </Fab>
+                      )}
+                    </ContIcon>
+                  </AddImg>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4} lg={4}>
+                  <AddImg>
+                    <label for="file-input3">
+                      <img src={image3 === "" ? placeholder : image3} />
+                    </label>
+
+                    <input
+                      id="file-input3"
+                      type="file"
+                      onChange={e =>
+                        handleChangeFile(e, setImage3, setImagePreview3)
+                      }
+                    />
+
+                    <ContIcon>
+                      {image3 === "" ? (
+                        ""
+                      ) : (
+                        <Fab
+                          size="small"
+                          color="secondary"
+                          onClick={() => deleteImage(image3, setImage3)}
+                        >
+                          <DeleteIcon color="#FFF"></DeleteIcon>
+                        </Fab>
+                      )}
+                    </ContIcon>
+                  </AddImg>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4} lg={4}>
+                  <AddImg>
+                    <label for="file-input4">
+                      <img src={image4 === "" ? placeholder : image4} />
+                    </label>
+
+                    <input
+                      id="file-input4"
+                      type="file"
+                      onChange={e =>
+                        handleChangeFile(e, setImage4, setImagePreview4)
+                      }
+                    />
+
+                    <ContIcon>
+                      {image4 === "" ? (
+                        ""
+                      ) : (
+                        <Fab
+                          size="small"
+                          color="secondary"
+                          onClick={() => deleteImage(image4, setImage4)}
+                        >
+                          <DeleteIcon color="#FFF"></DeleteIcon>
+                        </Fab>
+                      )}
+                    </ContIcon>
+                  </AddImg>
+                </Grid>
+                <Grid item xs={12} sm={4} md={4} lg={4}>
+                  <AddImg>
+                    <label for="file-input5">
+                      <img src={image5 === "" ? placeholder : image5} />
+                    </label>
+
+                    <input
+                      id="file-input5"
+                      type="file"
+                      onChange={e =>
+                        handleChangeFile(e, setImage5, setImagePreview5)
+                      }
+                    />
+
+                    <ContIcon>
+                      {image5 === "" ? (
+                        ""
+                      ) : (
+                        <Fab
+                          size="small"
+                          color="secondary"
+                          onClick={() => deleteImage(image5, setImage5)}
+                        >
+                          <DeleteIcon color="#FFF"></DeleteIcon>
+                        </Fab>
+                      )}
+                    </ContIcon>
+                  </AddImg>
+                </Grid>
+              </Grid>
+            </ContAddImg>
           </>
         );
       case 3:

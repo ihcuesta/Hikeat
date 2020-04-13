@@ -20,7 +20,7 @@ export const FormTitle = styled.h1`
 
 export const FormCont = styled.div`
   max-width: 750px;
-  padding: 7%;
+  padding: 5%;
   box-sizing: border-box;
   margin: auto;
   background-color: #fff;

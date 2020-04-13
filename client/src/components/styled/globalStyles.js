@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import placeholder from "../../images/placeholder.jpg";
 
 export const s = {
   primary: "#00adb5",
@@ -29,3 +30,39 @@ export const txtFieldAlt = {
     color: s.dark
   }
 };
+
+export const ContAddImg = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const AddImg = styled.div`
+  position: relative;
+  && input {
+    display: none;
+  }
+
+  && img {
+    cursor: pointer;
+    margin: auto;
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export const LabelAddImg = styled.label`
+  background-image: url(${placeholder});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+
+export const ContIcon = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`;
+
+export const ContBody = styled.div`
+  max-width: 1300px;
+  margin: auto;
+`;

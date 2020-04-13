@@ -8,7 +8,7 @@ import {
   ImRestaurant,
   WelcomeMsg
 } from "../styled/Nav";
-import { Button, Box } from "@material-ui/core";
+import { Button, Box, Avatar } from "@material-ui/core";
 import { s } from "../styled/globalStyles";
 
 export const Header = () => {
@@ -55,6 +55,19 @@ export const Header = () => {
             )}
             {session && (
               <>
+                <Avatar
+                  alt={session.user.username}
+                  src={session.user.image}
+                  style={{
+                    backgroundColor: s.primary,
+                    color: "#FFF",
+                    marginRight: 7,
+                    width: 25,
+                    height: 25
+                  }}
+                >
+                  {/* {session.user.username[0]} */}
+                </Avatar>
                 {session.user.role === "Hiker" && (
                   <WelcomeMsg>
                     {session.user.username}, such a great hiker!{" "}

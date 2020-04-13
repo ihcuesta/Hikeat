@@ -49,7 +49,7 @@ export const newRestaurant = async ({
       terrace,
       kids
     });
-    console.log("tmb llega");
+    console.log("también llega");
     return data;
   } catch (error) {
     console.log("llega a error");

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { doSignup, useUserSetter } from "../../service/authService";
 import { useForm } from "react-hook-form";
 import { Form, FormBg, FormCont, FormTitle, RadioCont } from "../styled/Forms";
@@ -8,22 +8,55 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  FormControlLabel
+  FormControlLabel,
+  Fab
 } from "@material-ui/core";
-import { s, txtField } from "../styled/globalStyles";
+import { s, txtField, AddImg, ContIcon } from "../styled/globalStyles";
+import placeholder from "../../images/placeholder.jpg";
+import { uploadPhoto, deletePhoto } from "../../service/uploadService";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 export const Signup = ({ history }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const [image, setImage] = useState("");
+  const { register, handleSubmit, errors, setValue } = useForm();
   const setUser = useUserSetter();
   const onSubmit = async data => {
+    console.log(data);
     const response = await doSignup(data);
-    console.log(response.username);
     if (response) {
       setUser(response);
       history.push("/"); //redirect to home after signup & login
     } else {
       console.log(errors);
     }
+  };
+
+  const handleChangeFile = async (e, setImg) => {
+    const imgForm = new FormData();
+    imgForm.append("imageUrl", e.target.files[0]);
+    const resp = await uploadPhoto(imgForm);
+    if (resp) {
+      console.log(resp);
+      let cloudimage = resp.data.secure_url;
+      cloudimage = cloudimage.split("upload/");
+      cloudimage =
+        cloudimage[0] + "upload/c_scale,h_300,w_300/" + cloudimage[1];
+      setValue("image", cloudimage);
+      setImage(cloudimage);
+    }
+  };
+
+  const deleteImage = async (img, setImg) => {
+    let public_id = img.split("/hikeat");
+    public_id = "hikeat" + public_id[1];
+    public_id = public_id.slice(0, -4);
+    console.log(public_id);
+    const resp = await deletePhoto({ public_id });
+    if (resp) {
+      console.log("Image deleted in Cloudinary");
+    }
+    setValue("image", "");
+    setImage("");
   };
 
   return (
@@ -75,6 +108,33 @@ export const Signup = ({ history }) => {
             InputProps={txtField}
           />
           {errors.password ? <span>{errors.password.message}</span> : ""}
+
+          <AddImg style={{ width: 200, height: 200, marginBottom: 30 }}>
+            <label for="file-input1">
+              <img src={image === "" ? placeholder : image} />
+            </label>
+
+            <input type="text" name="image" ref={register} />
+
+            <input
+              id="file-input1"
+              type="file"
+              onChange={e => handleChangeFile(e, setImage)}
+            />
+            <ContIcon>
+              {image === "" ? (
+                ""
+              ) : (
+                <Fab
+                  size="small"
+                  color="secondary"
+                  onClick={() => deleteImage(image, setImage)}
+                >
+                  <DeleteIcon color="#FFF"></DeleteIcon>
+                </Fab>
+              )}
+            </ContIcon>
+          </AddImg>
 
           <FormLabel component="legend">Role</FormLabel>
           <RadioGroup required aria-label="role" name="role">
