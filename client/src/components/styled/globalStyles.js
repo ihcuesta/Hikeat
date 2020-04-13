@@ -1,0 +1,68 @@
+import styled from "styled-components";
+import placeholder from "../../images/placeholder.jpg";
+
+export const s = {
+  primary: "#00adb5",
+  secondary: "#ff5722",
+  light: "#EEE",
+  dark: "#303841",
+  shadow: {
+    s3: "0px 3px 1px -2px rgba(0, 0, 0, 0.2)"
+  }
+};
+
+export const GlobalStyles = styled.div`
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap");
+  font-family: "Montserrat", sans-serif;
+  color: ${s.dark};
+  font-weight: 400;
+`;
+
+export const txtField = {
+  style: {
+    color: s.dark,
+    marginBottom: "7%"
+  }
+};
+
+export const txtFieldAlt = {
+  style: {
+    color: s.dark
+  }
+};
+
+export const ContAddImg = styled.div`
+  margin-bottom: 30px;
+`;
+
+export const AddImg = styled.div`
+  position: relative;
+  && input {
+    display: none;
+  }
+
+  && img {
+    cursor: pointer;
+    margin: auto;
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export const LabelAddImg = styled.label`
+  background-image: url(${placeholder});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
+
+export const ContIcon = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+`;
+
+export const ContBody = styled.div`
+  max-width: 1300px;
+  margin: auto;
+`;

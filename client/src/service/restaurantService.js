@@ -8,33 +8,52 @@ const restaurantService = axios.create({
 export const newRestaurant = async ({
   name,
   kind,
+  descr,
   phone,
   website,
   email,
-  location,
+  region,
+  city,
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
+  address,
   pics,
   allergenCard,
   dogs,
   terrace,
-  kidsMenu
+  kids
 }) => {
   try {
+    console.log("llega");
     const { data } = await restaurantService.post("/new", {
       name,
       kind,
+      descr,
       phone,
       website,
       email,
-      location,
+      region,
+      city,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      address,
       pics,
       allergenCard,
       dogs,
       terrace,
-      kidsMenu
+      kids
     });
+    console.log("también llega");
     return data;
   } catch (error) {
-    return error.response.data;
+    console.log("llega a error");
+    return error;
   }
 };
 
@@ -53,30 +72,46 @@ export const editRestaurant = async (
   {
     name,
     kind,
+    descr,
     phone,
     website,
     email,
-    location,
+    region,
+    city,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    address,
     pics,
     allergenCard,
     dogs,
     terrace,
-    kidsMenu
+    kids
   }
 ) => {
   try {
     const { data } = await restaurantService.put(`/${endpoint}/edit`, {
       name,
       kind,
+      descr,
       phone,
       website,
       email,
-      location,
+      city,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      region,
+      address,
       pics,
       allergenCard,
       dogs,
       terrace,
-      kidsMenu
+      kids
     });
     return data;
   } catch (error) {

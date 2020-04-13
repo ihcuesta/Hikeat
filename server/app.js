@@ -11,6 +11,7 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
+const axios = require("axios");
 
 mongoose
   .connect("mongodb://localhost/hike", { useNewUrlParser: true })
@@ -44,9 +45,10 @@ const corsOptions = {
   },
   credentials: true
 };
+app.use(cors(corsOptions));
 
 // Middleware Setup
-app.use(cors(corsOptions));
+
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

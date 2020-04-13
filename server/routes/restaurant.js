@@ -9,15 +9,23 @@ router.post("/new", async (req, res, next) => {
   const {
     name,
     kind,
+    descr,
     phone,
     website,
     email,
-    location,
+    region,
+    city,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    address,
     pics,
     allergenCard,
     dogs,
     terrace,
-    kidsMenu
+    kids
   } = req.body;
   try {
     // Check if the restaurant already exists
@@ -31,16 +39,24 @@ router.post("/new", async (req, res, next) => {
       name,
       owner: req.user._id,
       kind,
+      descr,
       phone,
       website,
       email,
-      location,
+      region,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      city,
+      address,
       pics,
       opinions: [],
       allergenCard,
       dogs,
       terrace,
-      kidsMenu
+      kids
     });
     console.log("Restaurant created");
     return res.status(200).json({ newRestaurant });
@@ -54,7 +70,7 @@ router.get("/:id", async (req, res, next) => {
       _id: req.params.id
     });
     return res.status(200).json({ restaurantId });
-  } catch (err) {
+  } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res
       .status(500)
@@ -97,12 +113,19 @@ router.put("/:id/edit", async (req, res, next) => {
     phone,
     website,
     email,
-    location,
+    region,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    city,
+    address,
     pics,
     allergenCard,
     dogs,
     terrace,
-    kidsMenu
+    kids
   } = req.body;
   try {
     const planToEdit = await Plan.findOne({
@@ -121,12 +144,19 @@ router.put("/:id/edit", async (req, res, next) => {
             phone,
             website,
             email,
-            location,
+            image1,
+            image2,
+            image3,
+            image4,
+            image5,
+            region,
+            city,
+            address,
             pics,
             allergenCard,
             dogs,
             terrace,
-            kidsMenu
+            kids
           }
         }
       );
