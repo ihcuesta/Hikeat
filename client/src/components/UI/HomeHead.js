@@ -23,11 +23,11 @@ export const HomeHead = () => {
               >
                 <span style={{ color: s.dark }}>Hik</span>eat
               </Typography>
-              <Typography variant="h3" component="h3" color="dark" paragraph>
+              <h3 style={{ color: s.dark }}>
                 Is there anything better than a<br />
                 <b style={{ color: s.primary }}>good meal</b> after a{" "}
                 <b>hiking trail</b>?
-              </Typography>
+              </h3>
               <p>
                 No one better than the local restaurants to give you advice.
               </p>

@@ -4,6 +4,7 @@ import placeholder from "../../images/placeholder.jpg";
 export const s = {
   primary: "#00adb5",
   secondary: "#ff5722",
+  textSecondary: "#888",
   light: "#EEE",
   dark: "#303841",
   shadow: {
@@ -27,7 +28,8 @@ export const txtField = {
 
 export const txtFieldAlt = {
   style: {
-    color: s.dark
+    color: s.dark,
+    maxLength: 2
   }
 };
 
@@ -65,4 +67,5 @@ export const ContIcon = styled.div`
 export const ContBody = styled.div`
   max-width: 1300px;
   margin: auto;
+  padding: 0 5%;
 `;

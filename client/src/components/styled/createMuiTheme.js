@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles";
+import { s } from "../styled/globalStyles";
 
 export const theme = createMuiTheme({
   palette: {
@@ -10,11 +11,11 @@ export const theme = createMuiTheme({
       main: "#ff5722",
       contrastText: "#FFF"
     },
-    lightGrey: {
+    light: {
       main: "#EEE"
     },
-    darkGrey: {
-      main: "#303841"
+    dark: {
+      main: s.dark
     },
     text: {
       primary: "#00adb5"
@@ -23,6 +24,7 @@ export const theme = createMuiTheme({
   typography: {
     fontFamily: ["Montserrat", "sans-serif"].join(","),
     fontSize: 16,
+    color: s.dark,
     button: {
       fontSize: "1rem",
       textTransform: "none"
@@ -35,7 +37,8 @@ export const theme = createMuiTheme({
       fontSize: "3rem"
     },
     h3: {
-      fontSize: "1.3rem"
+      fontSize: "1.3rem",
+      color: s.dark
     },
     h4: {
       fontSize: "1.15rem"
@@ -47,5 +50,5 @@ export const theme = createMuiTheme({
   shape: {
     borderRadius: 5
   },
-  spacing: 1
+  spacing: 8
 });

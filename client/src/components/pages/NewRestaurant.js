@@ -26,7 +26,8 @@ import {
   DialogContentText,
   DialogTitle,
   Container,
-  Fab
+  Fab,
+  FormHelperText
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { provincias } from "../../service/regions";
@@ -70,6 +71,8 @@ export const NewRestaurant = ({ history }) => {
   const [imagePreview3, setImagePreview3] = useState("");
   const [imagePreview4, setImagePreview4] = useState("");
   const [imagePreview5, setImagePreview5] = useState("");
+  const [validated0, setValidated0] = useState(false);
+  const [validated1, setValidated1] = useState(false);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -78,6 +81,20 @@ export const NewRestaurant = ({ history }) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleEmail = email => {
+    if (email === "" && validated1) {
+      return "Empty field!";
+    } else if (
+      /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/.test(email) ===
+        false &&
+      validated1
+    ) {
+      return "That's not a valid email";
+    } else {
+      return " ";
+    }
   };
 
   const deleteImage = async (img, setImg) => {
@@ -143,6 +160,8 @@ export const NewRestaurant = ({ history }) => {
               value={name}
               onChange={e => setName(e.target.value)}
               InputProps={txtField}
+              error={name === "" && validated0}
+              helperText={name === "" && validated0 ? "Empty field!" : " "}
             />
             <FormControl
               required
@@ -159,6 +178,8 @@ export const NewRestaurant = ({ history }) => {
                 fullWidth
                 value={kind}
                 onChange={e => setKind(e.target.value)}
+                error={kind === "" && validated0}
+                helperText={kind === "" && validated0 ? "Empty field!" : " "}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -169,7 +190,13 @@ export const NewRestaurant = ({ history }) => {
                 <MenuItem value={"American"}>American</MenuItem>
                 <MenuItem value={"Asian"}>Asian</MenuItem>
               </Select>
+              {kind === "" && validated0 ? (
+                <FormHelperText style={{ color: "red" }}>Error</FormHelperText>
+              ) : (
+                " "
+              )}
             </FormControl>
+
             <TextField
               required
               id="descrRestaurant"
@@ -183,6 +210,8 @@ export const NewRestaurant = ({ history }) => {
               value={descr}
               onChange={e => setDescr(e.target.value)}
               InputProps={txtField}
+              error={descr === "" && validated0}
+              helperText={descr === "" && validated0 ? "Empty field!" : " "}
             />
           </>
         );
@@ -193,16 +222,26 @@ export const NewRestaurant = ({ history }) => {
               required
               id="region"
               options={provincias}
+              onChange={(event, value) =>
+                value ? setRegion(value.nm) : setRegion("")
+              }
               getOptionLabel={option => option.nm}
               style={{ width: "100%", marginBottom: 40 }}
-              onChange={(event, value) => setRegion(value.nm)}
               renderInput={params => (
                 <TextField
                   {...params}
                   label="Region"
-                  value={region}
+                  // value={region}
+                  // onChange={e => {
+                  //   setRegion(e.target.value);
+                  //   console.log(e.target.value);
+                  // }}
                   required
                   variant="outlined"
+                  error={region === "" && validated1}
+                  helperText={
+                    region === "" && validated1 ? "Empty field!" : " "
+                  }
                 />
               )}
             />
@@ -219,6 +258,8 @@ export const NewRestaurant = ({ history }) => {
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              error={city === "" && validated1}
+              helperText={city === "" && validated1 ? "Empty field!" : " "}
             />
             <TextField
               required
@@ -233,6 +274,8 @@ export const NewRestaurant = ({ history }) => {
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              error={address === "" && validated1}
+              helperText={address === "" && validated1 ? "Empty field!" : " "}
             />
 
             <TextField
@@ -247,7 +290,9 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              InputProps={txtField}
+              inputProps={txtField}
+              error={phone === "" && validated1}
+              helperText={phone === "" && validated1 ? "Empty field!" : " "}
             />
 
             <TextField
@@ -263,6 +308,8 @@ export const NewRestaurant = ({ history }) => {
               size="medium"
               fullWidth="true"
               InputProps={txtField}
+              error={email === "" && validated1}
+              helperText={handleEmail(email)}
             />
 
             <TextField
@@ -498,40 +545,42 @@ export const NewRestaurant = ({ history }) => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    console.log(
-      name,
-      kind,
-      descr,
-      region,
-      city,
-      address,
-      phone,
-      email,
-      website,
-      dogs,
-      terrace,
-      allergenCard,
-      kids
-    );
   };
 
   const handleBack = () => {
     setActiveStep(prevActiveStep => prevActiveStep - 1);
-    console.log(
-      name,
-      kind,
-      descr,
-      region,
-      city,
-      address,
-      phone,
-      email,
-      website,
-      dogs,
-      terrace,
-      allergenCard,
-      kids
-    );
+  };
+
+  const handleErrors = currentStep => {
+    switch (currentStep) {
+      case 0:
+        if (name !== "" && kind !== "" && descr !== "") {
+          handleNext();
+        } else {
+          setValidated0(true);
+        }
+        break;
+      case 1:
+        if (
+          region !== "" &&
+          city !== "" &&
+          address !== "" &&
+          email !== "" &&
+          /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/.test(email) &&
+          phone !== ""
+        ) {
+          handleNext();
+        } else {
+          setValidated1(true);
+        }
+        break;
+      case 2:
+        handleNext();
+        break;
+      case 3:
+        handleNext();
+        break;
+    }
   };
 
   const handleReset = () => {
@@ -603,7 +652,7 @@ export const NewRestaurant = ({ history }) => {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={handleNext}
+                          onClick={() => handleErrors(activeStep)}
                         >
                           Next
                         </Button>

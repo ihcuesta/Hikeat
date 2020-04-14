@@ -17,7 +17,7 @@ export const Header = () => {
 
   return (
     <header>
-      <Box mt={50} style={{ boxShadow: s.shadow.s3 }}>
+      <Box mt={5} style={{ boxShadow: s.shadow.s3 }}>
         <Nav>
           <NavLeft>
             <Button component={Link} color="primary" to="/">
