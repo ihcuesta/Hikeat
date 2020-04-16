@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["Hiker", "Restaurant Owner"]
-    }
+    },
+    restaurant: false
   },
   {
     timestamps: true,

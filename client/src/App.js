@@ -12,6 +12,8 @@ import { GlobalStyles } from "./components/styled/globalStyles";
 import { NewRestaurant } from "./components/pages/NewRestaurant";
 import { NewPlan } from "./components/pages/NewPlan";
 import { Admin } from "./components/pages/Admin";
+import { RestaurantDetail } from "./components/pages/RestaurantDetail";
+import { PlanDetail } from "./components/pages/PlanDetail";
 
 export const App = withAuthentication(() => (
   <Router>
@@ -21,7 +23,9 @@ export const App = withAuthentication(() => (
           <Route exact path="/" component={Home} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
+          <Route path="/restaurant/detalle" component={RestaurantDetail} />
           <Route path="/restaurant/new" component={NewRestaurant} />
+          <Route path="/plan/:id" component={PlanDetail} />
           <Route path="/plan/new" component={NewPlan} />
           <Route path="/admin" component={Admin} />
         </Switch>

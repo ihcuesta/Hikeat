@@ -5,6 +5,18 @@ const planService = axios.create({
   withCredentials: true
 });
 
+export const getLastPlansRest = async endpoint => {
+  const data = await planService.get(`/lastplansrest/${endpoint}`);
+  console.log(data.data.plans);
+  return data.data.plans;
+};
+
+export const getAllPlans = async () => {
+  const data = await planService.get("/all");
+  console.log(data.data.plans);
+  return data.data.plans;
+};
+
 export const newPlan = async ({
   name,
   hikelevel,
@@ -12,7 +24,11 @@ export const newPlan = async ({
   longDescr,
   startPoint,
   kms,
-  pics,
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
   date,
   startTime,
   lunchTime,
@@ -37,7 +53,11 @@ export const newPlan = async ({
       longDescr,
       startPoint,
       kms,
-      pics,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
       date,
       startTime,
       lunchTime,
@@ -79,7 +99,11 @@ export const editPlan = async (
     longDescr,
     startPoint,
     kms,
-    pics,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
     date,
     startTime,
     lunchTime,
@@ -105,7 +129,11 @@ export const editPlan = async (
       longDescr,
       startPoint,
       kms,
-      pics,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
       date,
       startTime,
       lunchTime,

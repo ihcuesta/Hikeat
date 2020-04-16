@@ -1,8 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/Restaurant");
+const User = require("../models/User");
 const _ = require("lodash");
 const passport = require("passport");
+
+// Check if user has got restaurant created
+router.get("/searchrest/:id", async (req, res, next) => {
+  try {
+    const checkUser = await Restaurant.find({
+      owner: req.params.id
+    });
+    if (checkUser.length > 0) {
+      return res.status(200).json(true);
+    } else {
+      return res.status(200).json(false);
+    }
+  } catch (err) {
+    console.log("Imposible saber si hay restaurante creado", err);
+  }
+});
 
 // New restaurant
 router.post("/new", async (req, res, next) => {

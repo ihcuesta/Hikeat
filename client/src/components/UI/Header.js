@@ -1,6 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useUser, useUserLogout } from "../../service/authService";
+import React, { useEffect, useState } from "react";
+
+import { Link, Redirect, useHistory } from "react-router-dom";
+import { useUser, useUserLogout, whoami } from "../../service/authService";
+import { searchRestaurant } from "../../service/restaurantService";
 import {
   Nav,
   NavRight,
@@ -14,6 +16,21 @@ import { s } from "../styled/globalStyles";
 export const Header = () => {
   const session = useUser();
   const handleLogout = useUserLogout();
+  const [isRest, setIsRest] = useState(false);
+  const history = useHistory();
+  // useEffect(() => {
+  //   checkIfRestaurant();
+  // }, []);
+
+  const checkIfRestaurant = async () => {
+    const user = await whoami();
+    const isRestaurant = await searchRestaurant(user.user.id);
+    if (isRestaurant.data) {
+      history.push("/plan/new");
+    } else {
+      history.push("/restaurant/new");
+    }
+  };
 
   return (
     <header>
@@ -78,14 +95,12 @@ export const Header = () => {
                     <WelcomeMsg>
                       {session.user.username}, let's cook a plan!{" "}
                     </WelcomeMsg>
+
                     <Button
-                      style={{ marginRight: 15 }}
-                      component={Link}
-                      size="small"
-                      pr={10}
+                      onClick={checkIfRestaurant}
                       variant="contained"
-                      color={"secondary"}
-                      to="/plan/new"
+                      color="secondary"
+                      // to={isRest ? "/plan/new" : "restaurant/new"}
                     >
                       Create Plan
                     </Button>

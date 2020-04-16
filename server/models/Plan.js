@@ -7,8 +7,11 @@ const planSchema = new mongoose.Schema(
       type: String,
       unique: true
     },
-    restaurant: { type: Schema.Types.ObjectId, ref: "restaurant" },
     owner: { type: Schema.Types.ObjectId, ref: "user" },
+    restid: { type: Schema.Types.ObjectId, ref: "restaurant" },
+    restaurant: String,
+    region: String,
+    city: String,
     hikelevel: {
       type: String,
       enum: ["Easy peasy", "Challenging", "Hard", "Mountain runner"]
@@ -22,7 +25,11 @@ const planSchema = new mongoose.Schema(
     brunch: Boolean,
     maxBookings: Number,
     bookings: Array,
-    pics: Array,
+    image1: String,
+    image2: String,
+    image3: String,
+    image4: String,
+    image5: String,
     breakfast: Boolean,
     firstCourse: Array,
     secondCourse: Array,

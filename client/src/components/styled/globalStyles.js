@@ -69,3 +69,24 @@ export const ContBody = styled.div`
   margin: auto;
   padding: 0 5%;
 `;
+
+export const Error = styled.p`
+  color: #f44336;
+  font-size: 0.8571428571428571rem;
+  margin-left: 14px;
+  margin-top: 5px;
+`;
+
+export const Gap = styled.div`
+  height: 25px;
+`;
+
+export const BodyText = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+export const BodyLight = styled.p`
+  font-size: 16px;
+  font-weight: 300;
+`;

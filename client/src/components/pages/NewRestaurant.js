@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { newRestaurant } from "../../service/restaurantService";
+import { useUserSetter } from "../../service/authService";
+import { newRestaurant, addRestUser } from "../../service/restaurantService";
 import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import { regions } from "../../service/api";
 import { useForm } from "react-hook-form";
@@ -36,7 +37,9 @@ import {
   ContAddImg,
   ContIcon,
   s,
-  txtField
+  txtField,
+  Gap,
+  Error
 } from "../styled/globalStyles";
 import placeholder from "../../images/placeholder.jpg";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -48,6 +51,7 @@ const getRegions = async () => {
 };
 
 export const NewRestaurant = ({ history }) => {
+  const setUser = useUserSetter();
   const [name, setName] = useState("");
   const [kind, setKind] = useState("");
   const [descr, setDescr] = useState("");
@@ -66,11 +70,6 @@ export const NewRestaurant = ({ history }) => {
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
   const [image5, setImage5] = useState("");
-  const [imagePreview1, setImagePreview1] = useState("");
-  const [imagePreview2, setImagePreview2] = useState("");
-  const [imagePreview3, setImagePreview3] = useState("");
-  const [imagePreview4, setImagePreview4] = useState("");
-  const [imagePreview5, setImagePreview5] = useState("");
   const [validated0, setValidated0] = useState(false);
   const [validated1, setValidated1] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -109,9 +108,7 @@ export const NewRestaurant = ({ history }) => {
     setImg("");
   };
 
-  const handleChangeFile = async (e, setImg, setImgPreview) => {
-    // setImg(e.target.files[0]);
-    setImgPreview(URL.createObjectURL(e.target.files[0]));
+  const handleChangeFile = async (e, setImg) => {
     const imgForm = new FormData();
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
@@ -128,6 +125,11 @@ export const NewRestaurant = ({ history }) => {
   const handleSubmit = async data => {
     console.log(data);
     const response = await newRestaurant(data);
+    // const setRestUser = await addRestUser();
+    // console.log(setRestUser);
+    // setRestUser
+    //   ? setUser(setRestUser)
+    //   : console.log("Impossible to setUser from New Restaurant Form");
     console.log("Guardado");
     if (response) {
       handleClickOpen(); //mostrar pop up para ir al creador de plan o a la página de restaurante
@@ -140,7 +142,7 @@ export const NewRestaurant = ({ history }) => {
   const steps = getSteps();
 
   function getSteps() {
-    return ["Information", "Contact", "Pictures", "Other"];
+    return ["Info", "Contact", "Images", "Other"];
   }
 
   function getStepContent(stepIndex) {
@@ -159,16 +161,11 @@ export const NewRestaurant = ({ history }) => {
               fullWidth="true"
               value={name}
               onChange={e => setName(e.target.value)}
-              InputProps={txtField}
               error={name === "" && validated0}
               helperText={name === "" && validated0 ? "Empty field!" : " "}
             />
-            <FormControl
-              required
-              variant="outlined"
-              fullWidth
-              style={{ marginBottom: 40 }}
-            >
+            <Gap></Gap>
+            <FormControl required variant="outlined" fullWidth>
               <InputLabel id="restaurantKindLabel">Kind</InputLabel>
               <Select
                 labelId="restaurantKind"
@@ -191,11 +188,12 @@ export const NewRestaurant = ({ history }) => {
                 <MenuItem value={"Asian"}>Asian</MenuItem>
               </Select>
               {kind === "" && validated0 ? (
-                <FormHelperText style={{ color: "red" }}>Error</FormHelperText>
+                <Error>Empty field!</Error>
               ) : (
-                " "
+                <Error></Error>
               )}
             </FormControl>
+            <Gap></Gap>
 
             <TextField
               required
@@ -209,10 +207,11 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               value={descr}
               onChange={e => setDescr(e.target.value)}
-              InputProps={txtField}
               error={descr === "" && validated0}
               helperText={descr === "" && validated0 ? "Empty field!" : " "}
             />
+            <Gap></Gap>
+            <Gap></Gap>
           </>
         );
       case 1:
@@ -226,7 +225,7 @@ export const NewRestaurant = ({ history }) => {
                 value ? setRegion(value.nm) : setRegion("")
               }
               getOptionLabel={option => option.nm}
-              style={{ width: "100%", marginBottom: 40 }}
+              style={{ width: "100%" }}
               renderInput={params => (
                 <TextField
                   {...params}
@@ -240,11 +239,16 @@ export const NewRestaurant = ({ history }) => {
                   variant="outlined"
                   error={region === "" && validated1}
                   helperText={
-                    region === "" && validated1 ? "Empty field!" : " "
+                    region === "" && validated1 ? (
+                      <Error>Empty field!</Error>
+                    ) : (
+                      <Error></Error>
+                    )
                   }
                 />
               )}
             />
+            <Gap></Gap>
             <TextField
               required
               placeholder="Hallstatt"
@@ -257,10 +261,16 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              InputProps={txtField}
               error={city === "" && validated1}
-              helperText={city === "" && validated1 ? "Empty field!" : " "}
+              helperText={
+                city === "" && validated1 ? (
+                  <Error>Empty field!</Error>
+                ) : (
+                  <Error></Error>
+                )
+              }
             />
+            <Gap></Gap>
             <TextField
               required
               placeholder="23 Mountain St."
@@ -273,10 +283,16 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              InputProps={txtField}
               error={address === "" && validated1}
-              helperText={address === "" && validated1 ? "Empty field!" : " "}
+              helperText={
+                address === "" && validated1 ? (
+                  <Error>Empty field!</Error>
+                ) : (
+                  <Error></Error>
+                )
+              }
             />
+            <Gap></Gap>
 
             <TextField
               required
@@ -290,10 +306,16 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              inputProps={txtField}
               error={phone === "" && validated1}
-              helperText={phone === "" && validated1 ? "Empty field!" : " "}
+              helperText={
+                phone === "" && validated1 ? (
+                  <Error>Empty field!</Error>
+                ) : (
+                  <Error></Error>
+                )
+              }
             />
+            <Gap></Gap>
 
             <TextField
               required
@@ -307,10 +329,10 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              InputProps={txtField}
               error={email === "" && validated1}
-              helperText={handleEmail(email)}
+              helperText={<Error>{handleEmail(email)}</Error>}
             />
+            <Gap></Gap>
 
             <TextField
               id="website"
@@ -323,8 +345,10 @@ export const NewRestaurant = ({ history }) => {
               variant="outlined"
               size="medium"
               fullWidth="true"
-              InputProps={txtField}
+              helperText={<Error></Error>}
             />
+            <Gap></Gap>
+            <Gap></Gap>
           </>
         );
       case 2:
@@ -339,7 +363,7 @@ export const NewRestaurant = ({ history }) => {
               Images
             </Typography>
             <ContAddImg>
-              <Grid container spacing={10}>
+              <Grid container spacing={1}>
                 <Grid
                   item
                   xs={12}
@@ -356,9 +380,7 @@ export const NewRestaurant = ({ history }) => {
                     <input
                       id="file-input1"
                       type="file"
-                      onChange={e =>
-                        handleChangeFile(e, setImage1, setImagePreview1)
-                      }
+                      onChange={e => handleChangeFile(e, setImage1)}
                     />
                     <ContIcon>
                       {image1 === "" ? (
@@ -384,9 +406,7 @@ export const NewRestaurant = ({ history }) => {
                     <input
                       id="file-input2"
                       type="file"
-                      onChange={e =>
-                        handleChangeFile(e, setImage2, setImagePreview2)
-                      }
+                      onChange={e => handleChangeFile(e, setImage2)}
                     />
 
                     <ContIcon>
@@ -413,9 +433,7 @@ export const NewRestaurant = ({ history }) => {
                     <input
                       id="file-input3"
                       type="file"
-                      onChange={e =>
-                        handleChangeFile(e, setImage3, setImagePreview3)
-                      }
+                      onChange={e => handleChangeFile(e, setImage3)}
                     />
 
                     <ContIcon>
@@ -442,9 +460,7 @@ export const NewRestaurant = ({ history }) => {
                     <input
                       id="file-input4"
                       type="file"
-                      onChange={e =>
-                        handleChangeFile(e, setImage4, setImagePreview4)
-                      }
+                      onChange={e => handleChangeFile(e, setImage4)}
                     />
 
                     <ContIcon>
@@ -471,9 +487,7 @@ export const NewRestaurant = ({ history }) => {
                     <input
                       id="file-input5"
                       type="file"
-                      onChange={e =>
-                        handleChangeFile(e, setImage5, setImagePreview5)
-                      }
+                      onChange={e => handleChangeFile(e, setImage5)}
                     />
 
                     <ContIcon>

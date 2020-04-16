@@ -5,6 +5,43 @@ const Restaurant = require("../models/Restaurant");
 const _ = require("lodash");
 const passport = require("passport");
 
+// Last plans restaurant detail page
+router.get("/lastplansrest/:id", async (req, res, next) => {
+  try {
+    const plans = await Plan.find({
+      restid: req.params.id
+    });
+    return res.status(200).json({ plans });
+  } catch (err) {
+    console.log("Error while retrieving plans", error);
+    return res.status(500).json({ message: "Impossible to get the plans" });
+  }
+});
+
+// All
+router.get("/all", async (req, res, next) => {
+  try {
+    const plans = await Plan.find({});
+    return res.status(200).json({ plans });
+  } catch (err) {
+    console.log("Error while retrieving plans", error);
+    return res.status(500).json({ message: "Impossible to get the plans" });
+  }
+});
+
+// Region
+router.get("/region/:region", async (req, res, next) => {
+  try {
+    const plansRegion = await Plan.find({
+      region: req.params.region
+    });
+    return res.status(200).json({ plansRegion });
+  } catch (err) {
+    console.log("Error while retrieving plans region: ", err);
+    return res.status(500).json({ message: "Impossible to get the plans" });
+  }
+});
+
 // New plan
 router.post("/new", async (req, res, next) => {
   const {
@@ -13,7 +50,11 @@ router.post("/new", async (req, res, next) => {
     shortDescr,
     longDescr,
     kms,
-    pics,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
     date,
     startTime,
     lunchTime,
@@ -37,17 +78,24 @@ router.post("/new", async (req, res, next) => {
       return res.status(400).json({ message: "Plan name already taken" });
     }
 
-    const restPlan = await Restaurant.findOne({ owner: req.user._id }).populate(
-      "owner"
-    );
+    const restOwner = await Restaurant.findOne({ owner: req.user._id });
 
     const newPlan = await Plan.create({
       name,
+      owner: req.user._id,
+      restid: restOwner._id,
+      restaurant: restOwner.name,
+      region: restOwner.region,
+      city: restOwner.city,
       hikelevel,
       shortDescr,
       longDescr,
       kms,
-      pics,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
       date,
       startTime,
       lunchTime,
@@ -66,10 +114,10 @@ router.post("/new", async (req, res, next) => {
     console.log("Plan created");
     return res.status(200).json({ newPlan });
   } catch (err) {
-    console.log("Error while trying to create a new plan");
+    console.log("Error while trying to create a new plan", err);
     return res
       .status(500)
-      .json({ message: "Error while trying to create a new plan" });
+      .json({ message: "Error while trying to create a new plan", err });
   }
 });
 
@@ -116,7 +164,11 @@ router.put("/:id/edit", async (req, res, next) => {
     shortDescr,
     longDescr,
     kms,
-    pics,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
     date,
     startTime,
     lunchTime,
@@ -153,7 +205,11 @@ router.put("/:id/edit", async (req, res, next) => {
             hikelevel,
             shortDescr,
             longDescr,
-            kms,
+            image1,
+            image2,
+            image3,
+            image4,
+            image5,
             pics,
             date,
             startTime,

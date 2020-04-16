@@ -45,6 +45,9 @@ export const theme = createMuiTheme({
     },
     body1: {
       fontSize: "1rem"
+    },
+    p: {
+      fontSize: "1rem"
     }
   },
   shape: {

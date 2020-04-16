@@ -5,6 +5,11 @@ const restaurantService = axios.create({
   withCredentials: true
 });
 
+export const searchRestaurant = async endpoint => {
+  const { data } = await restaurantService.get(`/searchrest/${endpoint}`);
+  return { data };
+};
+
 export const newRestaurant = async ({
   name,
   kind,

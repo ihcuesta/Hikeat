@@ -33,7 +33,8 @@ router.post("/signup", async (req, res, next) => {
       role,
       favHike,
       favRecipe,
-      image
+      image,
+      restaurant: false
     });
 
     // login after signup
