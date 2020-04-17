@@ -12,6 +12,12 @@ router.use("/restaurant", restaurant);
 const plan = require("./plan");
 router.use("/plan", plan);
 
+const booking = require("./booking");
+router.use("/booking", booking);
+
+const favourite = require("./favourite");
+router.use("/favourite", favourite);
+
 const cloudinary = require("./cloudinary");
 router.use("/cloudinary", cloudinary);
 

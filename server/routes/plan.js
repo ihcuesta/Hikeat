@@ -9,7 +9,7 @@ const passport = require("passport");
 router.get("/lastplansrest/:id", async (req, res, next) => {
   try {
     const plans = await Plan.find({
-      restid: req.params.id
+      restaurant: req.params.id
     });
     return res.status(200).json({ plans });
   } catch (err) {
@@ -84,10 +84,7 @@ router.post("/new", async (req, res, next) => {
     const newPlan = await Plan.create({
       name,
       owner: req.user._id,
-      restid: restOwner._id,
-      restaurant: restOwner.name,
-      region: restOwner.region,
-      city: restOwner.city,
+      restaurant: restOwner._id,
       hikelevel,
       shortDescr,
       longDescr,
@@ -128,7 +125,9 @@ router.get("/:id", async (req, res, next) => {
   try {
     const planId = await Plan.findOne({
       _id: req.params.id
-    }).populate("restid");
+    })
+      .populate("restaurant")
+      .populate("owner");
 
     return res.status(200).json({ planId });
   } catch (err) {

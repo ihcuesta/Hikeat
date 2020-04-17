@@ -28,7 +28,9 @@ import {
   InputAdornment,
   Paper,
   IconButton,
-  Container
+  Container,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import {
   AddImg,
@@ -84,6 +86,7 @@ export const NewPlan = ({ history }) => {
   const [validated1, setValidated1] = useState(false);
   const [validated3, setValidated3] = useState(false);
   const [open, setOpen] = useState();
+  const [openspin, setOpenspin] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,6 +109,7 @@ export const NewPlan = ({ history }) => {
   };
 
   const handleChangeFile = async (e, setImg) => {
+    setOpenspin(true);
     const imgForm = new FormData();
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
@@ -117,6 +121,7 @@ export const NewPlan = ({ history }) => {
         cloudimage[0] + "upload/c_scale,h_525,w_700/" + cloudimage[1];
       setImg(cloudimage);
     }
+    setOpenspin(false);
   };
 
   const handleSubmit = async data => {
@@ -542,7 +547,7 @@ export const NewPlan = ({ history }) => {
               Images
             </Typography>
             <ContAddImg>
-              <Grid container spacing={2}>
+              <Grid container spacing={1}>
                 <Grid
                   item
                   xs={12}
@@ -1284,6 +1289,9 @@ export const NewPlan = ({ history }) => {
             </Button>
           </DialogActions>
         </Dialog>
+        <Backdrop style={{ zIndex: 1000 }} open={openspin}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </div>
       <FooterAlt></FooterAlt>
     </>

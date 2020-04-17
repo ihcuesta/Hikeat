@@ -8,10 +8,7 @@ const planSchema = new mongoose.Schema(
       unique: true
     },
     owner: { type: Schema.Types.ObjectId, ref: "user" },
-    restid: { type: Schema.Types.ObjectId, ref: "restaurant" },
-    restaurant: String,
-    region: String,
-    city: String,
+    restaurant: { type: Schema.Types.ObjectId, ref: "restaurant" },
     hikelevel: {
       type: String,
       enum: ["Easy peasy", "Challenging", "Hard", "Mountain runner"]

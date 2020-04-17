@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Grid, TextField } from "@material-ui/core";
+import { Grid, TextField, Backdrop, CircularProgress } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome } from "../styled/HomeStyles";
@@ -16,6 +16,7 @@ export const Home = () => {
   useEffect(() => {
     getAllPlans().then(plans => setPlans(plans));
   }, []);
+
   return (
     <>
       <HomeHead></HomeHead>
@@ -27,6 +28,9 @@ export const Home = () => {
               required
               id="region"
               options={provincias}
+              onChange={(event, value) =>
+                value ? setRegion(value.nm) : setRegion("")
+              }
               getOptionLabel={option => option.nm}
               style={{
                 width: "100%",
@@ -37,11 +41,6 @@ export const Home = () => {
                 <TextField
                   {...params}
                   label="🔍 Search by region"
-                  value={region}
-                  onChange={e => {
-                    setRegion(e.target.value);
-                    console.log(region);
-                  }}
                   variant="outlined"
                 />
               )}
@@ -50,21 +49,23 @@ export const Home = () => {
 
           <Grid container spacing={2}>
             {plans.length === 0 ? (
-              <p>Loading</p>
+              <Backdrop style={{ zIndex: 1000 }} open={true}>
+                <CircularProgress color="primary" />
+              </Backdrop>
             ) : (
               plans.map(plan => {
                 return (
                   <CardHome
                     id={plan._id}
                     image={plan.image1}
-                    region={plan.region}
-                    city={plan.city}
+                    region={plan.restaurant && plan.restaurant.region}
+                    city={plan.restaurant && plan.restaurant.city}
                     name={plan.name}
-                    restaurant={plan.restaurant}
+                    restaurant={plan.restaurant && plan.restaurant.name}
                     date={plan.date}
                     time={plan.startTime}
                     descr={plan.shortDescr}
-                    restid={plan.restid}
+                    restid={plan.restaurant && plan.restaurant._id}
                   ></CardHome>
                 );
               })

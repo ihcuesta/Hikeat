@@ -7,7 +7,21 @@ import {
   Owner,
   OwnerTexts
 } from "../styled/RestDetailStyled";
-import { Grid, Button, Box, TextField, Paper, Chip } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Box,
+  TextField,
+  Paper,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Backdrop,
+  CircularProgress
+} from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { ContBody, BodyText, BodyLight } from "../styled/globalStyles";
 import rest1 from "../../images/rest/rest1.jpg";
@@ -39,7 +53,8 @@ import {
   TitleBooking,
   Booking,
   BookButton,
-  Legend
+  Legend,
+  IconsCont
 } from "../styled/PlanDetailStyled";
 import infographic from "../../images/infographic.svg";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
@@ -56,29 +71,67 @@ import FastfoodIcon from "@material-ui/icons/Fastfood";
 import MapIcon from "@material-ui/icons/Map";
 import CheckCircleOutlineRoundedIcon from "@material-ui/icons/CheckCircleOutlineRounded";
 import { Footer } from "../UI/Footer";
+import { newBooking } from "../../service/bookingService";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
+import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
+import ShareIcon from "@material-ui/icons/Share";
 
-export const PlanDetail = props => {
+export const PlanDetail = (props, { history }) => {
   const [info, setInfo] = useState([]);
+  const [numhikers, setNumhikers] = useState(0);
+  const [comments, setComments] = useState();
+  const [planid, setPlanid] = useState();
+  const [validated, setValidated] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [newbooking, setNewbooking] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
     fetchSinglePlan(id).then(plan => {
-      console.log(plan);
       setInfo(plan.planId);
+      setPlanid(plan.planId._id);
     });
   }, []);
-  console.log(info.firstCourse);
+
+  const handleClickOpen = isNewBooking => {
+    if (isNewBooking) {
+      setNewbooking(true);
+    } else {
+      setNewbooking(false);
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = async (planid, numhikers, comments) => {
+    if (numhikers > 0) {
+      const response = await newBooking({ planid, numhikers, comments });
+      if (response) {
+        handleClickOpen(response.isNewBooking); //mostrar pop up
+      } else {
+        console.log("Algo ha fallado");
+      }
+    } else {
+      setValidated(true);
+    }
+  };
+
   return info === 0 ? (
-    <p>Loading...</p>
+    <Backdrop style={{ zIndex: 1000 }} open={true}>
+      <CircularProgress color="primary" />
+    </Backdrop>
   ) : (
     <>
       <ContBody>
         <Head>
           <p>
-            <i>{info.city}</i>
+            <i>{info.restaurant && info.restaurant.city}</i>
           </p>
           <h1>{info.name}</h1>
-          <NameRest>{info.restaurant}</NameRest>
+          <NameRest>{info.restaurant && info.restaurant.name}</NameRest>
         </Head>
 
         <ImgCont>
@@ -266,13 +319,15 @@ export const PlanDetail = props => {
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <Contact>
               <Owner>
-                <img src="#" />
+                <img src={info.owner && info.owner.image} />
                 <OwnerTexts>
                   <p>
                     <i>Organizer</i>
                   </p>
-                  <Organizer>{info.owner}</Organizer>
-                  <RestContact>{info.restaurant}</RestContact>
+                  <Organizer>{info.owner && info.owner.username}</Organizer>
+                  <RestContact>
+                    {info.restaurant && info.restaurant.name}
+                  </RestContact>
                 </OwnerTexts>
               </Owner>
               <DetailsContact>
@@ -308,10 +363,11 @@ export const PlanDetail = props => {
                     <p>
                       <b>Start Point</b>
                     </p>
-                    <p>{info.restaurant}</p>
+                    <p>{info.restaurant && info.restaurant.name}</p>
                     <p>
-                      {info.restid && info.restid.address}. {info.city},{" "}
-                      {info.region}.
+                      {info.restaurant && info.restaurant.address}.{" "}
+                      {info.restaurant && info.restaurant.city},{" "}
+                      {info.restaurant && info.restaurant.region}.
                     </p>
                   </DateText>
                 </Location>
@@ -320,16 +376,31 @@ export const PlanDetail = props => {
 
             <Paper elevation={5} style={{ padding: "5%" }}>
               <TitleBooking>BOOKING</TitleBooking>
-              <form>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  handleSubmit(planid, numhikers, comments);
+                }}
+              >
                 <TextField
+                  name="numhikers"
                   id="outlined-basic"
                   label="Persons"
                   variant="outlined"
                   type="number"
                   fullWidth
+                  value={numhikers}
+                  onChange={e => setNumhikers(e.target.value)}
+                  error={numhikers === 0 && validated}
+                  helperText={
+                    numhikers === 0 && validated
+                      ? "You must book for at least 1 person"
+                      : " "
+                  }
                 />
                 <Gap></Gap>
                 <TextField
+                  name="comments"
                   id="outlined-basic"
                   label="Comments"
                   variant="outlined"
@@ -337,6 +408,8 @@ export const PlanDetail = props => {
                   multiline
                   rows={3}
                   fullWidth
+                  value={comments}
+                  onChange={e => setComments(e.target.value)}
                 />
                 <Gap></Gap>
                 <BookButton>
@@ -344,27 +417,98 @@ export const PlanDetail = props => {
                     color="secondary"
                     variant="contained"
                     style={{ width: 150 }}
+                    type="submit"
                   >
                     BOOK
                   </Button>
                 </BookButton>
               </form>
             </Paper>
+            <IconsCont>
+              <FavoriteBorderOutlinedIcon
+                color="primary"
+                style={{ fontSize: "35px" }}
+              ></FavoriteBorderOutlinedIcon>
+              <ShareIcon
+                color="primary"
+                style={{ fontSize: "35px", marginLeft: 20, marginRight: 20 }}
+              ></ShareIcon>
+            </IconsCont>
           </Grid>
         </Grid>
         <TitleRest>THE RESTAURANT</TitleRest>
         <RestaurantCard
-          kind={info.restid && info.restid.kind}
-          name={info.restid && info.restid.name}
-          descr={info.restid && info.restid.descr}
-          address={info.restid && info.restid.address}
-          city={info.city}
-          region={info.region}
-          phone={info.restid && info.restid.phone}
-          website={info.restid && info.restid.website}
-          email={info.restid && info.restid.email}
+          img1={info.restaurant && info.restaurant.image1}
+          img2={info.restaurant && info.restaurant.image2}
+          img3={info.restaurant && info.restaurant.image3}
+          kind={info.restaurant && info.restaurant.kind}
+          name={info.restaurant && info.restaurant.name}
+          descr={info.restaurant && info.restaurant.descr}
+          address={info.restaurant && info.restaurant.address}
+          city={info.restaurant && info.restaurant.city}
+          region={info.restaurant && info.restaurant.region}
+          phone={info.restaurant && info.restaurant.phone}
+          website={info.restaurant && info.restaurant.website}
+          email={info.restaurant && info.restaurant.email}
         ></RestaurantCard>
       </ContBody>
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          {newbooking ? (
+            <>
+              <DialogTitle id="alert-dialog-title" style={{ color: s.dark }}>
+                {"Booking done!"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  You have a date in {info.restaurant.name} on {info.date} at{" "}
+                  {info.startTime}!
+                </DialogContentText>
+              </DialogContent>
+            </>
+          ) : (
+            <>
+              <DialogTitle
+                id="alert-dialog-title"
+                style={{
+                  display: "flex",
+                  flexFlow: "row wrap",
+                  alignItems: "center"
+                }}
+              >
+                <ErrorOutlineOutlinedIcon
+                  style={{ color: "red" }}
+                ></ErrorOutlineOutlinedIcon>
+                {"Error"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Please, modify your booking in Admin.
+                </DialogContentText>
+              </DialogContent>
+            </>
+          )}
+
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+            <Button
+              onClick={() => history.push("/admin")}
+              color="secondary"
+              variant="contained"
+              autoFocus
+            >
+              Admin
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       <Footer></Footer>
     </>
   );

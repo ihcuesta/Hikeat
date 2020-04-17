@@ -24,6 +24,9 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import { BgRestCard, OpinionsBox } from "../styled/RestCardStyled";
 
 export const RestaurantCard = ({
+  img1,
+  img2,
+  img3,
   kind,
   name,
   address,
@@ -40,13 +43,13 @@ export const RestaurantCard = ({
         <BgRestCard>
           <Grid container spacing={3}>
             <Grid item xs={4} sm={4} md={4} lg={4}>
-              <img src={rest1} width="100%" height="auto" />
+              <img src={img1} width="100%" height="auto" />
               <Grid container>
                 <Grid item xs={6}>
-                  <img src={rest2} width="100%" height="auto" />
+                  <img src={img2} width="100%" height="auto" />
                 </Grid>
                 <Grid item xs={6}>
-                  <img src={rest3} width="100%" height="auto" />
+                  <img src={img3} width="100%" height="auto" />
                 </Grid>
               </Grid>
             </Grid>

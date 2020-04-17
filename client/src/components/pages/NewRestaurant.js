@@ -28,7 +28,9 @@ import {
   DialogTitle,
   Container,
   Fab,
-  FormHelperText
+  FormHelperText,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { provincias } from "../../service/regions";
@@ -74,6 +76,7 @@ export const NewRestaurant = ({ history }) => {
   const [validated0, setValidated0] = useState(false);
   const [validated1, setValidated1] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [openspin, setOpenspin] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -110,6 +113,7 @@ export const NewRestaurant = ({ history }) => {
   };
 
   const handleChangeFile = async (e, setImg) => {
+    setOpenspin(true);
     const imgForm = new FormData();
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
@@ -121,6 +125,7 @@ export const NewRestaurant = ({ history }) => {
         cloudimage[0] + "upload/c_scale,h_525,w_700/" + cloudimage[1];
       setImg(cloudimage);
     }
+    setOpenspin(false);
   };
 
   const handleSubmit = async data => {
@@ -710,6 +715,9 @@ export const NewRestaurant = ({ history }) => {
           </DialogActions>
         </Dialog>
       </div>
+      <Backdrop style={{ zIndex: 1000 }} open={openspin}>
+        <CircularProgress color="primary" />
+      </Backdrop>
       <FooterAlt></FooterAlt>
     </>
   );

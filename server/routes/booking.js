@@ -1,83 +1,40 @@
 const express = require("express");
 const router = express.Router();
-const Restaurant = require("../models/Restaurant");
+const Booking = require("../models/Booking");
 const User = require("../models/User");
+const Plan = require("../models/Plan");
 const _ = require("lodash");
 const passport = require("passport");
 
-// Check if user has got restaurant created
-router.get("/searchrest/:id", async (req, res, next) => {
-  try {
-    const checkUser = await Restaurant.find({
-      owner: req.params.id
-    });
-    if (checkUser.length > 0) {
-      return res.status(200).json(true);
-    } else {
-      return res.status(200).json(false);
-    }
-  } catch (err) {
-    console.log("Imposible saber si hay restaurante creado", err);
-  }
-});
-
-// New restaurant
+// New booking
 router.post("/new", async (req, res, next) => {
-  const {
-    name,
-    kind,
-    descr,
-    phone,
-    website,
-    email,
-    region,
-    city,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    address,
-    pics,
-    allergenCard,
-    dogs,
-    terrace,
-    kids
-  } = req.body;
+  const { planid, numhikers, comments } = req.body;
   try {
-    // Check if the restaurant already exists
-    const registeredRestaurant = await Restaurant.findOne({ name });
-    if (registeredRestaurant) {
-      console.log(`Restaurant ${name} already exists`);
-      return res.status(400).json({ message: "Restaurant already taken" });
+    // Check if there is already a booking for that plan and with that user
+    const registeredBooking = await Booking.findOne({ user: req.user._id });
+    if (registeredBooking) {
+      console.log(
+        `There are bookings for this user, modify the booking created`
+      );
+      return res.status(400).json({
+        isNewBooking: false
+      });
     }
 
-    const newRestaurant = await Restaurant.create({
-      name,
-      owner: req.user._id,
-      kind,
-      descr,
-      phone,
-      website,
-      email,
-      region,
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      city,
-      address,
-      pics,
-      opinions: [],
-      allergenCard,
-      dogs,
-      terrace,
-      kids
+    const newBooking = await Booking.create({
+      user: req.user._id,
+      planid,
+      numhikers,
+      comments
     });
-    console.log("Restaurant created");
-    return res.status(200).json({ newRestaurant });
-  } catch (err) {}
+    console.log("Booking created");
+    return res.status(200).json({ isNewBooking: true });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ message: "Impossible to create new booking" });
+  }
 });
 
 // Detail page of restaurant

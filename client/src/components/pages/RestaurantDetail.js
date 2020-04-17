@@ -15,7 +15,13 @@ import {
   InfoIcon,
   IconsCont
 } from "../styled/RestDetailStyled";
-import { Grid, Button, Box } from "@material-ui/core";
+import {
+  Grid,
+  Button,
+  Box,
+  Backdrop,
+  CircularProgress
+} from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { ContBody, BodyText, BodyLight } from "../styled/globalStyles";
 import rest1 from "../../images/rest/rest1.jpg";
@@ -32,23 +38,35 @@ import ChildCareIcon from "@material-ui/icons/ChildCare";
 import LocalPharmacyIcon from "@material-ui/icons/LocalPharmacy";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import { Divider, BgHome } from "../styled/HomeStyles";
-import { CardRestaurant } from "../UI/Cards";
+import { CardLastPlansRest } from "../UI/Cards";
 import { getLastPlansRest } from "../../service/planService";
+import { fetchSingleRestaurant } from "../../service/restaurantService";
 import { Footer } from "../UI/Footer";
 
-export const RestaurantDetail = () => {
+export const RestaurantDetail = props => {
   const [plans, setPlans] = useState([]);
+  const [info, setInfo] = useState();
   useEffect(() => {
     getLastPlansRest().then(plans => setPlans(plans));
+    const id = props.match.params.id;
+    fetchSingleRestaurant(id).then(restaurant => {
+      console.log(restaurant.restaurantId);
+      setInfo(restaurant.restaurantId);
+    });
   }, []);
-  return (
+  console.log(info && info.kind);
+  return info === 0 ? (
+    <Backdrop style={{ zIndex: 1000 }} open={true}>
+      <CircularProgress color="primary" />
+    </Backdrop>
+  ) : (
     <>
       <ContBody>
         <Head>
           <p>
-            <i>Italian</i>
+            <i>{info && info.kind}</i>
           </p>
-          <h1>Ristorante Pepino</h1>
+          <h1>{info && info.name}</h1>
         </Head>
         <Rates>
           <Box mt={0.3} component="fieldset" borderColor="transparent">
@@ -59,21 +77,21 @@ export const RestaurantDetail = () => {
         <ImgCont>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <img src={rest1} width="100%" height="auto" />
+              <img src={info && info.image1} width="100%" height="auto" />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Grid container>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={rest2} width="100%" height="auto" />
+                  <img src={info && info.image2} width="100%" height="auto" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={rest3} width="100%" height="auto" />
+                  <img src={info && info.image3} width="100%" height="auto" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={rest4} width="100%" height="auto" />
+                  <img src={info && info.image4} width="100%" height="auto" />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={rest5} width="100%" height="auto" />
+                  <img src={info && info.image5} width="100%" height="auto" />
                 </Grid>
               </Grid>
             </Grid>
@@ -84,22 +102,17 @@ export const RestaurantDetail = () => {
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <Contact>
               <Owner>
-                <img src="#" />
+                <img src={info && info.owner.image} />
                 <OwnerTexts>
                   <p>
                     <i>Restaurant owner</i>
                   </p>
-                  <p>Don Pepino</p>
+                  <p>{info && info.owner.username}</p>
                 </OwnerTexts>
               </Owner>
               <BodyLight styles={{ paddingBottom: 30 }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum qui
-                ratione consectetur asperiores nisi. Aliquid quod praesentium
-                illum earum saepe ex facere odio architecto esse dolores!
-                Consequatur provident sit doloremque laborum soluta dicta totam
-                aspernatur iste illum accusantium obcaecati iusto eum commodi,
-                tempora nihil quisquam assumenda dolorum. Blanditiis, modi
-                ducimus.<br></br>
+                {info && info.descr}
+                <br></br>
                 <br></br>
               </BodyLight>
               <InfoBullets>
@@ -108,7 +121,7 @@ export const RestaurantDetail = () => {
                     <PhoneIcon></PhoneIcon>
                   </Grid>
                   <Grid item xs={9}>
-                    657 345 789
+                    {info && info.phone}
                   </Grid>
                 </Grid>
               </InfoBullets>
@@ -118,7 +131,7 @@ export const RestaurantDetail = () => {
                     <LanguageIcon></LanguageIcon>
                   </Grid>
                   <Grid item xs={9}>
-                    www.ristorantepepino.com
+                    {info && info.website}
                   </Grid>
                 </Grid>
               </InfoBullets>
@@ -128,7 +141,7 @@ export const RestaurantDetail = () => {
                     <MailOutlineIcon></MailOutlineIcon>
                   </Grid>
                   <Grid item xs={9}>
-                    info@ristorantepepino.com
+                    {info && info.email}
                   </Grid>
                 </Grid>
               </InfoBullets>
@@ -138,7 +151,7 @@ export const RestaurantDetail = () => {
                     <LocationOnIcon></LocationOnIcon>
                   </Grid>
                   <Grid item xs={9}>
-                    El Escorial, Madrid
+                    {info && info.city}, {info && info.region}
                   </Grid>
                 </Grid>
               </InfoBullets>
@@ -174,22 +187,38 @@ export const RestaurantDetail = () => {
           </Grid>
           <Grid item xs={12} sm={12} md={2} lg={2}>
             <IconsCont>
-              <InfoIcon>
-                <PetsIcon color="primary"></PetsIcon>
-                <p>Dogs</p>
-              </InfoIcon>
-              <InfoIcon>
-                <ChildCareIcon color="primary"></ChildCareIcon>
-                <p>Kids menu</p>
-              </InfoIcon>
-              <InfoIcon>
-                <LocalPharmacyIcon color="primary"></LocalPharmacyIcon>
-                <p>Allergens card</p>
-              </InfoIcon>
-              <InfoIcon>
-                <BeachAccessIcon color="primary"></BeachAccessIcon>
-                <p>Terrace</p>
-              </InfoIcon>
+              {info && info.dogs ? (
+                <InfoIcon>
+                  <PetsIcon color="primary"></PetsIcon>
+                  <p>Dogs</p>
+                </InfoIcon>
+              ) : (
+                ""
+              )}
+              {info && info.kids ? (
+                <InfoIcon>
+                  <ChildCareIcon color="primary"></ChildCareIcon>
+                  <p>Kids menu</p>
+                </InfoIcon>
+              ) : (
+                ""
+              )}
+              {info && info.allergenCard ? (
+                <InfoIcon>
+                  <LocalPharmacyIcon color="primary"></LocalPharmacyIcon>
+                  <p>Allergens card</p>
+                </InfoIcon>
+              ) : (
+                ""
+              )}
+              {info && info.terrace ? (
+                <InfoIcon>
+                  <BeachAccessIcon color="primary"></BeachAccessIcon>
+                  <p>Terrace</p>
+                </InfoIcon>
+              ) : (
+                ""
+              )}
             </IconsCont>
           </Grid>
         </Grid>
@@ -203,7 +232,7 @@ export const RestaurantDetail = () => {
             ) : (
               plans.map(plan => {
                 return (
-                  <CardRestaurant
+                  <CardLastPlansRest
                     image={plan.image1}
                     region={plan.region}
                     city={plan.city}
@@ -212,7 +241,7 @@ export const RestaurantDetail = () => {
                     date={plan.date}
                     time={plan.startTime}
                     descr={plan.shortDescr}
-                  ></CardRestaurant>
+                  ></CardLastPlansRest>
                 );
               })
             )}

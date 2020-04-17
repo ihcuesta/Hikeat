@@ -4,7 +4,7 @@ import { s } from "../styled/globalStyles";
 export const NameRest = styled.div`
   font-size: 20px;
   margin-top: -20px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   color: ${s.primary};
 `;
 
@@ -161,4 +161,12 @@ export const Legend = styled.div`
   && img {
     margin-right: 5px;
   }
+`;
+
+export const IconsCont = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
 `;

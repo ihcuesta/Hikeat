@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -17,9 +17,10 @@ import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutline
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
+import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
+import { newFavourite, deleteFavourite } from "../../service/favouriteService";
 
 export const CardHome = ({
   id,
@@ -33,6 +34,18 @@ export const CardHome = ({
   descr,
   restid
 }) => {
+  const [favourite, setFavourite] = useState(false);
+  const handleFav = async id => {
+    if (!favourite) {
+      const addFav = await newFavourite(id);
+      console.log(addFav);
+    } else {
+      const deleteFav = await deleteFavourite(id);
+      console.log(deleteFav);
+    }
+    setFavourite(!favourite);
+  };
+
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
       <Card>
@@ -100,12 +113,20 @@ export const CardHome = ({
         >
           <Grid container>
             <Grid item xs={6}>
-              <FavoriteBorderOutlinedIcon
-                style={{ fontSize: "35px" }}
-              ></FavoriteBorderOutlinedIcon>
-              {/* <FavoriteOutlinedIcon></FavoriteOutlinedIcon> */}
+              {favourite ? (
+                <FavoriteOutlinedIcon
+                  style={{ fontSize: "35px", cursor: "pointer" }}
+                  onClick={() => handleFav(id)}
+                ></FavoriteOutlinedIcon>
+              ) : (
+                <FavoriteBorderOutlinedIcon
+                  style={{ fontSize: "35px", cursor: "pointer" }}
+                  onClick={() => handleFav(id)}
+                ></FavoriteBorderOutlinedIcon>
+              )}
+
               <ShareIcon
-                style={{ fontSize: "35px", marginLeft: 20 }}
+                style={{ fontSize: "35px", marginLeft: 20, cursor: "pointer" }}
               ></ShareIcon>
             </Grid>
             <Grid item xs={6}>
@@ -126,7 +147,7 @@ export const CardHome = ({
   );
 };
 
-export const CardRestaurant = ({
+export const CardLastPlansRest = ({
   image,
   city,
   region,

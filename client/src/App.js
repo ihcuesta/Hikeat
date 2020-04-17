@@ -27,7 +27,6 @@ export const App = withAuthentication(() => (
         <Route path="/restaurant/new" component={NewRestaurant} />
         <Route path="/restaurant/:id" component={RestaurantDetail} />
 
-        {/* <Route path="/plan/:id" component={PlanDetail} /> */}
         <Route path="/plan/new" component={NewPlan} />
         <Route path="/plan/:id" component={PlanDetail} />
         <Route path="/admin" component={Admin} />
