@@ -29,9 +29,10 @@ export const Divider = styled.div`
 export const SearcherCont = styled.div`
   max-width: 500px;
   margin: auto;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 `;
 
 export const BgHome = styled.div`
   background-color: ${s.light};
+  padding-bottom: 50px;
 `;

@@ -26,6 +26,7 @@ import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import ExploreIcon from "@material-ui/icons/Explore";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
+import { Footer } from "../UI/Footer";
 
 export const Admin = ({ history }) => {
   const session = useUser();
@@ -132,6 +133,7 @@ export const Admin = ({ history }) => {
           </HeaderAdmin>
         </ContBody>
       )}
+      <Footer></Footer>
     </>
   );
 };

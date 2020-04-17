@@ -53,5 +53,8 @@ export const theme = createMuiTheme({
   shape: {
     borderRadius: 5
   },
-  spacing: 8
+  spacing: 8,
+  textField: {
+    backgroundColor: "#FFF"
+  }
 });

@@ -34,6 +34,7 @@ import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import { Divider, BgHome } from "../styled/HomeStyles";
 import { CardRestaurant } from "../UI/Cards";
 import { getLastPlansRest } from "../../service/planService";
+import { Footer } from "../UI/Footer";
 
 export const RestaurantDetail = () => {
   const [plans, setPlans] = useState([]);
@@ -218,6 +219,7 @@ export const RestaurantDetail = () => {
           </Grid>
         </ContBody>
       </BgHome>
+      <Footer></Footer>
     </>
   );
 };

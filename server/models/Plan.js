@@ -19,6 +19,7 @@ const planSchema = new mongoose.Schema(
     shortDescr: String,
     longDescr: String,
     kms: Number,
+    highlights: Array,
     date: String,
     startTime: String,
     lunchTime: String,

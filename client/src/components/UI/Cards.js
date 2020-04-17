@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Grid,
   Typography,
@@ -21,6 +22,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 
 export const CardHome = ({
+  id,
   image,
   city,
   region,
@@ -34,60 +36,61 @@ export const CardHome = ({
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
       <Card>
-        <CardActionArea>
-          <CardMedia style={{ height: 140 }} image={image} />
-          <CardContent>
-            <LocationCont>
-              <LocationOnOutlinedIcon
-                style={{ width: 20, height: 20 }}
-              ></LocationOnOutlinedIcon>
-              <p>
-                {city}, {region}
-              </p>
-            </LocationCont>
+        <Link to={`plan/${id}`}>
+          <CardMedia style={{ height: 200 }} image={image} />
+        </Link>
+        <CardContent>
+          <LocationCont>
+            <LocationOnOutlinedIcon
+              style={{ width: 20, height: 20 }}
+            ></LocationOnOutlinedIcon>
+            <p>
+              {city}, {region}
+            </p>
+          </LocationCont>
 
-            <Typography gutterBottom variant="h3" component="h3">
-              {name}
-            </Typography>
-            <RestCont to={`/restaurant/${restid}`}>
-              <RestaurantMenuOutlinedIcon
+          <Typography gutterBottom variant="h3" component="h3">
+            {name}
+          </Typography>
+          <RestCont to={`/restaurant/${restid}`}>
+            <RestaurantMenuOutlinedIcon
+              style={{
+                width: 20,
+                height: 20,
+                color: s.primary
+              }}
+            ></RestaurantMenuOutlinedIcon>
+            <p>{restaurant}</p>
+          </RestCont>
+          <Grid container spacing={1}>
+            <Grid item xs={5}>
+              <Chip
                 style={{
-                  width: 20,
-                  height: 20,
-                  color: s.primary
+                  padding: "20px 5px",
+                  color: s.dark,
+                  backgroundColor: s.light
                 }}
-              ></RestaurantMenuOutlinedIcon>
-              <p>{restaurant}</p>
-            </RestCont>
-            <Grid container spacing={1}>
-              <Grid item xs={5}>
-                <Chip
-                  style={{
-                    padding: "20px 5px",
-                    color: s.dark,
-                    backgroundColor: s.light
-                  }}
-                  size="medium"
-                  icon={<CalendarTodayIcon style={{ color: s.primary }} />}
-                  label={date}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Chip
-                  style={{
-                    padding: "20px 5px",
-                    color: s.dark,
-                    backgroundColor: s.light
-                  }}
-                  size="medium"
-                  icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
-                  label={time}
-                />
-              </Grid>
+                size="medium"
+                icon={<CalendarTodayIcon style={{ color: s.primary }} />}
+                label={date}
+              />
             </Grid>
-            <BodyCard>{descr}</BodyCard>
-          </CardContent>
-        </CardActionArea>
+            <Grid item xs={4}>
+              <Chip
+                style={{
+                  padding: "20px 5px",
+                  color: s.dark,
+                  backgroundColor: s.light
+                }}
+                size="medium"
+                icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
+                label={time}
+              />
+            </Grid>
+          </Grid>
+          <BodyCard>{descr}</BodyCard>
+        </CardContent>
+
         <CardActions
           style={{
             marginLeft: 5,
@@ -106,7 +109,13 @@ export const CardHome = ({
               ></ShareIcon>
             </Grid>
             <Grid item xs={6}>
-              <Button fullWidth variant="contained" color="secondary">
+              <Button
+                component={Link}
+                to={`plan/${id}`}
+                fullWidth
+                variant="contained"
+                color="secondary"
+              >
                 MORE INFO
               </Button>
             </Grid>

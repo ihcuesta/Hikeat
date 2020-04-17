@@ -43,6 +43,7 @@ import {
 } from "../styled/globalStyles";
 import placeholder from "../../images/placeholder.jpg";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { FooterAlt } from "../UI/Footer";
 
 const getRegions = async () => {
   const reg = await regions();
@@ -709,6 +710,7 @@ export const NewRestaurant = ({ history }) => {
           </DialogActions>
         </Dialog>
       </div>
+      <FooterAlt></FooterAlt>
     </>
   );
 };

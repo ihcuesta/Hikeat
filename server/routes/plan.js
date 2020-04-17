@@ -49,6 +49,7 @@ router.post("/new", async (req, res, next) => {
     hikelevel,
     shortDescr,
     longDescr,
+    highlights,
     kms,
     image1,
     image2,
@@ -90,6 +91,7 @@ router.post("/new", async (req, res, next) => {
       hikelevel,
       shortDescr,
       longDescr,
+      highlights,
       kms,
       image1,
       image2,
@@ -126,7 +128,8 @@ router.get("/:id", async (req, res, next) => {
   try {
     const planId = await Plan.findOne({
       _id: req.params.id
-    });
+    }).populate("restid");
+
     return res.status(200).json({ planId });
   } catch (err) {
     console.log("Error while retrieving plan ID: ", error);
@@ -163,6 +166,7 @@ router.put("/:id/edit", async (req, res, next) => {
     hikelevel,
     shortDescr,
     longDescr,
+    highlights,
     kms,
     image1,
     image2,
@@ -205,6 +209,8 @@ router.put("/:id/edit", async (req, res, next) => {
             hikelevel,
             shortDescr,
             longDescr,
+            highlights,
+            kms,
             image1,
             image2,
             image3,

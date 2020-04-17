@@ -8,6 +8,7 @@ import { provincias } from "../../service/regions";
 import { ContBody } from "../styled/globalStyles";
 import { getAllPlans } from "../../service/planService";
 import { CardHome } from "../UI/Cards";
+import { FooterHome } from "../UI/Footer";
 
 export const Home = () => {
   const [region, setRegion] = useState();
@@ -54,6 +55,7 @@ export const Home = () => {
               plans.map(plan => {
                 return (
                   <CardHome
+                    id={plan._id}
                     image={plan.image1}
                     region={plan.region}
                     city={plan.city}
@@ -70,6 +72,7 @@ export const Home = () => {
           </Grid>
         </ContBody>
       </BgHome>
+      <FooterHome></FooterHome>
     </>
   );
 };

@@ -17,11 +17,17 @@ export const getAllPlans = async () => {
   return data.data.plans;
 };
 
+const formatDate = date => {
+  date = date.split("-");
+  return [date[2], date[1], date[0]].join("-");
+};
+
 export const newPlan = async ({
   name,
   hikelevel,
   shortDescr,
   longDescr,
+  highlights,
   startPoint,
   kms,
   image1,
@@ -46,11 +52,13 @@ export const newPlan = async ({
   status
 }) => {
   try {
+    const newDate = formatDate(date);
     const { data } = await planService.post("/new", {
       name,
       hikelevel,
       shortDescr,
       longDescr,
+      highlights,
       startPoint,
       kms,
       image1,
@@ -58,7 +66,7 @@ export const newPlan = async ({
       image3,
       image4,
       image5,
-      date,
+      date: newDate,
       startTime,
       lunchTime,
       kids,
@@ -97,6 +105,7 @@ export const editPlan = async (
     hikelevel,
     shortDescr,
     longDescr,
+    highlights,
     startPoint,
     kms,
     image1,
@@ -127,6 +136,7 @@ export const editPlan = async (
       hikelevel,
       shortDescr,
       longDescr,
+      highlights,
       startPoint,
       kms,
       image1,

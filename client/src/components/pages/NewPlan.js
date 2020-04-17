@@ -48,11 +48,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 // } from "@material-ui/pickers";
 // import DateFnsUtils from "@date-io/date-fns";
 import AddIcon from "@material-ui/icons/Add";
+import { FooterAlt } from "../UI/Footer";
 
 export const NewPlan = ({ history }) => {
   const [name, setName] = useState("");
   const [shortDescr, setShortDescr] = useState("");
   const [longDescr, setLongDescr] = useState("");
+  const [highlights, setHighlights] = useState([""]);
   const [hikelevel, setHikelevel] = useState("");
   const [kms, setKms] = useState(0);
   const [date, setDate] = useState("");
@@ -126,6 +128,25 @@ export const NewPlan = ({ history }) => {
     } else {
       console.log("Algo ha fallado");
     }
+  };
+
+  const addHighlight = () => {
+    if (highlights.length < 5) {
+      const newElem = "";
+      setHighlights([...highlights, newElem]);
+    }
+  };
+
+  const removeHighlight = i => {
+    let newArr = highlights.slice();
+    newArr.splice(i, 1);
+    setHighlights(newArr);
+  };
+
+  const handleHighlight = (e, i) => {
+    let newArr = highlights.slice();
+    newArr[i] = e.target.value;
+    setHighlights(newArr);
   };
 
   const addCourse = (category, setCategory) => {
@@ -223,6 +244,90 @@ export const NewPlan = ({ history }) => {
               helperText={longDescr === "" && validated0 ? "Empty field!" : " "}
             />
             <Gap></Gap>
+
+            <Paper
+              elevation={2}
+              style={{
+                marginBottom: "7%",
+                padding: "5%",
+                borderRadius: 5
+              }}
+            >
+              <Typography
+                variant="h4"
+                component="h4"
+                gutterBottom
+                style={{ fontWeight: 500, color: s.dark }}
+              >
+                Highlights
+              </Typography>
+              <Typography
+                variant="p"
+                component="p"
+                gutterBottom
+                style={{ marginBottom: "7%", color: s.dark }}
+              >
+                Add as headlines the most interesting highlights of the hike:
+              </Typography>
+
+              {highlights.map((h, i) => {
+                return (
+                  <>
+                    <Container style={{ marginBottom: "7%" }}>
+                      <FormControl variant="outlined" fullWidth>
+                        <InputLabel htmlFor="outlined-adornment-password">
+                          Highlight {i + 1} &nbsp;
+                        </InputLabel>
+                        <OutlinedInput
+                          required
+                          fullWidth
+                          id="outlined-adornment-password"
+                          type="text"
+                          placeholder={`Highlight ${i + 1}`}
+                          value={h}
+                          style={{ color: s.dark }}
+                          onChange={e => handleHighlight(e, i)}
+                          error={i === 0 && highlights[0] === "" && validated0}
+                          endAdornment={
+                            i > 0 && (
+                              <InputAdornment position="end">
+                                <IconButton edge="end">
+                                  <DeleteIcon
+                                    onClick={() => removeHighlight(i)}
+                                  />
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }
+                          labelWidth={70}
+                        />
+                      </FormControl>
+
+                      {i === 0 && highlights[0] === "" && validated0 ? (
+                        <Error>Empty field!</Error>
+                      ) : (
+                        " "
+                      )}
+                    </Container>
+                  </>
+                );
+              })}
+              <Container
+                style={{
+                  display: "flex",
+                  flexFlow: "row wrap",
+                  justifyContent: "flex-end"
+                }}
+              >
+                <Fab
+                  color="primary"
+                  aria-label="add"
+                  onClick={() => addHighlight()}
+                >
+                  <AddIcon />
+                </Fab>
+              </Container>
+            </Paper>
           </>
         );
       case 1:
@@ -299,7 +404,7 @@ export const NewPlan = ({ history }) => {
               style={{
                 color: s.dark
               }}
-              defaultValue="2020-04-20"
+              defaultValue="20-04-2020"
               InputLabelProps={{
                 shrink: true
               }}
@@ -1024,6 +1129,7 @@ export const NewPlan = ({ history }) => {
 
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
+    console.log(date);
   };
 
   const handleBack = () => {
@@ -1079,6 +1185,7 @@ export const NewPlan = ({ history }) => {
                 name,
                 shortDescr,
                 longDescr,
+                highlights,
                 hikelevel,
                 kms,
                 date,
@@ -1178,6 +1285,7 @@ export const NewPlan = ({ history }) => {
           </DialogActions>
         </Dialog>
       </div>
+      <FooterAlt></FooterAlt>
     </>
   );
 };

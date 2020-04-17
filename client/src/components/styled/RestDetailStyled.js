@@ -44,6 +44,7 @@ export const Contact = styled.div`
   background-color: ${s.primary};
   color: #fff;
   border-radius: 5px;
+  margin-bottom: 10px;
 `;
 
 export const Owner = styled.div`

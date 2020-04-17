@@ -65,7 +65,7 @@ export const ContIcon = styled.div`
 `;
 
 export const ContBody = styled.div`
-  max-width: 1300px;
+  max-width: 1400px;
   margin: auto;
   padding: 0 5%;
 `;

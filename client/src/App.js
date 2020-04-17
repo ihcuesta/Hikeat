@@ -14,22 +14,24 @@ import { NewPlan } from "./components/pages/NewPlan";
 import { Admin } from "./components/pages/Admin";
 import { RestaurantDetail } from "./components/pages/RestaurantDetail";
 import { PlanDetail } from "./components/pages/PlanDetail";
+import { Header } from "./components/UI/Header";
 
 export const App = withAuthentication(() => (
   <Router>
     <GlobalStyles>
-      <Layout>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/login" component={Login} />
-          <Route path="/restaurant/detalle" component={RestaurantDetail} />
-          <Route path="/restaurant/new" component={NewRestaurant} />
-          <Route path="/plan/:id" component={PlanDetail} />
-          <Route path="/plan/new" component={NewPlan} />
-          <Route path="/admin" component={Admin} />
-        </Switch>
-      </Layout>
+      <Header></Header>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/login" component={Login} />
+        <Route path="/restaurant/new" component={NewRestaurant} />
+        <Route path="/restaurant/:id" component={RestaurantDetail} />
+
+        {/* <Route path="/plan/:id" component={PlanDetail} /> */}
+        <Route path="/plan/new" component={NewPlan} />
+        <Route path="/plan/:id" component={PlanDetail} />
+        <Route path="/admin" component={Admin} />
+      </Switch>
     </GlobalStyles>
   </Router>
 ));

@@ -1,9 +1,5 @@
 export const provincias = [
   {
-    id: "00",
-    nm: "All regions"
-  },
-  {
     id: "04",
     nm: "Almería"
   },
