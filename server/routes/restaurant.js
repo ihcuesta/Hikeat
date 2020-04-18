@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
+const Comment = require("../models/Comment");
 const _ = require("lodash");
 const passport = require("passport");
 
@@ -80,13 +81,38 @@ router.post("/new", async (req, res, next) => {
   } catch (err) {}
 });
 
+// Check it its manager of the restaurant
+router.get("/manager/:id", async (req, res, next) => {
+  try {
+    const checkIfManager = await Restaurant.find({
+      _id: req.params.id,
+      owner: req.user._id
+    });
+    if (checkIfManager.length === 0) {
+      return res.status(200).json({ isManager: false });
+    } else {
+      return res.status(200).json({ isManager: true });
+    }
+  } catch (error) {
+    console.log("Error while trying to find out if its manager: ", error);
+    return res
+      .status(500)
+      .json({ message: "Error while trying to find out if its manager" });
+  }
+});
+
 // Detail page of restaurant
 router.get("/:id", async (req, res, next) => {
   try {
     const restaurantId = await Restaurant.findOne({
       _id: req.params.id
     }).populate("owner");
-    return res.status(200).json({ restaurantId });
+
+    const commentsRes = await Comment.find({
+      restaurant: req.params.id
+    }).populate("user");
+
+    return res.status(200).json({ restaurantId, commentsRes });
   } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res
@@ -95,7 +121,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// Edit page for a celebrity ID
+// Edit page for a restaurant ID
 router.get("/:id/edit", async (req, res, next) => {
   try {
     const restaurantToEdit = await Restaurant.findOne({

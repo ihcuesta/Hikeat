@@ -13,6 +13,8 @@ const planSchema = new mongoose.Schema(
       type: String,
       enum: ["Easy peasy", "Challenging", "Hard", "Mountain runner"]
     },
+    region: String,
+    city: String,
     shortDescr: String,
     longDescr: String,
     kms: Number,

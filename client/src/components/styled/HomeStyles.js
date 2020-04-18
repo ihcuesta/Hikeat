@@ -36,3 +36,17 @@ export const BgHome = styled.div`
   background-color: ${s.light};
   padding-bottom: 50px;
 `;
+
+export const NotFound = styled.div`
+  width: 100%;
+  && img {
+    width: 50px;
+    height: auto;
+    display: block;
+    margin: auto;
+  }
+
+  && p {
+    text-align: center;
+  }
+`;

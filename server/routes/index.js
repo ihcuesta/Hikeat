@@ -18,6 +18,9 @@ router.use("/booking", booking);
 const favourite = require("./favourite");
 router.use("/favourite", favourite);
 
+const comment = require("./comment");
+router.use("/comment", comment);
+
 const cloudinary = require("./cloudinary");
 router.use("/cloudinary", cloudinary);
 

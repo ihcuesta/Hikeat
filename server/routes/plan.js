@@ -35,6 +35,7 @@ router.get("/region/:region", async (req, res, next) => {
     const plansRegion = await Plan.find({
       region: req.params.region
     });
+    console.log(plansRegion);
     return res.status(200).json({ plansRegion });
   } catch (err) {
     console.log("Error while retrieving plans region: ", err);
@@ -85,6 +86,8 @@ router.post("/new", async (req, res, next) => {
       name,
       owner: req.user._id,
       restaurant: restOwner._id,
+      region: restOwner.region,
+      city: restOwner.city,
       hikelevel,
       shortDescr,
       longDescr,
@@ -117,6 +120,26 @@ router.post("/new", async (req, res, next) => {
     return res
       .status(500)
       .json({ message: "Error while trying to create a new plan", err });
+  }
+});
+
+// Check it its manager of the plan
+router.get("/manager/:id", async (req, res, next) => {
+  try {
+    const checkIfManager = await Plan.find({
+      _id: req.params.id,
+      owner: req.user._id
+    });
+    if (checkIfManager.length === 0) {
+      return res.status(200).json({ isManager: false });
+    } else {
+      return res.status(200).json({ isManager: true });
+    }
+  } catch (error) {
+    console.log("Error while trying to find out if its manager: ", error);
+    return res
+      .status(500)
+      .json({ message: "Error while trying to find out if its manager" });
   }
 });
 

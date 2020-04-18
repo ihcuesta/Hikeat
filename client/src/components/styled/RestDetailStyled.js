@@ -75,8 +75,7 @@ export const InfoBullets = styled.div`
 `;
 
 export const Opinion = styled.div`
-  padding: 5%;
-  box-sizing: border-box;
+  margin-bottom: 10px;
 `;
 
 export const RateOp = styled.div`
@@ -114,4 +113,26 @@ export const InfoIcon = styled.div`
   && p {
     padding-left: 10px;
   }
+`;
+
+export const TitComment = styled.h3`
+  font-size: 20px;
+  margin-bottom: 0px;
+  color: ${s.dark};
+  margin-top: 50px;
+`;
+
+export const ContRating = styled.div`
+  width: 200;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+export const ContBtnComment = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row wrap;
+  justify-content: flex-end;
+  margin-top: -10px;
 `;

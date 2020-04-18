@@ -7,6 +7,7 @@ export const s = {
   textSecondary: "#888",
   light: "#EEE",
   dark: "#303841",
+  error: "#f44336",
   shadow: {
     s3: "0px 3px 1px -2px rgba(0, 0, 0, 0.2)"
   }
@@ -89,4 +90,13 @@ export const BodyText = styled.p`
 export const BodyLight = styled.p`
   font-size: 16px;
   font-weight: 300;
+`;
+
+export const EditCont = styled.div`
+  width: 100%;
+  padding: 25px 5%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #eee;
+  margin-bottom: 10px;
 `;

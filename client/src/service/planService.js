@@ -17,9 +17,17 @@ export const getAllPlans = async () => {
   return data.data.plans;
 };
 
+export const getByRegion = async region => {
+  const data = await planService.get(`/region/${region}`);
+  console.log(data.data.plansRegion);
+  return data.data.plansRegion;
+};
+
 const formatDate = date => {
-  date = date.split("-");
-  return [date[2], date[1], date[0]].join("-");
+  return date
+    .split("-")
+    .reverse()
+    .join("-");
 };
 
 export const newPlan = async ({
@@ -90,6 +98,12 @@ export const newPlan = async ({
 
 export const fetchSinglePlan = async endpoint => {
   const { data } = await planService.get(`/${endpoint}`);
+  return data;
+};
+
+export const checkIfManager = async endpoint => {
+  const { data } = await planService.get(`/manager/${endpoint}`);
+  console.log(data);
   return data;
 };
 

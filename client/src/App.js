@@ -15,6 +15,7 @@ import { Admin } from "./components/pages/Admin";
 import { RestaurantDetail } from "./components/pages/RestaurantDetail";
 import { PlanDetail } from "./components/pages/PlanDetail";
 import { Header } from "./components/UI/Header";
+import { EditRestaurant } from "./components/pages/EditRestaurant";
 
 export const App = withAuthentication(() => (
   <Router>
@@ -24,7 +25,9 @@ export const App = withAuthentication(() => (
         <Route exact path="/" component={Home} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
+
         <Route path="/restaurant/new" component={NewRestaurant} />
+        <Route path="/restaurant/:id/edit" component={EditRestaurant} />
         <Route path="/restaurant/:id" component={RestaurantDetail} />
 
         <Route path="/plan/new" component={NewPlan} />

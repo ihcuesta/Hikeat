@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useUserSetter } from "../../service/authService";
-import { newRestaurant, addRestUser } from "../../service/restaurantService";
+import {
+  editRestaurant,
+  fetchEditRestaurant
+} from "../../service/restaurantService";
 import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import { regions } from "../../service/api";
 import { useForm } from "react-hook-form";
@@ -53,7 +56,7 @@ const getRegions = async () => {
   return reg.data;
 };
 
-export const NewRestaurant = ({ history }) => {
+export const EditRestaurant = (props, { history }) => {
   const setUser = useUserSetter();
   const [name, setName] = useState("");
   const [kind, setKind] = useState("");
@@ -75,8 +78,16 @@ export const NewRestaurant = ({ history }) => {
   const [image5, setImage5] = useState("");
   const [validated0, setValidated0] = useState(false);
   const [validated1, setValidated1] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [openspin, setOpenspin] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openspin, setOpenspin] = useState(false);
+  const [restaurant, setRestaurant] = useState();
+
+  useEffect(() => {
+    const id = props.match.params.id;
+    fetchEditRestaurant(id).then(restaurant => {
+      setRestaurant(restaurant);
+    });
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -130,7 +141,7 @@ export const NewRestaurant = ({ history }) => {
 
   const handleSubmit = async data => {
     console.log(data);
-    const response = await newRestaurant(data);
+    const response = await editRestaurant(data);
     // const setRestUser = await addRestUser();
     // console.log(setRestUser);
     // setRestUser

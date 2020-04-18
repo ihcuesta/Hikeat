@@ -3,19 +3,31 @@ import { Link } from "react-router-dom";
 import { Grid, TextField, Backdrop, CircularProgress } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { HomeHead } from "../UI/HomeHead";
-import { Divider, SearcherCont, BgHome } from "../styled/HomeStyles";
+import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
 import { ContBody } from "../styled/globalStyles";
-import { getAllPlans } from "../../service/planService";
+import { getAllPlans, getByRegion } from "../../service/planService";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
+import error from "../../images/error.svg";
 
 export const Home = () => {
-  const [region, setRegion] = useState();
+  const [search, setSearch] = useState(false);
   const [plans, setPlans] = useState([]);
   useEffect(() => {
     getAllPlans().then(plans => setPlans(plans));
   }, []);
+
+  const handleFilter = region => {
+    if (region === "all") {
+      getAllPlans().then(plans => setPlans(plans));
+    } else {
+      setSearch(true);
+      getByRegion(region).then(plans => {
+        setPlans(plans);
+      });
+    }
+  };
 
   return (
     <>
@@ -28,9 +40,10 @@ export const Home = () => {
               required
               id="region"
               options={provincias}
-              onChange={(event, value) =>
-                value ? setRegion(value.nm) : setRegion("")
-              }
+              onChange={(event, value) => {
+                // handleFilter(region);
+                value ? handleFilter(value.nm) : handleFilter("all");
+              }}
               getOptionLabel={option => option.nm}
               style={{
                 width: "100%",
@@ -48,11 +61,18 @@ export const Home = () => {
           </SearcherCont>
 
           <Grid container spacing={2}>
-            {plans.length === 0 ? (
+            {plans && plans.length === 0 && search && (
+              <NotFound>
+                <img src={error} />
+                <p>No plan found in this region</p>
+              </NotFound>
+            )}
+            {plans && plans.length === 0 && !search ? (
               <Backdrop style={{ zIndex: 1000 }} open={true}>
                 <CircularProgress color="primary" />
               </Backdrop>
             ) : (
+              plans &&
               plans.map(plan => {
                 return (
                   <CardHome

@@ -23,16 +23,16 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-import { ContBody, BodyText, BodyLight } from "../styled/globalStyles";
-import rest1 from "../../images/rest/rest1.jpg";
-import rest2 from "../../images/rest/rest2.jpg";
-import rest3 from "../../images/rest/rest3.jpg";
-import rest4 from "../../images/rest/rest4.jpg";
-import rest5 from "../../images/rest/rest5.jpeg";
+import {
+  ContBody,
+  BodyText,
+  BodyLight,
+  EditCont
+} from "../styled/globalStyles";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import FilterHdrRoundedIcon from "@material-ui/icons/FilterHdrRounded";
 import { CardRestaurant } from "../UI/Cards";
-import { fetchSinglePlan } from "../../service/planService";
+import { fetchSinglePlan, checkIfManager } from "../../service/planService";
 import {
   NameRest,
   Hike,
@@ -84,12 +84,16 @@ export const PlanDetail = (props, { history }) => {
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
   const [newbooking, setNewbooking] = useState();
+  const [ismanager, setIsmanager] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
     fetchSinglePlan(id).then(plan => {
       setInfo(plan.planId);
       setPlanid(plan.planId._id);
+    });
+    checkIfManager(id).then(restaurant => {
+      setIsmanager(restaurant.isManager);
     });
   }, []);
 
@@ -317,6 +321,30 @@ export const PlanDetail = (props, { history }) => {
             </Menu>
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4}>
+            {ismanager && (
+              <EditCont>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ minWidth: 150, margin: "auto", display: "block" }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  component={Link}
+                  style={{
+                    minWidth: 150,
+                    color: s.error,
+                    margin: "auto",
+                    display: "block",
+                    textAlign: "center",
+                    marginTop: 15
+                  }}
+                >
+                  Delete
+                </Button>
+              </EditCont>
+            )}
             <Contact>
               <Owner>
                 <img src={info.owner && info.owner.image} />
