@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Grid, TextField, Backdrop, CircularProgress } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Pagination from "@material-ui/lab/Pagination";
 import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
@@ -10,12 +11,22 @@ import { getAllPlans, getByRegion } from "../../service/planService";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+// ..
+AOS.init();
 
 export const Home = () => {
   const [search, setSearch] = useState(false);
   const [plans, setPlans] = useState([]);
+  const [page, setPage] = useState(1);
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
   useEffect(() => {
-    getAllPlans().then(plans => setPlans(plans));
+    getAllPlans(page).then(plans => setPlans(plans));
   }, []);
 
   const handleFilter = region => {
@@ -35,7 +46,7 @@ export const Home = () => {
       <Divider></Divider>
       <BgHome>
         <ContBody>
-          <SearcherCont>
+          <SearcherCont data-aos="slide-up">
             <Autocomplete
               required
               id="region"
@@ -91,6 +102,14 @@ export const Home = () => {
               })
             )}
           </Grid>
+          <p>Page {page}</p>
+          <Pagination
+            count={10}
+            color="primary"
+            page={page}
+            onChange={handleChange}
+            style={{ margin: "40px auto 0px" }}
+          />
         </ContBody>
       </BgHome>
       <FooterHome></FooterHome>

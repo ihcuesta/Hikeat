@@ -96,7 +96,6 @@ export const editRestaurant = async (
     image4,
     image5,
     address,
-    pics,
     allergenCard,
     dogs,
     terrace,
@@ -119,7 +118,7 @@ export const editRestaurant = async (
       image5,
       region,
       address,
-      pics,
+
       allergenCard,
       dogs,
       terrace,
@@ -127,7 +126,7 @@ export const editRestaurant = async (
     });
     return data;
   } catch (error) {
-    return error.response.data;
+    return error;
   }
 };
 

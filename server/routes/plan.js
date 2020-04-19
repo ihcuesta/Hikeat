@@ -238,7 +238,6 @@ router.put("/:id/edit", async (req, res, next) => {
             image3,
             image4,
             image5,
-            pics,
             date,
             startTime,
             lunchTime,
@@ -263,7 +262,7 @@ router.put("/:id/edit", async (req, res, next) => {
     }
   } catch (err) {
     console.log("Error trying to update the plan details: ", err);
-    return status(500).json({
+    return res.status(500).json({
       message: "Error trying to update the plan details"
     });
   }

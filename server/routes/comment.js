@@ -36,20 +36,20 @@ router.post("/:rest/new", async (req, res, next) => {
   }
 });
 
-// Detail page of restaurant
-// router.get("/:id", async (req, res, next) => {
-//   try {
-//     const restaurantId = await Restaurant.findOne({
-//       _id: req.params.id
-//     }).populate("owner");
-//     return res.status(200).json({ restaurantId });
-//   } catch (error) {
-//     console.log("Error while retrieving restaurant ID: ", error);
-//     return res
-//       .status(500)
-//       .json({ message: "Impossible to get the restaurant" });
-//   }
-// });
+// Get comments of a restaurant
+router.get("/:id", async (req, res, next) => {
+  try {
+    const comments = await Comment.find({
+      restaurant: req.params.id
+    }).populate("user");
+    return res.status(200).json({ comments });
+  } catch (error) {
+    console.log("Error while retrieving restaurant ID: ", error);
+    return res
+      .status(500)
+      .json({ message: "Impossible to get the restaurant" });
+  }
+});
 
 // // Edit page for a celebrity ID
 // router.get("/:id/edit", async (req, res, next) => {

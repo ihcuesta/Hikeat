@@ -16,6 +16,11 @@ import { RestaurantDetail } from "./components/pages/RestaurantDetail";
 import { PlanDetail } from "./components/pages/PlanDetail";
 import { Header } from "./components/UI/Header";
 import { EditRestaurant } from "./components/pages/EditRestaurant";
+import { EditPlan } from "./components/pages/EditPlan";
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+// ..
+AOS.init();
 
 export const App = withAuthentication(() => (
   <Router>
@@ -31,6 +36,7 @@ export const App = withAuthentication(() => (
         <Route path="/restaurant/:id" component={RestaurantDetail} />
 
         <Route path="/plan/new" component={NewPlan} />
+        <Route path="/plan/:id/edit" component={EditPlan} />
         <Route path="/plan/:id" component={PlanDetail} />
         <Route path="/admin" component={Admin} />
       </Switch>

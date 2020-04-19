@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useUserSetter } from "../../service/authService";
+import { useHistory } from "react-router-dom";
 import {
   editRestaurant,
   fetchEditRestaurant
@@ -37,6 +38,7 @@ import {
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { provincias } from "../../service/regions";
+
 import {
   AddImg,
   ContAddImg,
@@ -56,7 +58,8 @@ const getRegions = async () => {
   return reg.data;
 };
 
-export const EditRestaurant = (props, { history }) => {
+export const EditRestaurant = props => {
+  const history = useHistory();
   const setUser = useUserSetter();
   const [name, setName] = useState("");
   const [kind, setKind] = useState("");
@@ -81,13 +84,34 @@ export const EditRestaurant = (props, { history }) => {
   const [open, setOpen] = useState(false);
   const [openspin, setOpenspin] = useState(false);
   const [restaurant, setRestaurant] = useState();
+  const id = props.match.params.id;
 
   useEffect(() => {
     const id = props.match.params.id;
-    fetchEditRestaurant(id).then(restaurant => {
-      setRestaurant(restaurant);
+    fetchEditRestaurant(id).then(rest => {
+      setRestaurant(rest.restaurantToEdit);
+      setName(rest.restaurantToEdit.name);
+      setKind(rest.restaurantToEdit.kind);
+      setDescr(rest.restaurantToEdit.descr);
+      setCity(rest.restaurantToEdit.city);
+      setAddress(rest.restaurantToEdit.address);
+      setPhone(rest.restaurantToEdit.phone);
+      setEmail(rest.restaurantToEdit.email);
+      setWebsite(rest.restaurantToEdit.website);
+      setDogs(rest.restaurantToEdit.dogs);
+      setTerrace(rest.restaurantToEdit.terrace);
+      setKids(rest.restaurantToEdit.kids);
+      setAllergenCard(rest.restaurantToEdit.allergenCard);
+      setImage1(rest.restaurantToEdit.image1);
+      setImage2(rest.restaurantToEdit.image2);
+      setImage3(rest.restaurantToEdit.image3);
+      setImage4(rest.restaurantToEdit.image4);
+      setImage5(rest.restaurantToEdit.image5);
     });
   }, []);
+
+  console.log(name);
+  console.log(kind);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -120,7 +144,7 @@ export const EditRestaurant = (props, { history }) => {
     if (resp) {
       console.log("Image deleted in Cloudinary");
     }
-    setImg("");
+    setImg(null);
   };
 
   const handleChangeFile = async (e, setImg) => {
@@ -139,9 +163,48 @@ export const EditRestaurant = (props, { history }) => {
     setOpenspin(false);
   };
 
-  const handleSubmit = async data => {
-    console.log(data);
-    const response = await editRestaurant(data);
+  const handleSubmit = async (
+    name,
+    kind,
+    descr,
+    region,
+    city,
+    address,
+    phone,
+    email,
+    website,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    dogs,
+    terrace,
+    kids,
+    allergenCard
+  ) => {
+    console.log("entra a la funcion");
+    const response = await editRestaurant(props.match.params.id, {
+      name,
+      kind,
+      descr,
+      region,
+      city,
+      address,
+      phone,
+      email,
+      website,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      dogs,
+      terrace,
+      kids,
+      allergenCard
+    });
+    console.log("Llega");
     // const setRestUser = await addRestUser();
     // console.log(setRestUser);
     // setRestUser
@@ -386,7 +449,7 @@ export const EditRestaurant = (props, { history }) => {
                 >
                   <AddImg>
                     <label for="file-input1">
-                      <img src={image1 === "" ? placeholder : image1} />
+                      <img src={image1 === null ? placeholder : image1} />
                     </label>
 
                     <input
@@ -395,7 +458,7 @@ export const EditRestaurant = (props, { history }) => {
                       onChange={e => handleChangeFile(e, setImage1)}
                     />
                     <ContIcon>
-                      {image1 === "" ? (
+                      {image1 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -412,7 +475,7 @@ export const EditRestaurant = (props, { history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input2">
-                      <img src={image2 === "" ? placeholder : image2} />
+                      <img src={image2 === null ? placeholder : image2} />
                     </label>
 
                     <input
@@ -422,7 +485,7 @@ export const EditRestaurant = (props, { history }) => {
                     />
 
                     <ContIcon>
-                      {image2 === "" ? (
+                      {image2 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -439,7 +502,7 @@ export const EditRestaurant = (props, { history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input3">
-                      <img src={image3 === "" ? placeholder : image3} />
+                      <img src={image3 === null ? placeholder : image3} />
                     </label>
 
                     <input
@@ -449,7 +512,7 @@ export const EditRestaurant = (props, { history }) => {
                     />
 
                     <ContIcon>
-                      {image3 === "" ? (
+                      {image3 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -466,7 +529,7 @@ export const EditRestaurant = (props, { history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input4">
-                      <img src={image4 === "" ? placeholder : image4} />
+                      <img src={image4 === null ? placeholder : image4} />
                     </label>
 
                     <input
@@ -476,7 +539,7 @@ export const EditRestaurant = (props, { history }) => {
                     />
 
                     <ContIcon>
-                      {image4 === "" ? (
+                      {image4 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -493,7 +556,7 @@ export const EditRestaurant = (props, { history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input5">
-                      <img src={image5 === "" ? placeholder : image5} />
+                      <img src={image5 === null ? placeholder : image5} />
                     </label>
 
                     <input
@@ -503,7 +566,7 @@ export const EditRestaurant = (props, { history }) => {
                     />
 
                     <ContIcon>
-                      {image5 === "" ? (
+                      {image5 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -616,12 +679,13 @@ export const EditRestaurant = (props, { history }) => {
   return (
     <>
       <FormBg>
-        <FormTitle>New Restaurant</FormTitle>
+        <FormTitle>Edit Restaurant</FormTitle>
         <FormCont style={{ paddingTop: 30 }}>
           <Form
             onSubmit={e => {
+              console.log(name);
               e.preventDefault();
-              handleSubmit({
+              handleSubmit(
                 name,
                 kind,
                 descr,
@@ -640,7 +704,7 @@ export const EditRestaurant = (props, { history }) => {
                 terrace,
                 kids,
                 allergenCard
-              });
+              );
             }}
           >
             <div>
@@ -662,7 +726,7 @@ export const EditRestaurant = (props, { history }) => {
                       Back
                     </Button>
                     <Button variant="contained" color="secondary" type="submit">
-                      Create
+                      Update
                     </Button>
                   </div>
                 ) : (
@@ -699,24 +763,24 @@ export const EditRestaurant = (props, { history }) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"Restaurant created!"}
+            {"Restaurant updated!"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              The fun has only just begun! Do you wanna create a Hikeat plan?
+              Restaurant correctly modified according to your new inputs 😉
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => history.push("/")} color="primary">
-              Not now
+            <Button onClick={() => history.push("/admin")} color="primary">
+              Admin
             </Button>
             <Button
-              onClick={() => history.push("/plan/new")}
+              onClick={() => history.push(`/restaurant/${id}`)}
               color="secondary"
               variant="contained"
               autoFocus
             >
-              Let's create a plan!
+              Restaurant Page
             </Button>
           </DialogActions>
         </Dialog>

@@ -35,7 +35,8 @@ export const RestaurantCard = ({
   descr,
   phone,
   website,
-  email
+  email,
+  comments
 }) => {
   return (
     <>
@@ -134,87 +135,29 @@ export const RestaurantCard = ({
             </Grid>
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <OpinionsBox>
-                <Opinion>
-                  <Owner>
-                    <img src="#"></img>
-                    <RateOp>
-                      <p>Pedro Rodríguez</p>
-                      <RatesOp>
-                        <Box component="fieldset" borderColor="transparent">
-                          <Rating name="read-only" value="4" readOnly />
-                        </Box>
-                        <p>
-                          <i>05/07/2020</i>
-                        </p>
-                      </RatesOp>
-                    </RateOp>
-                  </Owner>
-                  <OpText>
-                    <BodyLight>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      A, in labore expedita, doloribus laboriosam ab tempore
-                      inventore corrupti ut nostrum amet quidem qui dolor
-                      numquam cumque ullam impedit rerum dicta ipsum! Repellat,
-                      consequuntur! Quod eius nisi explicabo praesentium vero!
-                      Culpa, et laborum sit a ipsam adipisci ad quasi eligendi
-                      voluptatibus.
-                    </BodyLight>
-                  </OpText>
-                </Opinion>
-                <Opinion>
-                  <Owner>
-                    <img src="#"></img>
-                    <RateOp>
-                      <p>Pedro Rodríguez</p>
-                      <RatesOp>
-                        <Box component="fieldset" borderColor="transparent">
-                          <Rating name="read-only" value="4" readOnly />
-                        </Box>
-                        <p>
-                          <i>05/07/2020</i>
-                        </p>
-                      </RatesOp>
-                    </RateOp>
-                  </Owner>
-                  <OpText>
-                    <BodyLight>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      A, in labore expedita, doloribus laboriosam ab tempore
-                      inventore corrupti ut nostrum amet quidem qui dolor
-                      numquam cumque ullam impedit rerum dicta ipsum! Repellat,
-                      consequuntur! Quod eius nisi explicabo praesentium vero!
-                      Culpa, et laborum sit a ipsam adipisci ad quasi eligendi
-                      voluptatibus.
-                    </BodyLight>
-                  </OpText>
-                </Opinion>
-                <Opinion>
-                  <Owner>
-                    <img src="#"></img>
-                    <RateOp>
-                      <p>Pedro Rodríguez</p>
-                      <RatesOp>
-                        <Box component="fieldset" borderColor="transparent">
-                          <Rating name="read-only" value="4" readOnly />
-                        </Box>
-                        <p>
-                          <i>05/07/2020</i>
-                        </p>
-                      </RatesOp>
-                    </RateOp>
-                  </Owner>
-                  <OpText>
-                    <BodyLight>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      A, in labore expedita, doloribus laboriosam ab tempore
-                      inventore corrupti ut nostrum amet quidem qui dolor
-                      numquam cumque ullam impedit rerum dicta ipsum! Repellat,
-                      consequuntur! Quod eius nisi explicabo praesentium vero!
-                      Culpa, et laborum sit a ipsam adipisci ad quasi eligendi
-                      voluptatibus.
-                    </BodyLight>
-                  </OpText>
-                </Opinion>
+                {comments.map(comment => {
+                  return (
+                    <Opinion>
+                      <Owner>
+                        <img src={comment.user.image}></img>
+                        <RateOp>
+                          <p>{comment.user.username}</p>
+                          <RatesOp>
+                            <Box component="fieldset" borderColor="transparent">
+                              <Rating name="read-only" value="4" readOnly />
+                            </Box>
+                            <p>
+                              <i>{comment.date}</i>
+                            </p>
+                          </RatesOp>
+                        </RateOp>
+                      </Owner>
+                      <OpText>
+                        <BodyLight>{comment.comment}</BodyLight>
+                      </OpText>
+                    </Opinion>
+                  );
+                })}
               </OpinionsBox>
             </Grid>
           </Grid>

@@ -21,6 +21,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
 import { newFavourite, deleteFavourite } from "../../service/favouriteService";
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+// ..
+AOS.init();
 
 export const CardHome = ({
   id,
@@ -48,7 +52,7 @@ export const CardHome = ({
 
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
-      <Card>
+      <Card data-aos="fade-up">
         <Link to={`plan/${id}`}>
           <CardMedia style={{ height: 200 }} image={image} />
         </Link>

@@ -20,6 +20,12 @@ export const newComment = async (rest, stars, comment, date) => {
   }
 };
 
+export const getComments = async endpoint => {
+  const data = await commentService.get(`/${endpoint}`);
+  console.log(data.data.comments);
+  return data.data.comments;
+};
+
 // export const deleteFavourite = async id => {
 //   try {
 //     const { data } = await favouriteService.post(`${id}/delete`, {});

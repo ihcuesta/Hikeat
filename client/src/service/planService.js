@@ -11,7 +11,7 @@ export const getLastPlansRest = async endpoint => {
   return data.data.plans;
 };
 
-export const getAllPlans = async () => {
+export const getAllPlans = async page => {
   const data = await planService.get("/all");
   console.log(data.data.plans);
   return data.data.plans;
@@ -176,7 +176,7 @@ export const editPlan = async (
     });
     return data;
   } catch (error) {
-    return error.response.data;
+    return error;
   }
 };
 

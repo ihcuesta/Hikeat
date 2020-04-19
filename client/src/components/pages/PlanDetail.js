@@ -75,6 +75,8 @@ import { newBooking } from "../../service/bookingService";
 import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+import { getComments } from "../../service/commentService";
+import { SheetsRegistry } from "jss";
 
 export const PlanDetail = (props, { history }) => {
   const [info, setInfo] = useState([]);
@@ -85,17 +87,31 @@ export const PlanDetail = (props, { history }) => {
   const [open, setOpen] = useState(false);
   const [newbooking, setNewbooking] = useState();
   const [ismanager, setIsmanager] = useState();
+  const [allComments, setAllComments] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
+
     fetchSinglePlan(id).then(plan => {
-      setInfo(plan.planId);
       setPlanid(plan.planId._id);
+      setInfo(plan.planId);
+      getComments(plan.planId.restaurant._id).then(comments => {
+        console.log(comments);
+        setAllComments(comments);
+      });
     });
+
     checkIfManager(id).then(restaurant => {
       setIsmanager(restaurant.isManager);
     });
   }, []);
+
+  console.log(
+    allComments &&
+      allComments.map(comment => {
+        return comment.comment;
+      })
+  );
 
   const handleClickOpen = isNewBooking => {
     if (isNewBooking) {
@@ -465,20 +481,23 @@ export const PlanDetail = (props, { history }) => {
           </Grid>
         </Grid>
         <TitleRest>THE RESTAURANT</TitleRest>
-        <RestaurantCard
-          img1={info.restaurant && info.restaurant.image1}
-          img2={info.restaurant && info.restaurant.image2}
-          img3={info.restaurant && info.restaurant.image3}
-          kind={info.restaurant && info.restaurant.kind}
-          name={info.restaurant && info.restaurant.name}
-          descr={info.restaurant && info.restaurant.descr}
-          address={info.restaurant && info.restaurant.address}
-          city={info.restaurant && info.restaurant.city}
-          region={info.restaurant && info.restaurant.region}
-          phone={info.restaurant && info.restaurant.phone}
-          website={info.restaurant && info.restaurant.website}
-          email={info.restaurant && info.restaurant.email}
-        ></RestaurantCard>
+        {allComments && (
+          <RestaurantCard
+            img1={info.restaurant && info.restaurant.image1}
+            img2={info.restaurant && info.restaurant.image2}
+            img3={info.restaurant && info.restaurant.image3}
+            kind={info.restaurant && info.restaurant.kind}
+            name={info.restaurant && info.restaurant.name}
+            descr={info.restaurant && info.restaurant.descr}
+            address={info.restaurant && info.restaurant.address}
+            city={info.restaurant && info.restaurant.city}
+            region={info.restaurant && info.restaurant.region}
+            phone={info.restaurant && info.restaurant.phone}
+            website={info.restaurant && info.restaurant.website}
+            email={info.restaurant && info.restaurant.email}
+            comments={allComments}
+          ></RestaurantCard>
+        )}
       </ContBody>
       <div>
         <Dialog

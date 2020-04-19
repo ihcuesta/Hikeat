@@ -3,6 +3,7 @@ const router = express.Router();
 const Restaurant = require("../models/Restaurant");
 const User = require("../models/User");
 const Comment = require("../models/Comment");
+const Plan = require("../models/Plan");
 const _ = require("lodash");
 const passport = require("passport");
 
@@ -153,6 +154,7 @@ router.put("/:id/edit", async (req, res, next) => {
   const {
     name,
     kind,
+    descr,
     phone,
     website,
     email,
@@ -164,18 +166,17 @@ router.put("/:id/edit", async (req, res, next) => {
     image5,
     city,
     address,
-    pics,
     allergenCard,
     dogs,
     terrace,
     kids
   } = req.body;
   try {
-    const planToEdit = await Plan.findOne({
+    const restaurantToEdit = await Restaurant.findOne({
       _id: req.params.id
     });
 
-    if (String(planToEdit.owner) === String(req.user._id)) {
+    if (String(restaurantToEdit.owner) === String(req.user._id)) {
       const restaurantUpdated = await Restaurant.findOneAndUpdate(
         {
           _id: req.params.id
@@ -184,6 +185,7 @@ router.put("/:id/edit", async (req, res, next) => {
           $set: {
             name,
             kind,
+            descr,
             phone,
             website,
             email,
@@ -195,7 +197,6 @@ router.put("/:id/edit", async (req, res, next) => {
             region,
             city,
             address,
-            pics,
             allergenCard,
             dogs,
             terrace,
@@ -210,7 +211,7 @@ router.put("/:id/edit", async (req, res, next) => {
     }
   } catch (err) {
     console.log("Error trying to update the restaurant details: ", err);
-    return status(500).json({
+    return res.status(500).json({
       message: "Error trying to update the restaurant details"
     });
   }
