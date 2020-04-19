@@ -21,6 +21,8 @@ export const Signup = ({ history }) => {
   const [image, setImage] = useState("");
   const { register, handleSubmit, errors, setValue } = useForm();
   const setUser = useUserSetter();
+  const [favLabel, setFavLabel] = useState("Your favourite...");
+
   const onSubmit = async data => {
     console.log(data);
     const response = await doSignup(data);
@@ -29,6 +31,15 @@ export const Signup = ({ history }) => {
       history.push("/"); //redirect to home after signup & login
     } else {
       console.log(errors);
+    }
+  };
+
+  const changeFav = role => {
+    if (role === "Hiker") {
+      setFavLabel("Your favourite hike");
+    }
+    if (role === "Restaurant owner") {
+      setFavLabel("Your favourite course");
     }
   };
 
@@ -111,6 +122,7 @@ export const Signup = ({ history }) => {
             />
             {errors.password ? <span>{errors.password.message}</span> : ""}
 
+            <p>Add your profile picture:</p>
             <AddImg style={{ width: 200, height: 200, marginBottom: 30 }}>
               <label for="file-input1">
                 <img src={image === "" ? placeholder : image} />
@@ -143,6 +155,7 @@ export const Signup = ({ history }) => {
               <RadioCont>
                 <FormControlLabel
                   required
+                  onClick={() => changeFav("Hiker")}
                   style={{ color: s.dark, marginRight: 30 }}
                   value="Hiker"
                   control={<Radio color="primary" />}
@@ -156,10 +169,11 @@ export const Signup = ({ history }) => {
                 />
                 <FormControlLabel
                   required
+                  onClick={() => changeFav("Restaurant owner")}
                   style={{ color: s.dark }}
                   value="Restaurant Owner"
                   control={<Radio color="primary" />}
-                  label="Restaurant"
+                  label="Restaurant owner"
                   inputRef={register({
                     required: {
                       value: true,
@@ -179,12 +193,35 @@ export const Signup = ({ history }) => {
               multiline
               rows="4"
               fullWidth="true"
-              placeholder="Write about you and your love to hiking! 😎"
+              placeholder="Write about you and your love to hiking/cooking! 😎"
               variant="outlined"
               inputRef={register({
                 required: {
                   value: true,
                   message: "Description required"
+                },
+                maxLength: 100
+              })}
+              InputProps={txtField}
+            />
+            {errors.description ? (
+              <span>{errors.description.message}</span>
+            ) : (
+              ""
+            )}
+
+            <TextField
+              required
+              id="fav"
+              name="fav"
+              label={favLabel}
+              fullWidth="true"
+              placeholder={favLabel}
+              variant="outlined"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Input required"
                 },
                 maxLength: 100
               })}

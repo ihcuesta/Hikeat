@@ -6,12 +6,13 @@ import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import FilterHdrOutlinedIcon from "@material-ui/icons/FilterHdrOutlined";
 import RestaurantOutlinedIcon from "@material-ui/icons/RestaurantOutlined";
 import { s } from "../styled/globalStyles";
+import ScrollIntoView from "react-scroll-into-view";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
 AOS.init();
 
-export const HomeHead = () => {
+export const HomeHead = ({ scrollPlans }) => {
   return (
     <Hero>
       <Container maxWidth="lg">
@@ -84,25 +85,30 @@ export const HomeHead = () => {
                   </Grid>
                 </Grid>
               </div>
-              <Button
-                data-aos="fade-left"
-                data-aos-duration="400"
-                data-aos-easing="ease-in-out"
-                data-aos-delay="150"
-                style={{
-                  margin: "30px auto 0px auto",
-                  textAlign: "center",
-                  borderRadius: 20,
-                  width: "80%"
-                }}
-                component={Link}
-                size="medium"
-                variant="contained"
-                color="secondary"
-                to="#"
-              >
-                see plans
-              </Button>
+              <ScrollIntoView selector={scrollPlans}>
+                <Button
+                  component={Link}
+                  to="#intro"
+                  data-scroll
+                  data-aos="fade-left"
+                  data-aos-duration="400"
+                  data-aos-easing="ease-in-out"
+                  data-aos-delay="150"
+                  style={{
+                    margin: "30px auto 0px auto",
+                    textAlign: "center",
+                    borderRadius: 20,
+                    width: "80%"
+                  }}
+                  component={Link}
+                  size="medium"
+                  variant="contained"
+                  color="secondary"
+                  to="#plans"
+                >
+                  see plans
+                </Button>
+              </ScrollIntoView>
             </ContHead>
           </Grid>
         </Grid>

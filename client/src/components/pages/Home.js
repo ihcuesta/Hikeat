@@ -18,6 +18,7 @@ import {
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";
+import ScrollIntoView from "react-scroll-into-view";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
@@ -94,8 +95,8 @@ export const Home = () => {
 
   return (
     <>
-      <HomeHead></HomeHead>
-      <Divider></Divider>
+      <HomeHead scrollPlans="#search"></HomeHead>
+      <Divider id="search"></Divider>
       <BgHome>
         <ContBody>
           <SearcherCont data-aos="slide-up">

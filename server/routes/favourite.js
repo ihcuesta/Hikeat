@@ -9,17 +9,6 @@ const passport = require("passport");
 // New favourite
 router.post("/:id/new", async (req, res, next) => {
   try {
-    // Check if there is already a booking for that plan and with that user
-    // const registeredBooking = await Booking.findOne({ user: req.user._id });
-    // if (registeredBooking) {
-    //   console.log(
-    //     `There are bookings for this user, modify the booking created`
-    //   );
-    //   return res.status(400).json({
-    //     isNewBooking: false
-    //   });
-    // }
-
     const newFavourite = await Favourite.create({
       user: req.user._id,
       planid: req.params.id
@@ -55,6 +44,20 @@ router.post("/:id/delete", async (req, res, next) => {
     return status(500).json({
       message: "Error trying to delete the favourite"
     });
+  }
+});
+
+// New favourite
+router.get("/:id", async (req, res, next) => {
+  try {
+    let getFav = await Favourite.find({
+      planid: req.params.id,
+      user: req.user._id
+    });
+    return res.status(200).json({ getFav });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Impossible to get the favourite" });
   }
 });
 

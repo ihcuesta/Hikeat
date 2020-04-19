@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router";
+import { Link, Redirect } from "react-router-dom";
 import { useUser, useUserLogout, whoami } from "../../service/authService";
 import { searchRestaurant } from "../../service/restaurantService";
 import {
@@ -107,7 +107,11 @@ export const Header = () => {
                   </>
                 )}
 
-                <Button component={Link} color="primary" to="#">
+                <Button
+                  onClick={() => history.push("/admin")}
+                  color="primary"
+                  to="#"
+                >
                   Admin
                 </Button>
                 <Button

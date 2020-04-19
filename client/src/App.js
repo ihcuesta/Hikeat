@@ -17,6 +17,7 @@ import { PlanDetail } from "./components/pages/PlanDetail";
 import { Header } from "./components/UI/Header";
 import { EditRestaurant } from "./components/pages/EditRestaurant";
 import { EditPlan } from "./components/pages/EditPlan";
+import ScrollMemory from "react-router-scroll-memory";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
@@ -24,6 +25,7 @@ AOS.init();
 
 export const App = withAuthentication(() => (
   <Router>
+    <ScrollMemory />
     <GlobalStyles>
       <Header></Header>
       <Switch>

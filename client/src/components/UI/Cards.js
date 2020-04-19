@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -20,7 +20,11 @@ import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutline
 import ShareIcon from "@material-ui/icons/Share";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
-import { newFavourite, deleteFavourite } from "../../service/favouriteService";
+import {
+  newFavourite,
+  deleteFavourite,
+  getFavourite
+} from "../../service/favouriteService";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
@@ -39,6 +43,14 @@ export const CardHome = ({
   restid
 }) => {
   const [favourite, setFavourite] = useState(false);
+
+  useEffect(() => {
+    getFavourite(id).then(fav => {
+      if (fav.length > 0) setFavourite(true);
+      console.log(fav);
+    });
+  }, []);
+
   const handleFav = async id => {
     if (!favourite) {
       const addFav = await newFavourite(id);

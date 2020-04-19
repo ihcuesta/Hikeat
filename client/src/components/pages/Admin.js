@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "../../service/authService";
 import {
   Container,
@@ -27,9 +27,14 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import RestaurantIcon from "@material-ui/icons/Restaurant";
 import DirectionsWalkIcon from "@material-ui/icons/DirectionsWalk";
 import { Footer } from "../UI/Footer";
+import { whoami } from "./../../service/authService";
 
 export const Admin = ({ history }) => {
   const session = useUser();
+  console.log(session);
+  useEffect(() => {
+    // whoami().then(user => console.log(user));
+  }, []);
 
   return (
     <>

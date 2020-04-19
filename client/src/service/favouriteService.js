@@ -26,3 +26,14 @@ export const deleteFavourite = async id => {
     return error;
   }
 };
+
+export const getFavourite = async id => {
+  try {
+    const { data } = await favouriteService.get(`/${id}`, {});
+    console.log(data);
+    return data.getFav;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
