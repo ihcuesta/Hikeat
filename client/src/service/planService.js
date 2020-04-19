@@ -15,6 +15,11 @@ export const getPlansPage = async num => {
   return data.data.plans;
 };
 
+export const getPlansPageRegion = async (region, num) => {
+  const data = await planService.get(`/${region}/${num}`);
+  return data.data.plans;
+};
+
 export const getAllPlans = async () => {
   const data = await planService.get("/all");
   return data.data.plans;
@@ -22,6 +27,11 @@ export const getAllPlans = async () => {
 
 export const getTotal = async () => {
   const data = await planService.get(`/total`);
+  return data.data.total;
+};
+
+export const getTotalRegion = async region => {
+  const data = await planService.get(`/total/${region}`);
   return data.data.total;
 };
 

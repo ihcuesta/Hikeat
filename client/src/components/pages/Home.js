@@ -11,7 +11,9 @@ import {
   getAllPlans,
   getByRegion,
   getPlansPage,
-  getTotal
+  getTotal,
+  getPlansPageRegion,
+  getTotalRegion
 } from "../../service/planService";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
@@ -27,38 +29,65 @@ export const Home = () => {
   const [numPage, setNumPage] = useState(1);
   const [total, setTotal] = useState();
   const [pages, setPages] = useState();
+  const [region, setRegion] = useState();
+
+  const [numPageReg, setNumPageReg] = useState(1);
+  const [totalReg, setTotalReg] = useState();
+  const [pagesReg, setPagesReg] = useState();
 
   const handleChange = (event, value) => {
     setNumPage(value);
     getPlansPage(value).then(plans => setPlans(plans));
   };
 
+  const handleChangeReg = (event, value) => {
+    setNumPageReg(value);
+    getPlansPageRegion(region, value).then(plans => setPlans(plans));
+  };
+
   useEffect(() => {
     getPlansPage(numPage).then(plans => setPlans(plans));
     getTotal().then(total => {
       setTotal(total);
-      calcPages(total);
+      setPages(cPages(total));
     });
   }, []);
 
   console.log(total);
   console.log(pages);
 
-  const calcPages = total => {
+  const cPages = total => {
     let pages = Math.floor(total / 6);
     console.log(pages);
     if (total % 6 > 0) pages++;
+    return pages;
+  };
 
-    setPages(pages);
+  const calcPages = total => {
+    setPages(cPages(total));
+  };
+
+  const calcPagesReg = total => {
+    setPagesReg(cPages(total));
   };
 
   const handleFilter = region => {
+    setRegion(region);
     if (region === "all") {
-      getAllPlans().then(plans => setPlans(plans));
+      setSearch(false);
+      setNumPage(1);
+      getPlansPage(numPage).then(plans => setPlans(plans));
+      getTotal().then(total => {
+        setTotal(total);
+        setPages(cPages(total));
+      });
     } else {
       setSearch(true);
-      getByRegion(region).then(plans => {
-        setPlans(plans);
+      setNumPageReg(1);
+      getPlansPageRegion(region, numPageReg).then(plans => setPlans(plans));
+      getTotalRegion(region).then(total => {
+        setTotalReg(total);
+        setPagesReg(cPages(total));
       });
     }
   };
@@ -125,14 +154,29 @@ export const Home = () => {
               })
             )}
           </Grid>
-          <p>Page {numPage}</p>
-          <Pagination
-            count={pages}
-            color="primary"
-            page={numPage}
-            onChange={handleChange}
-            style={{ margin: "40px auto 0px" }}
-          />
+          {!search ? (
+            <>
+              <p>Page {numPage}</p>
+              <Pagination
+                count={pages}
+                color="primary"
+                page={numPage}
+                onChange={handleChange}
+                style={{ margin: "40px auto 0px" }}
+              />
+            </>
+          ) : (
+            <>
+              <p>Page {numPageReg}</p>
+              <Pagination
+                count={pagesReg}
+                color="primary"
+                page={numPageReg}
+                onChange={handleChangeReg}
+                style={{ margin: "40px auto 0px" }}
+              />
+            </>
+          )}
         </ContBody>
       </BgHome>
       <FooterHome></FooterHome>
