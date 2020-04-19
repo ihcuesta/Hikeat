@@ -55,7 +55,13 @@ import {
   checkIfManager
 } from "../../service/restaurantService";
 import { Footer } from "../UI/Footer";
-import { newComment } from "../../service/commentService";
+import {
+  newComment,
+  getUserComment,
+  editComment,
+  getComments,
+  deleteComment
+} from "../../service/commentService";
 
 export const RestaurantDetail = props => {
   const history = useHistory();
@@ -67,8 +73,10 @@ export const RestaurantDetail = props => {
   const [validated, setValidated] = useState(false);
   const [hover, setHover] = useState(-1);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [iscomment, setIscomment] = useState();
   const [ismanager, setIsmanager] = useState(false);
+  const [isOldCom, setIsOldCom] = useState(false);
 
   useEffect(() => {
     getLastPlansRest().then(plans => setPlans(plans));
@@ -76,6 +84,13 @@ export const RestaurantDetail = props => {
     fetchSingleRestaurant(id).then(restaurant => {
       setInfo(restaurant.restaurantId);
       setAllcomments(restaurant.commentsRes);
+    });
+    getUserComment(id).then(comment => {
+      if (comment.length > 0) {
+        setIsOldCom(true);
+        setStars(comment[0].stars);
+        setComment(comment[0].comment);
+      }
     });
     checkIfManager(id).then(restaurant => {
       setIsmanager(restaurant.isManager);
@@ -91,15 +106,40 @@ export const RestaurantDetail = props => {
     return dd + "-" + mm + "-" + yyyy;
   };
 
-  const handleSubmit = async (rest, stars, comment) => {
-    if (comment !== "") {
+  const deleteCom = async () => {
+    setOpen(false);
+    const response = await deleteComment(rest);
+    getComments(rest).then(comments => {
+      setAllcomments(comments);
+    });
+    setIsOldCom(false);
+    setOpenDelete(true);
+  };
+
+  const handleSubmit = async (rest, stars, comment, isOldCom) => {
+    setOpenDelete(false);
+    if (isOldCom) {
       const date = getDate();
-      const response = await newComment(rest, stars, comment, date);
-      console.log(response.data.isComment);
-      if (response) setOpen(true);
-      response.data.isComment ? setIscomment(true) : setIscomment(false);
+      const response = await editComment(rest, stars, comment, date);
+
+      getComments(rest).then(comments => {
+        setAllcomments(comments);
+      });
+      setOpen(true);
     } else {
-      setValidated(true);
+      if (comment !== "") {
+        const date = getDate();
+        const response = await newComment(rest, stars, comment, date);
+
+        getComments(rest).then(comments => {
+          setAllcomments(comments);
+        });
+        setIsOldCom(true);
+        setOpen(true);
+        // response.data.isComment ? setIscomment(true) : setIscomment(false);
+      } else {
+        setValidated(true);
+      }
     }
   };
 
@@ -242,13 +282,16 @@ export const RestaurantDetail = props => {
                   </Opinion>
                 );
               })}
-
-            <TitComment>Add comment</TitComment>
+            {isOldCom ? (
+              <TitComment>Edit comment</TitComment>
+            ) : (
+              <TitComment>Add comment</TitComment>
+            )}
             <hr style={{ color: s.dark, width: "100%", marginBottom: 15 }} />
             <form
               onSubmit={e => {
                 e.preventDefault();
-                handleSubmit(rest, stars, comment);
+                handleSubmit(rest, stars, comment, isOldCom);
               }}
             >
               <ContRating>
@@ -289,49 +332,73 @@ export const RestaurantDetail = props => {
                 }
               />
               <ContBtnComment>
-                <Button variant="contained" color="secondary" type="submit">
-                  Add comment
-                </Button>
+                {isOldCom ? (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      type="submit"
+                      style={{ marginRight: 10 }}
+                    >
+                      Edit comment
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => deleteCom(rest)}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="contained" color="secondary" type="submit">
+                    Add comment
+                  </Button>
+                )}
               </ContBtnComment>
               <div style={{ width: "100%", marginTop: 10 }}>
                 <Collapse in={open}>
-                  {!iscomment ? (
-                    <Alert
-                      severity="success"
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="small"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                    >
-                      Thank you for your comment!
-                    </Alert>
-                  ) : (
-                    <Alert
-                      severity="error"
-                      action={
-                        <IconButton
-                          aria-label="close"
-                          color="inherit"
-                          size="small"
-                          onClick={() => {
-                            setOpen(false);
-                          }}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                    >
-                      You have already starred this restaurant.
-                    </Alert>
-                  )}
+                  <Alert
+                    severity="success"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    {isOldCom ? (
+                      <>Comment edited!</>
+                    ) : (
+                      <>Thank you for your comment!</>
+                    )}
+                  </Alert>
+                </Collapse>
+
+                <Collapse in={openDelete}>
+                  <Alert
+                    severity="success"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpenDelete(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    Comment deleted!
+                  </Alert>
                 </Collapse>
               </div>
             </form>
@@ -342,7 +409,12 @@ export const RestaurantDetail = props => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  style={{ minWidth: 150, margin: "auto", display: "block" }}
+                  style={{
+                    maxWidth: 150,
+                    margin: "auto",
+                    display: "block",
+                    padding: "5px 35px"
+                  }}
                   onClick={() => history.push(`/restaurant/${info._id}/edit`)}
                 >
                   Edit
@@ -350,12 +422,13 @@ export const RestaurantDetail = props => {
                 <Button
                   component={Link}
                   style={{
-                    minWidth: 150,
+                    maxWidth: 150,
                     color: s.error,
                     margin: "auto",
                     display: "block",
                     textAlign: "center",
-                    marginTop: 15
+                    marginTop: 15,
+                    padding: "5px 35px"
                   }}
                 >
                   Delete
