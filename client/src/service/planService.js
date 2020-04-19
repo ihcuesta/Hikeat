@@ -7,19 +7,26 @@ const planService = axios.create({
 
 export const getLastPlansRest = async endpoint => {
   const data = await planService.get(`/lastplansrest/${endpoint}`);
-  console.log(data.data.plans);
   return data.data.plans;
 };
 
-export const getAllPlans = async page => {
-  const data = await planService.get("/all");
-  console.log(data.data.plans);
+export const getPlansPage = async num => {
+  const data = await planService.get(`/page/${num}`);
   return data.data.plans;
+};
+
+export const getAllPlans = async () => {
+  const data = await planService.get("/all");
+  return data.data.plans;
+};
+
+export const getTotal = async () => {
+  const data = await planService.get(`/total`);
+  return data.data.total;
 };
 
 export const getByRegion = async region => {
   const data = await planService.get(`/region/${region}`);
-  console.log(data.data.plansRegion);
   return data.data.plansRegion;
 };
 

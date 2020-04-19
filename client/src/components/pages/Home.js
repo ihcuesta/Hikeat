@@ -7,7 +7,12 @@ import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
 import { ContBody } from "../styled/globalStyles";
-import { getAllPlans, getByRegion } from "../../service/planService";
+import {
+  getAllPlans,
+  getByRegion,
+  getPlansPage,
+  getTotal
+} from "../../service/planService";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";
@@ -19,15 +24,33 @@ AOS.init();
 export const Home = () => {
   const [search, setSearch] = useState(false);
   const [plans, setPlans] = useState([]);
-  const [page, setPage] = useState(1);
+  const [numPage, setNumPage] = useState(1);
+  const [total, setTotal] = useState();
+  const [pages, setPages] = useState();
 
   const handleChange = (event, value) => {
-    setPage(value);
+    setNumPage(value);
+    getPlansPage(value).then(plans => setPlans(plans));
   };
 
   useEffect(() => {
-    getAllPlans(page).then(plans => setPlans(plans));
+    getPlansPage(numPage).then(plans => setPlans(plans));
+    getTotal().then(total => {
+      setTotal(total);
+      calcPages(total);
+    });
   }, []);
+
+  console.log(total);
+  console.log(pages);
+
+  const calcPages = total => {
+    let pages = Math.floor(total / 6);
+    console.log(pages);
+    if (total % 6 > 0) pages++;
+
+    setPages(pages);
+  };
 
   const handleFilter = region => {
     if (region === "all") {
@@ -102,11 +125,11 @@ export const Home = () => {
               })
             )}
           </Grid>
-          <p>Page {page}</p>
+          <p>Page {numPage}</p>
           <Pagination
-            count={10}
+            count={pages}
             color="primary"
-            page={page}
+            page={numPage}
             onChange={handleChange}
             style={{ margin: "40px auto 0px" }}
           />

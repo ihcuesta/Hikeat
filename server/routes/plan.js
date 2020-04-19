@@ -29,6 +29,30 @@ router.get("/all", async (req, res, next) => {
   }
 });
 
+// Total
+router.get("/total", async (req, res, next) => {
+  try {
+    const plans = await Plan.find({});
+    const total = plans.length;
+    return res.status(200).json({ total });
+  } catch (err) {
+    console.log("Error while retrieving plans", error);
+    return res.status(500).json({ message: "Impossible to get the plans" });
+  }
+});
+
+// Per page
+router.get("/page/:num", async (req, res, next) => {
+  const skip = (Number(req.params.num) - 1) * 6;
+  try {
+    const plans = await Plan.find({}, {}, { limit: 6, skip: skip });
+    return res.status(200).json({ plans });
+  } catch (err) {
+    console.log("Error while retrieving plans", error);
+    return res.status(500).json({ message: "Impossible to get the plans" });
+  }
+});
+
 // Region
 router.get("/region/:region", async (req, res, next) => {
   try {
