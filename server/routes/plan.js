@@ -30,7 +30,7 @@ router.get("/all", async (req, res, next) => {
 });
 
 // Total
-router.get("/total", async (req, res, next) => {
+router.get("/pages/total", async (req, res, next) => {
   try {
     const plans = await Plan.find({});
     const total = plans.length;
@@ -42,7 +42,7 @@ router.get("/total", async (req, res, next) => {
 });
 
 // Total per region
-router.get("/total/:region", async (req, res, next) => {
+router.get("/pages/total/:region", async (req, res, next) => {
   const region = req.params.region;
   try {
     const plans = await Plan.find({
@@ -57,7 +57,7 @@ router.get("/total/:region", async (req, res, next) => {
 });
 
 // Per page
-router.get("/page/:num", async (req, res, next) => {
+router.get("/pages/:num", async (req, res, next) => {
   const skip = (Number(req.params.num) - 1) * 6;
   try {
     const plans = await Plan.find({}, {}, { limit: 6, skip: skip });
@@ -69,7 +69,7 @@ router.get("/page/:num", async (req, res, next) => {
 });
 
 // Per region and page
-router.get("/:region/:num", async (req, res, next) => {
+router.get("/pages/:region/:num", async (req, res, next) => {
   const skip = (Number(req.params.num) - 1) * 6;
   try {
     const plans = await Plan.find(
@@ -87,7 +87,7 @@ router.get("/:region/:num", async (req, res, next) => {
 });
 
 // Region
-router.get("/region/:region", async (req, res, next) => {
+router.get("/pages/region/:region", async (req, res, next) => {
   try {
     const plansRegion = await Plan.find({
       region: req.params.region
@@ -181,24 +181,24 @@ router.post("/new", async (req, res, next) => {
 });
 
 // Check it its manager of the plan
-// router.get("/manager/:id", async (req, res, next) => {
-//   try {
-//     const checkIfManager = await Plan.find({
-//       _id: req.params.id,
-//       owner: req.user._id
-//     });
-//     if (checkIfManager.length === 0) {
-//       return res.status(200).json({ isManager: false });
-//     } else {
-//       return res.status(200).json({ isManager: true });
-//     }
-//   } catch (error) {
-//     console.log("Error while trying to find out if its manager: ", error);
-//     return res
-//       .status(500)
-//       .json({ message: "Error while trying to find out if its manager" });
-//   }
-// });
+router.get("/manager/:id", async (req, res, next) => {
+  try {
+    const checkIfManager = await Plan.find({
+      _id: req.params.id,
+      owner: req.user._id
+    });
+    if (checkIfManager.length === 0) {
+      return res.status(200).json({ isManager: false });
+    } else {
+      return res.status(200).json({ isManager: true });
+    }
+  } catch (error) {
+    console.log("Error while trying to find out if its manager: ", error);
+    return res
+      .status(500)
+      .json({ message: "Error while trying to find out if its manager" });
+  }
+});
 
 // Detail page of plan
 router.get("/:id", async (req, res, next) => {
@@ -211,7 +211,7 @@ router.get("/:id", async (req, res, next) => {
 
     return res.status(200).json({ planId });
   } catch (err) {
-    console.log("Error while retrieving plan ID: ", error);
+    console.log("Error while retrieving plan ID: ", err);
     return res.status(500).json({ message: "Impossible to get the plan" });
   }
 });

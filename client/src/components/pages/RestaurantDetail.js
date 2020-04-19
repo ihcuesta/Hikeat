@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import {
   Head,
   Rates,
@@ -57,6 +58,7 @@ import { Footer } from "../UI/Footer";
 import { newComment } from "../../service/commentService";
 
 export const RestaurantDetail = props => {
+  const history = useHistory();
   const [plans, setPlans] = useState([]);
   const [info, setInfo] = useState();
   const [allcomments, setAllcomments] = useState();
@@ -341,6 +343,7 @@ export const RestaurantDetail = props => {
                   variant="contained"
                   color="secondary"
                   style={{ minWidth: 150, margin: "auto", display: "block" }}
+                  onClick={() => history.push(`/restaurant/${info._id}/edit`)}
                 >
                   Edit
                 </Button>

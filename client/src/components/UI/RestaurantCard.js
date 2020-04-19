@@ -24,6 +24,7 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import { BgRestCard, OpinionsBox } from "../styled/RestCardStyled";
 
 export const RestaurantCard = ({
+  id,
   img1,
   img2,
   img3,
@@ -61,7 +62,7 @@ export const RestaurantCard = ({
                   <i>{kind}</i>
                 </p>
                 <Link
-                  to="#"
+                  to={`/restaurant/${id}`}
                   style={{
                     fontSize: 18,
 

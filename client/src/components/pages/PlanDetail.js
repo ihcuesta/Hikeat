@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import {
   Head,
   ImgCont,
@@ -78,7 +79,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import { getComments } from "../../service/commentService";
 import { SheetsRegistry } from "jss";
 
-export const PlanDetail = (props, { history }) => {
+export const PlanDetail = props => {
+  const history = useHistory();
   const [info, setInfo] = useState([]);
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
@@ -105,6 +107,8 @@ export const PlanDetail = (props, { history }) => {
       setIsmanager(restaurant.isManager);
     });
   }, []);
+
+  const id = props.match.params.id;
 
   console.log(
     allComments &&
@@ -151,7 +155,11 @@ export const PlanDetail = (props, { history }) => {
             <i>{info.restaurant && info.restaurant.city}</i>
           </p>
           <h1>{info.name}</h1>
-          <NameRest>{info.restaurant && info.restaurant.name}</NameRest>
+          <NameRest
+            onClick={() => history.push(`/restaurant/${info.restaurant._id}`)}
+          >
+            {info.restaurant && info.restaurant.name}
+          </NameRest>
         </Head>
 
         <ImgCont>
@@ -343,6 +351,7 @@ export const PlanDetail = (props, { history }) => {
                   variant="contained"
                   color="secondary"
                   style={{ minWidth: 150, margin: "auto", display: "block" }}
+                  onClick={() => history.push(`/plan/${id}/edit`)}
                 >
                   Edit
                 </Button>
@@ -369,7 +378,11 @@ export const PlanDetail = (props, { history }) => {
                     <i>Organizer</i>
                   </p>
                   <Organizer>{info.owner && info.owner.username}</Organizer>
-                  <RestContact>
+                  <RestContact
+                    onClick={() =>
+                      history.push(`/restaurant/${info.restaurant._id}`)
+                    }
+                  >
                     {info.restaurant && info.restaurant.name}
                   </RestContact>
                 </OwnerTexts>
@@ -483,6 +496,7 @@ export const PlanDetail = (props, { history }) => {
         <TitleRest>THE RESTAURANT</TitleRest>
         {allComments && (
           <RestaurantCard
+            id={info.restaurant && info.restaurant._id}
             img1={info.restaurant && info.restaurant.image1}
             img2={info.restaurant && info.restaurant.image2}
             img3={info.restaurant && info.restaurant.image3}

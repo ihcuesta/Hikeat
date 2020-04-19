@@ -6,6 +6,7 @@ export const NameRest = styled.div`
   margin-top: -20px;
   margin-bottom: 40px;
   color: ${s.primary};
+  cursor: pointer;
 `;
 
 export const Hike = styled.div`
@@ -88,6 +89,7 @@ export const Organizer = styled.p`
 export const RestContact = styled.p`
   color: #fff;
   margin-top: -15px;
+  cursor: pointer;
 `;
 
 export const DetailsContact = styled.div`

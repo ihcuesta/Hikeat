@@ -11,12 +11,12 @@ export const getLastPlansRest = async endpoint => {
 };
 
 export const getPlansPage = async num => {
-  const data = await planService.get(`/page/${num}`);
+  const data = await planService.get(`/pages/${num}`);
   return data.data.plans;
 };
 
 export const getPlansPageRegion = async (region, num) => {
-  const data = await planService.get(`/${region}/${num}`);
+  const data = await planService.get(`/pages/${region}/${num}`);
   return data.data.plans;
 };
 
@@ -26,17 +26,17 @@ export const getAllPlans = async () => {
 };
 
 export const getTotal = async () => {
-  const data = await planService.get(`/total`);
+  const data = await planService.get(`/pages/total`);
   return data.data.total;
 };
 
 export const getTotalRegion = async region => {
-  const data = await planService.get(`/total/${region}`);
+  const data = await planService.get(`/pages/total/${region}`);
   return data.data.total;
 };
 
 export const getByRegion = async region => {
-  const data = await planService.get(`/region/${region}`);
+  const data = await planService.get(`/pages/region/${region}`);
   return data.data.plansRegion;
 };
 
