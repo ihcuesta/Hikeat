@@ -5,14 +5,61 @@ const planService = axios.create({
   withCredentials: true
 });
 
+export const getLastPlansRest = async endpoint => {
+  const data = await planService.get(`/lastplansrest/${endpoint}`);
+  return data.data.plans;
+};
+
+export const getPlansPage = async num => {
+  const data = await planService.get(`/pages/${num}`);
+  return data.data.plans;
+};
+
+export const getPlansPageRegion = async (region, num) => {
+  const data = await planService.get(`/pages/${region}/${num}`);
+  return data.data.plans;
+};
+
+export const getAllPlans = async () => {
+  const data = await planService.get("/all");
+  return data.data.plans;
+};
+
+export const getTotal = async () => {
+  const data = await planService.get(`/pages/total`);
+  return data.data.total;
+};
+
+export const getTotalRegion = async region => {
+  const data = await planService.get(`/pages/total/${region}`);
+  return data.data.total;
+};
+
+export const getByRegion = async region => {
+  const data = await planService.get(`/pages/region/${region}`);
+  return data.data.plansRegion;
+};
+
+const formatDate = date => {
+  return date
+    .split("-")
+    .reverse()
+    .join("-");
+};
+
 export const newPlan = async ({
   name,
   hikelevel,
   shortDescr,
   longDescr,
+  highlights,
   startPoint,
   kms,
-  pics,
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
   date,
   startTime,
   lunchTime,
@@ -30,15 +77,21 @@ export const newPlan = async ({
   status
 }) => {
   try {
+    const newDate = formatDate(date);
     const { data } = await planService.post("/new", {
       name,
       hikelevel,
       shortDescr,
       longDescr,
+      highlights,
       startPoint,
       kms,
-      pics,
-      date,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      date: newDate,
       startTime,
       lunchTime,
       kids,
@@ -65,6 +118,12 @@ export const fetchSinglePlan = async endpoint => {
   return data;
 };
 
+export const checkIfManager = async endpoint => {
+  const { data } = await planService.get(`/manager/${endpoint}`);
+  console.log(data);
+  return data;
+};
+
 export const fetchEditPlan = async endpoint => {
   const { data } = await planService.get(`/${endpoint}/edit`);
   return data;
@@ -77,9 +136,14 @@ export const editPlan = async (
     hikelevel,
     shortDescr,
     longDescr,
+    highlights,
     startPoint,
     kms,
-    pics,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
     date,
     startTime,
     lunchTime,
@@ -103,9 +167,14 @@ export const editPlan = async (
       hikelevel,
       shortDescr,
       longDescr,
+      highlights,
       startPoint,
       kms,
-      pics,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
       date,
       startTime,
       lunchTime,
@@ -124,7 +193,7 @@ export const editPlan = async (
     });
     return data;
   } catch (error) {
-    return error.response.data;
+    return error;
   }
 };
 

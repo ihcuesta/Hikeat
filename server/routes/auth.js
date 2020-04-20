@@ -7,15 +7,7 @@ const { hashPassword } = require("../lib/hashing");
 
 // SIGNUP
 router.post("/signup", async (req, res, next) => {
-  const {
-    username,
-    password,
-    description,
-    role,
-    favHike,
-    favRecipe,
-    image
-  } = req.body;
+  const { username, password, description, role, fav, image } = req.body;
 
   // Create the user
   try {
@@ -31,8 +23,7 @@ router.post("/signup", async (req, res, next) => {
       password: hashPassword(password),
       description,
       role,
-      favHike,
-      favRecipe,
+      fav,
       image
     });
 

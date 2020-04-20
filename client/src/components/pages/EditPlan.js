@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { newPlan } from "../../service/planService";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { fetchEditPlan, editPlan } from "../../service/planService";
 import { Form, FormBg, FormCont, FormTitle } from "../styled/Forms";
 import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import {
@@ -52,7 +53,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import { FooterAlt } from "../UI/Footer";
 
-export const NewPlan = ({ history }) => {
+export const EditPlan = props => {
+  const history = useHistory();
   const [name, setName] = useState("");
   const [shortDescr, setShortDescr] = useState("");
   const [longDescr, setLongDescr] = useState("");
@@ -88,6 +90,38 @@ export const NewPlan = ({ history }) => {
   const [open, setOpen] = useState();
   const [openspin, setOpenspin] = useState();
 
+  useEffect(() => {
+    const id = props.match.params.id;
+    fetchEditPlan(id).then(rest => {
+      console.log(rest);
+      setName(rest.planToEdit.name);
+      setShortDescr(rest.planToEdit.shortDescr);
+      setLongDescr(rest.planToEdit.longDescr);
+      setHighlights(rest.planToEdit.highlights);
+      setHikelevel(rest.planToEdit.hikelevel);
+      setKms(rest.planToEdit.kms);
+      setDate(rest.planToEdit.date);
+      setStartTime(rest.planToEdit.startTime);
+      setLunchTime(rest.planToEdit.lunchTime);
+      setMaxBookings(rest.planToEdit.maxBookings);
+
+      setFirstCourse(rest.planToEdit.firstCourse);
+      setSecondCourse(rest.planToEdit.secondCourse);
+      setDessert(rest.planToEdit.dessert);
+      setBread(rest.planToEdit.bread);
+      setDrinks(rest.planToEdit.drinks);
+      setCoffee(rest.planToEdit.coffee);
+      setBreakfast(rest.planToEdit.breakfast);
+      setBrunch(rest.planToEdit.brunch);
+      setImage1(rest.planToEdit.image1);
+      setImage2(rest.planToEdit.image2);
+      setImage3(rest.planToEdit.image3);
+      setImage4(rest.planToEdit.image4);
+      setImage5(rest.planToEdit.image5);
+    });
+  }, []);
+
+  const id = props.match.params.id;
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -105,7 +139,7 @@ export const NewPlan = ({ history }) => {
     if (resp) {
       console.log("Image deleted in Cloudinary");
     }
-    setImg("");
+    setImg(null);
   };
 
   const handleChangeFile = async (e, setImg) => {
@@ -124,9 +158,56 @@ export const NewPlan = ({ history }) => {
     setOpenspin(false);
   };
 
-  const handleSubmit = async data => {
-    console.log(data);
-    const response = await newPlan(data);
+  const handleSubmit = async (
+    name,
+    shortDescr,
+    longDescr,
+    highlights,
+    hikelevel,
+    kms,
+    date,
+    startTime,
+    lunchTime,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    maxBookings,
+    breakfast,
+    brunch,
+    firstCourse,
+    secondCourse,
+    dessert,
+    bread,
+    drinks,
+    coffee
+  ) => {
+    const response = await editPlan(id, {
+      name,
+      shortDescr,
+      longDescr,
+      highlights,
+      hikelevel,
+      kms,
+      date,
+      startTime,
+      lunchTime,
+      image1,
+      image2,
+      image3,
+      image4,
+      image5,
+      maxBookings,
+      breakfast,
+      brunch,
+      firstCourse,
+      secondCourse,
+      dessert,
+      bread,
+      drinks,
+      coffee
+    });
     console.log("Guardado");
     if (response) {
       handleClickOpen(); //mostrar pop up para ir al creador de plan o a la página de restaurante
@@ -558,7 +639,7 @@ export const NewPlan = ({ history }) => {
                 >
                   <AddImg>
                     <label for="file-input1">
-                      <img src={image1 === "" ? placeholder : image1} />
+                      <img src={image1 === null ? placeholder : image1} />
                     </label>
 
                     <input
@@ -567,7 +648,7 @@ export const NewPlan = ({ history }) => {
                       onChange={e => handleChangeFile(e, setImage1)}
                     />
                     <ContIcon>
-                      {image1 === "" ? (
+                      {image1 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -584,7 +665,7 @@ export const NewPlan = ({ history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input2">
-                      <img src={image2 === "" ? placeholder : image2} />
+                      <img src={image2 === null ? placeholder : image2} />
                     </label>
 
                     <input
@@ -594,7 +675,7 @@ export const NewPlan = ({ history }) => {
                     />
 
                     <ContIcon>
-                      {image2 === "" ? (
+                      {image2 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -611,7 +692,7 @@ export const NewPlan = ({ history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input3">
-                      <img src={image3 === "" ? placeholder : image3} />
+                      <img src={image3 === null ? placeholder : image3} />
                     </label>
 
                     <input
@@ -621,7 +702,7 @@ export const NewPlan = ({ history }) => {
                     />
 
                     <ContIcon>
-                      {image3 === "" ? (
+                      {image3 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -638,7 +719,7 @@ export const NewPlan = ({ history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input4">
-                      <img src={image4 === "" ? placeholder : image4} />
+                      <img src={image4 === null ? placeholder : image4} />
                     </label>
 
                     <input
@@ -648,7 +729,7 @@ export const NewPlan = ({ history }) => {
                     />
 
                     <ContIcon>
-                      {image4 === "" ? (
+                      {image4 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -665,7 +746,7 @@ export const NewPlan = ({ history }) => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input5">
-                      <img src={image5 === "" ? placeholder : image5} />
+                      <img src={image5 === null ? placeholder : image5} />
                     </label>
 
                     <input
@@ -675,7 +756,7 @@ export const NewPlan = ({ history }) => {
                     />
 
                     <ContIcon>
-                      {image5 === "" ? (
+                      {image5 === null ? (
                         ""
                       ) : (
                         <Fab
@@ -1186,7 +1267,7 @@ export const NewPlan = ({ history }) => {
           <Form
             onSubmit={e => {
               e.preventDefault();
-              handleSubmit({
+              handleSubmit(
                 name,
                 shortDescr,
                 longDescr,
@@ -1210,7 +1291,7 @@ export const NewPlan = ({ history }) => {
                 bread,
                 drinks,
                 coffee
-              });
+              );
             }}
           >
             <div>
@@ -1268,24 +1349,23 @@ export const NewPlan = ({ history }) => {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Plan created!"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"Plan updated!"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Congrats! You can manage your plans from your profile. Ready to
-              receive your hikers?
+              Plan correctly modified according to your new inputs 😉
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => history.push("/")} color="primary">
-              Homepage
+            <Button onClick={() => history.push("/admin")} color="primary">
+              Admin
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={() => history.push(`/plan/${id}`)}
               color="secondary"
               variant="contained"
               autoFocus
             >
-              Profile
+              Plan page
             </Button>
           </DialogActions>
         </Dialog>

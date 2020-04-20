@@ -9,17 +9,24 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  Fab
+  Fab,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import { s, txtField, AddImg, ContIcon } from "../styled/globalStyles";
-import placeholder from "../../images/placeholder.jpg";
+import placeholder from "../../images/placeholder-profile.jpg";
 import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { FooterAlt } from "../UI/Footer";
+import { Error, Gap } from "../styled/globalStyles";
 
 export const Signup = ({ history }) => {
   const [image, setImage] = useState("");
   const { register, handleSubmit, errors, setValue } = useForm();
   const setUser = useUserSetter();
+  const [favLabel, setFavLabel] = useState("Your favourite...");
+  const [openspin, setOpenspin] = useState(false);
+
   const onSubmit = async data => {
     console.log(data);
     const response = await doSignup(data);
@@ -31,7 +38,17 @@ export const Signup = ({ history }) => {
     }
   };
 
+  const changeFav = role => {
+    if (role === "Hiker") {
+      setFavLabel("Your favourite hike");
+    }
+    if (role === "Restaurant owner") {
+      setFavLabel("Your favourite course");
+    }
+  };
+
   const handleChangeFile = async (e, setImg) => {
+    setOpenspin(true);
     const imgForm = new FormData();
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
@@ -44,6 +61,7 @@ export const Signup = ({ history }) => {
       setValue("image", cloudimage);
       setImage(cloudimage);
     }
+    setOpenspin(false);
   };
 
   const deleteImage = async (img, setImg) => {
@@ -60,146 +78,183 @@ export const Signup = ({ history }) => {
   };
 
   return (
-    <FormBg>
-      <FormTitle>Sign up</FormTitle>
-      <FormCont>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            required
-            placeholder="Like Hikwoman o SuperHiker 😜"
-            id="username"
-            type="text"
-            name="username"
-            label="Username"
-            variant="outlined"
-            size="medium"
-            fullWidth="true"
-            inputRef={register({
-              required: {
-                value: true,
-                message: "Username required"
-              }
-            })}
-            InputProps={txtField}
-          />
-          {errors.username ? <span>{errors.username.message}</span> : ""}
-
-          <TextField
-            required
-            placeholder="8 characters, at least 1 letter and 1 number"
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            variant="outlined"
-            size="medium"
-            fullWidth="true"
-            inputRef={register({
-              required: {
-                value: true,
-                message: "Password required"
-              },
-              pattern: {
-                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                message:
-                  "The password should include minimum eight characters, at least one letter and one number"
-              }
-            })}
-            InputProps={txtField}
-          />
-          {errors.password ? <span>{errors.password.message}</span> : ""}
-
-          <AddImg style={{ width: 200, height: 200, marginBottom: 30 }}>
-            <label for="file-input1">
-              <img src={image === "" ? placeholder : image} />
-            </label>
-
-            <input type="text" name="image" ref={register} />
-
-            <input
-              id="file-input1"
-              type="file"
-              onChange={e => handleChangeFile(e, setImage)}
+    <>
+      <FormBg>
+        <FormTitle>Sign up</FormTitle>
+        <FormCont>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              required
+              placeholder="Like Hikwoman o SuperHiker 😜"
+              id="username"
+              type="text"
+              name="username"
+              label="Username"
+              variant="outlined"
+              size="medium"
+              fullWidth="true"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Username required"
+                }
+              })}
             />
-            <ContIcon>
-              {image === "" ? (
-                ""
-              ) : (
-                <Fab
-                  size="small"
-                  color="secondary"
-                  onClick={() => deleteImage(image, setImage)}
-                >
-                  <DeleteIcon color="#FFF"></DeleteIcon>
-                </Fab>
-              )}
-            </ContIcon>
-          </AddImg>
+            {errors.username ? <Error>{errors.username.message}</Error> : ""}
+            <Gap></Gap>
+            <TextField
+              required
+              placeholder="8 characters, at least 1 letter and 1 number"
+              id="password"
+              name="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              size="medium"
+              fullWidth="true"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Password required"
+                },
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                  message:
+                    "The password should include minimum eight characters, at least one letter and one number"
+                }
+              })}
+            />
+            {errors.password ? <Error>{errors.password.message}</Error> : ""}
+            <Gap></Gap>
+            <p>Profile picture:</p>
+            <AddImg style={{ width: 200, height: 200, marginBottom: 30 }}>
+              <label for="file-input1">
+                <img
+                  width="200"
+                  height="200"
+                  src={image === "" ? placeholder : image}
+                />
+              </label>
 
-          <FormLabel component="legend">Role</FormLabel>
-          <RadioGroup required aria-label="role" name="role">
-            <RadioCont>
-              <FormControlLabel
-                required
-                style={{ color: s.dark, marginRight: 30 }}
-                value="Hiker"
-                control={<Radio color="primary" />}
-                label="Hiker"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Role required"
-                  }
-                })}
+              <input type="text" name="image" ref={register} />
+
+              <input
+                id="file-input1"
+                type="file"
+                onChange={e => handleChangeFile(e, setImage)}
               />
-              <FormControlLabel
-                required
-                style={{ color: s.dark }}
-                value="Restaurant Owner"
-                control={<Radio color="primary" />}
-                label="Restaurant"
-                inputRef={register({
-                  required: {
-                    value: true,
-                    message: "Role required"
-                  }
-                })}
-              />
-            </RadioCont>
-          </RadioGroup>
-          {errors.role ? <span>{errors.role.message}</span> : ""}
+              <ContIcon>
+                {image === "" ? (
+                  ""
+                ) : (
+                  <Fab
+                    size="small"
+                    color="secondary"
+                    onClick={() => deleteImage(image, setImage)}
+                  >
+                    <DeleteIcon color="#FFF"></DeleteIcon>
+                  </Fab>
+                )}
+              </ContIcon>
+            </AddImg>
 
-          <TextField
-            required
-            id="description"
-            name="description"
-            label="Description"
-            multiline
-            rows="4"
-            fullWidth="true"
-            placeholder="Write about you and your love to hiking! 😎"
-            variant="outlined"
-            inputRef={register({
-              required: {
-                value: true,
-                message: "Description required"
-              },
-              maxLength: 100
-            })}
-            InputProps={txtField}
-          />
-          {errors.description ? <span>{errors.description.message}</span> : ""}
-
-          <Button
-            variant="contained"
-            color="secondary"
-            type="submit"
-            size="large"
-          >
-            SIGN UP
-          </Button>
-        </Form>
-      </FormCont>
-    </FormBg>
+            <FormLabel component="legend">Role</FormLabel>
+            <RadioGroup required aria-label="role" name="role">
+              <RadioCont>
+                <FormControlLabel
+                  required
+                  onClick={() => changeFav("Hiker")}
+                  style={{ color: s.dark, marginRight: 30 }}
+                  value="Hiker"
+                  control={<Radio color="primary" />}
+                  label="Hiker"
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: "Role required"
+                    }
+                  })}
+                />
+                <FormControlLabel
+                  required
+                  onClick={() => changeFav("Restaurant owner")}
+                  style={{ color: s.dark }}
+                  value="Restaurant Owner"
+                  control={<Radio color="primary" />}
+                  label="Restaurant owner"
+                  inputRef={register({
+                    required: {
+                      value: true,
+                      message: "Role required"
+                    }
+                  })}
+                />
+              </RadioCont>
+            </RadioGroup>
+            {errors.role ? <Error>{errors.role.message}</Error> : ""}
+            <Gap></Gap>
+            <TextField
+              required
+              id="description"
+              name="description"
+              label="Description"
+              multiline
+              rows="4"
+              fullWidth="true"
+              placeholder="Write about you and your love to hiking/cooking! 😎"
+              variant="outlined"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Description required"
+                },
+                maxLength: 100
+              })}
+            />
+            {errors.description ? (
+              <Error>{errors.description.message}</Error>
+            ) : (
+              ""
+            )}
+            <Gap></Gap>
+            <TextField
+              required
+              id="fav"
+              name="fav"
+              label={favLabel}
+              fullWidth="true"
+              placeholder={favLabel}
+              variant="outlined"
+              inputRef={register({
+                required: {
+                  value: true,
+                  message: "Input required"
+                },
+                maxLength: 100
+              })}
+            />
+            {errors.description ? (
+              <Error>{errors.description.message}</Error>
+            ) : (
+              ""
+            )}
+            <Gap></Gap>
+            <Gap></Gap>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+              size="large"
+            >
+              SIGN UP
+            </Button>
+          </Form>
+        </FormCont>
+      </FormBg>
+      <Backdrop style={{ zIndex: 1000 }} open={openspin}>
+        <CircularProgress color="primary" />
+      </Backdrop>
+      <FooterAlt></FooterAlt>
+    </>
   );
 };

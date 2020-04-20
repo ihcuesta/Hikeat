@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Form, FormBg, FormCont, FormTitle } from "../styled/Forms";
 import { TextField, Button } from "@material-ui/core";
 import { s, txtField } from "../styled/globalStyles";
+import { FooterAlt } from "../UI/Footer";
 
 export const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm();
@@ -20,46 +21,49 @@ export const Login = ({ history }) => {
   };
 
   return (
-    <FormBg>
-      <FormTitle>Log in</FormTitle>
-      <FormCont>
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            required
-            id="username"
-            type="text"
-            name="username"
-            label="Username"
-            variant="outlined"
-            size="medium"
-            fullWidth="true"
-            inputRef={register({ required: true })}
-            InputProps={txtField}
-          />
+    <>
+      <FormBg>
+        <FormTitle>Log in</FormTitle>
+        <FormCont>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              required
+              id="username"
+              type="text"
+              name="username"
+              label="Username"
+              variant="outlined"
+              size="medium"
+              fullWidth="true"
+              inputRef={register({ required: true })}
+              InputProps={txtField}
+            />
 
-          <TextField
-            required
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            variant="outlined"
-            size="medium"
-            fullWidth="true"
-            inputRef={register({ required: true })}
-            InputProps={txtField}
-          />
+            <TextField
+              required
+              id="password"
+              name="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              size="medium"
+              fullWidth="true"
+              inputRef={register({ required: true })}
+              InputProps={txtField}
+            />
 
-          <Button
-            variant="contained"
-            color="secondary"
-            type="submit"
-            size="large"
-          >
-            LOG IN
-          </Button>
-        </Form>
-      </FormCont>
-    </FormBg>
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+              size="large"
+            >
+              LOG IN
+            </Button>
+          </Form>
+        </FormCont>
+      </FormBg>
+      <FooterAlt></FooterAlt>
+    </>
   );
 };

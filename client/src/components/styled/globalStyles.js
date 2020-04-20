@@ -4,8 +4,10 @@ import placeholder from "../../images/placeholder.jpg";
 export const s = {
   primary: "#00adb5",
   secondary: "#ff5722",
+  textSecondary: "#888",
   light: "#EEE",
   dark: "#303841",
+  error: "#f44336",
   shadow: {
     s3: "0px 3px 1px -2px rgba(0, 0, 0, 0.2)"
   }
@@ -27,7 +29,8 @@ export const txtField = {
 
 export const txtFieldAlt = {
   style: {
-    color: s.dark
+    color: s.dark,
+    maxLength: 2
   }
 };
 
@@ -63,6 +66,37 @@ export const ContIcon = styled.div`
 `;
 
 export const ContBody = styled.div`
-  max-width: 1300px;
+  max-width: 1400px;
   margin: auto;
+  padding: 0 5%;
+`;
+
+export const Error = styled.p`
+  color: #f44336;
+  font-size: 0.8571428571428571rem;
+  margin-left: 14px;
+  margin-top: 5px;
+`;
+
+export const Gap = styled.div`
+  height: 25px;
+`;
+
+export const BodyText = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+`;
+
+export const BodyLight = styled.p`
+  font-size: 16px;
+  font-weight: 300;
+`;
+
+export const EditCont = styled.div`
+  width: 100%;
+  padding: 25px 5%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #eee;
+  margin-bottom: 10px;
 `;
