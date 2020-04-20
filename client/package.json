@@ -30,6 +30,9 @@
     "sweet-scroll": "^4.0.0",
     "typeface-montserrat": "0.0.75"
   },
+  "engines": {
+    "node": "12.16.x"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
