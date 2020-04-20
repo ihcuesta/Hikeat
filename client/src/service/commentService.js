@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const commentService = axios.create({
-  baseURL: "http://localhost:4000/comment",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/comment`,
   withCredentials: true
 });
 

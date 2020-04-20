@@ -32,7 +32,7 @@ export const useUserLogout = () => {
 };
 
 const authService = axios.create({
-  baseURL: "http://localhost:4000/auth",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/auth`,
   withCredentials: true
 });
 

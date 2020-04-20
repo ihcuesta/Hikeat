@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const restaurantService = axios.create({
-  baseURL: "http://localhost:4000/restaurant",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/restaurant`,
   withCredentials: true
 });
 

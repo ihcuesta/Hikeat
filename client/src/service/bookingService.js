@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const bookingService = axios.create({
-  baseURL: "http://localhost:4000/booking",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/booking`,
   withCredentials: true
 });
 
