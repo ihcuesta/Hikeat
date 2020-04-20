@@ -85,6 +85,7 @@ export const PlanDetail = props => {
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
   const [planid, setPlanid] = useState();
+  const [restid, setRestid] = useState();
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
   const [newbooking, setNewbooking] = useState();
@@ -97,6 +98,7 @@ export const PlanDetail = props => {
     fetchSinglePlan(id).then(plan => {
       setPlanid(plan.planId._id);
       setInfo(plan.planId);
+      setRestid(plan.planId.restaurant._id);
       getComments(plan.planId.restaurant._id).then(comments => {
         console.log(comments);
         setAllComments(comments);
@@ -130,9 +132,14 @@ export const PlanDetail = props => {
     setOpen(false);
   };
 
-  const handleSubmit = async (planid, numhikers, comments) => {
+  const handleSubmit = async (planid, restid, numhikers, comments) => {
     if (numhikers > 0) {
-      const response = await newBooking({ planid, numhikers, comments });
+      const response = await newBooking({
+        planid,
+        restid,
+        numhikers,
+        comments
+      });
       if (response) {
         handleClickOpen(response.isNewBooking); //mostrar pop up
       } else {
@@ -436,7 +443,7 @@ export const PlanDetail = props => {
               <form
                 onSubmit={e => {
                   e.preventDefault();
-                  handleSubmit(planid, numhikers, comments);
+                  handleSubmit(planid, restid, numhikers, comments);
                 }}
               >
                 <TextField
@@ -527,8 +534,8 @@ export const PlanDetail = props => {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                  You have a date in {info.restaurant.name} on {info.date} at{" "}
-                  {info.startTime}!
+                  You have a date in {info && info.restaurant.name} on{" "}
+                  {info && info.date} at {info && info.startTime}!
                 </DialogContentText>
               </DialogContent>
             </>

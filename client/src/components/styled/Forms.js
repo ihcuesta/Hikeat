@@ -47,23 +47,10 @@ export const Submit = styled.input`
 
 export const Form = styled.form`
   margin-top: 0px;
-  /* margin-left: 20px;
-  width: 300px;
-  input {
-    width: 100%;
-    height: 30px;
-    border: 1px solid #444;
-  }
-
-  textarea {
-    width: 100%;
-    height: 80px;
-  } */
 `;
 
 export const RadioCont = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 30px;
 `;

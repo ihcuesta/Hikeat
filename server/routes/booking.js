@@ -8,7 +8,7 @@ const passport = require("passport");
 
 // New booking
 router.post("/new", async (req, res, next) => {
-  const { planid, numhikers, comments } = req.body;
+  const { planid, restid, numhikers, comments } = req.body;
   try {
     // Check if there is already a booking for that plan and with that user
     const registeredBooking = await Booking.findOne({ user: req.user._id });
@@ -24,6 +24,7 @@ router.post("/new", async (req, res, next) => {
     const newBooking = await Booking.create({
       user: req.user._id,
       planid,
+      restid,
       numhikers,
       comments
     });
@@ -37,33 +38,48 @@ router.post("/new", async (req, res, next) => {
   }
 });
 
-// Detail page of restaurant
-router.get("/:id", async (req, res, next) => {
+// All bookings
+router.get("/all", async (req, res, next) => {
   try {
-    const restaurantId = await Restaurant.findOne({
-      _id: req.params.id
-    }).populate("owner");
-    return res.status(200).json({ restaurantId });
+    const getBooking = await Booking.find({
+      user: req.user._id
+    })
+      .populate("restid")
+      .populate("planid");
+    return res.status(200).json({ getBooking });
   } catch (error) {
-    console.log("Error while retrieving restaurant ID: ", error);
-    return res
-      .status(500)
-      .json({ message: "Impossible to get the restaurant" });
+    console.log("Error while retrieving booking: ", error);
+    return res.status(500).json({ message: "Impossible to get the booking" });
   }
 });
 
-// Edit page for a celebrity ID
+// Detail of booking
+router.get("/:id", async (req, res, next) => {
+  try {
+    const getBooking = await Booking.findOne({
+      _id: req.params.id
+    })
+      .populate("restid")
+      .populate("planid");
+    return res.status(200).json({ getBooking });
+  } catch (error) {
+    console.log("Error while retrieving booking: ", error);
+    return res.status(500).json({ message: "Impossible to get the booking" });
+  }
+});
+
+// Edit booking
 router.get("/:id/edit", async (req, res, next) => {
   try {
-    const restaurantToEdit = await Restaurant.findOne({
+    const bookingToEdit = await Booking.findOne({
       _id: req.params.id
     });
 
-    if (String(restaurantToEdit.owner) === String(req.user._id)) {
+    if (String(bookingToEdit.user) === String(req.user._id)) {
       console.log(
-        "Acceso permitido" + restaurantToEdit.owner + "  " + req.user._id
+        "Acceso permitido" + bookingToEdit.user + "  " + req.user._id
       );
-      return res.status(200).json({ restaurantToEdit });
+      return res.status(200).json({ bookingToEdit });
     } else {
       console.log("Only the owner is allowed to edit this restaurant");
       return res.status(403).json({ message: "Forbidden access" });
@@ -81,92 +97,57 @@ router.get("/:id/edit", async (req, res, next) => {
 
 // Send the updates after edit
 router.put("/:id/edit", async (req, res, next) => {
-  const {
-    name,
-    kind,
-    phone,
-    website,
-    email,
-    region,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    city,
-    address,
-    pics,
-    allergenCard,
-    dogs,
-    terrace,
-    kids
-  } = req.body;
+  const { numhikers, comments } = req.body;
   try {
-    const planToEdit = await Plan.findOne({
+    const bookingToEdit = await Booking.findOne({
       _id: req.params.id
     });
 
-    if (String(planToEdit.owner) === String(req.user._id)) {
-      const restaurantUpdated = await Restaurant.findOneAndUpdate(
+    if (String(bookingToEdit.user) === String(req.user._id)) {
+      const bookingUpdated = await Booking.findOneAndUpdate(
         {
           _id: req.params.id
         },
         {
           $set: {
-            name,
-            kind,
-            phone,
-            website,
-            email,
-            image1,
-            image2,
-            image3,
-            image4,
-            image5,
-            region,
-            city,
-            address,
-            pics,
-            allergenCard,
-            dogs,
-            terrace,
-            kids
+            numhikers,
+            comments
           }
         }
       );
-      return res.status(200).json({ restaurantUpdated });
+      return res.status(200).json({ bookingUpdated });
     } else {
-      console.log("Only the owner is allowed to edit this restaurant");
+      console.log("Only the owner is allowed to edit this booking");
       return res.status(403).json({ message: "Forbidden access" });
     }
   } catch (err) {
-    console.log("Error trying to update the restaurant details: ", err);
+    console.log("Error trying to update the booking details: ", err);
     return status(500).json({
-      message: "Error trying to update the restaurant details"
+      message: "Error trying to update the booking details"
     });
   }
 });
 
-// Send delete action
+// Delete booking
 router.post("/:id/delete", async (req, res, next) => {
   try {
-    let restaurantCheck = await Plan.findOne({
+    let bookingCheck = await Booking.findOne({
       _id: req.params.id
     });
 
-    if (String(restaurantCheck.owner) === String(req.user._id)) {
-      const restaurantDeleted = await Restaurant.findOneAndRemove({
+    if (String(bookingCheck.user) === String(req.user._id)) {
+      const bookingDeleted = await Booking.findOneAndRemove({
         _id: req.params.id
       });
-      return res.status(200).json({ restaurantDeleted });
+      return res.status(200).json({ bookingDeleted });
     } else {
-      console.log("Only the owner is allowed to delete this restaurant");
+      console.log("Only the owner is allowed to delete this booking");
       return res.status(403).json({ message: "Forbidden access" });
     }
   } catch (err) {
-    console.log("Error trying to delete the restaurant: ", err);
+    console.log("Error trying to delete the booking: ", err);
     return status(500).json({
-      message: "Error trying to delete the restaurant"
+      message: "Error trying to delete the booking"
     });
   }
 });

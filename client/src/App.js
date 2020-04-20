@@ -11,12 +11,14 @@ import { withAuthentication } from "./context/withAuthentication";
 import { GlobalStyles } from "./components/styled/globalStyles";
 import { NewRestaurant } from "./components/pages/NewRestaurant";
 import { NewPlan } from "./components/pages/NewPlan";
-import { Admin } from "./components/pages/Admin";
+import { AdminHiker } from "./components/pages/AdminHiker";
+import { AdminRest } from "./components/pages/AdminRest";
 import { RestaurantDetail } from "./components/pages/RestaurantDetail";
 import { PlanDetail } from "./components/pages/PlanDetail";
 import { Header } from "./components/UI/Header";
 import { EditRestaurant } from "./components/pages/EditRestaurant";
 import { EditPlan } from "./components/pages/EditPlan";
+
 import ScrollMemory from "react-router-scroll-memory";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
@@ -40,7 +42,8 @@ export const App = withAuthentication(() => (
         <Route path="/plan/new" component={NewPlan} />
         <Route path="/plan/:id/edit" component={EditPlan} />
         <Route path="/plan/:id" component={PlanDetail} />
-        <Route path="/admin" component={Admin} />
+        <Route path="/hiker/admin" component={AdminHiker} />
+        <Route path="/restaurant/admin" component={AdminRest} />
       </Switch>
     </GlobalStyles>
   </Router>

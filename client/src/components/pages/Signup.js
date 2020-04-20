@@ -9,19 +9,23 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  Fab
+  Fab,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import { s, txtField, AddImg, ContIcon } from "../styled/globalStyles";
-import placeholder from "../../images/placeholder.jpg";
+import placeholder from "../../images/placeholder-profile.jpg";
 import { uploadPhoto, deletePhoto } from "../../service/uploadService";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FooterAlt } from "../UI/Footer";
+import { Error, Gap } from "../styled/globalStyles";
 
 export const Signup = ({ history }) => {
   const [image, setImage] = useState("");
   const { register, handleSubmit, errors, setValue } = useForm();
   const setUser = useUserSetter();
   const [favLabel, setFavLabel] = useState("Your favourite...");
+  const [openspin, setOpenspin] = useState(false);
 
   const onSubmit = async data => {
     console.log(data);
@@ -44,6 +48,7 @@ export const Signup = ({ history }) => {
   };
 
   const handleChangeFile = async (e, setImg) => {
+    setOpenspin(true);
     const imgForm = new FormData();
     imgForm.append("imageUrl", e.target.files[0]);
     const resp = await uploadPhoto(imgForm);
@@ -56,6 +61,7 @@ export const Signup = ({ history }) => {
       setValue("image", cloudimage);
       setImage(cloudimage);
     }
+    setOpenspin(false);
   };
 
   const deleteImage = async (img, setImg) => {
@@ -93,10 +99,9 @@ export const Signup = ({ history }) => {
                   message: "Username required"
                 }
               })}
-              InputProps={txtField}
             />
-            {errors.username ? <span>{errors.username.message}</span> : ""}
-
+            {errors.username ? <Error>{errors.username.message}</Error> : ""}
+            <Gap></Gap>
             <TextField
               required
               placeholder="8 characters, at least 1 letter and 1 number"
@@ -118,14 +123,17 @@ export const Signup = ({ history }) => {
                     "The password should include minimum eight characters, at least one letter and one number"
                 }
               })}
-              InputProps={txtField}
             />
-            {errors.password ? <span>{errors.password.message}</span> : ""}
-
-            <p>Add your profile picture:</p>
+            {errors.password ? <Error>{errors.password.message}</Error> : ""}
+            <Gap></Gap>
+            <p>Profile picture:</p>
             <AddImg style={{ width: 200, height: 200, marginBottom: 30 }}>
               <label for="file-input1">
-                <img src={image === "" ? placeholder : image} />
+                <img
+                  width="200"
+                  height="200"
+                  src={image === "" ? placeholder : image}
+                />
               </label>
 
               <input type="text" name="image" ref={register} />
@@ -183,8 +191,8 @@ export const Signup = ({ history }) => {
                 />
               </RadioCont>
             </RadioGroup>
-            {errors.role ? <span>{errors.role.message}</span> : ""}
-
+            {errors.role ? <Error>{errors.role.message}</Error> : ""}
+            <Gap></Gap>
             <TextField
               required
               id="description"
@@ -202,14 +210,13 @@ export const Signup = ({ history }) => {
                 },
                 maxLength: 100
               })}
-              InputProps={txtField}
             />
             {errors.description ? (
-              <span>{errors.description.message}</span>
+              <Error>{errors.description.message}</Error>
             ) : (
               ""
             )}
-
+            <Gap></Gap>
             <TextField
               required
               id="fav"
@@ -225,14 +232,14 @@ export const Signup = ({ history }) => {
                 },
                 maxLength: 100
               })}
-              InputProps={txtField}
             />
             {errors.description ? (
-              <span>{errors.description.message}</span>
+              <Error>{errors.description.message}</Error>
             ) : (
               ""
             )}
-
+            <Gap></Gap>
+            <Gap></Gap>
             <Button
               variant="contained"
               color="secondary"
@@ -244,6 +251,9 @@ export const Signup = ({ history }) => {
           </Form>
         </FormCont>
       </FormBg>
+      <Backdrop style={{ zIndex: 1000 }} open={openspin}>
+        <CircularProgress color="primary" />
+      </Backdrop>
       <FooterAlt></FooterAlt>
     </>
   );

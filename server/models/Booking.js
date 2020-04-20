@@ -5,6 +5,7 @@ const bookingSchema = new mongoose.Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "user" },
     planid: { type: Schema.Types.ObjectId, ref: "plan" },
+    restid: { type: Schema.Types.ObjectId, ref: "restaurant" },
     numhikers: Number,
     comments: String
   },
