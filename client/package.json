@@ -31,7 +31,8 @@
     "typeface-montserrat": "0.0.75"
   },
   "engines": {
-    "node": "12.16.x"
+    "node": "13.6.0",
+    "npm": "6.13.4"
   },
   "scripts": {
     "start": "react-scripts start",
