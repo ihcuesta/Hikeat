@@ -31,12 +31,13 @@ export const getSingleBooking = async endpoint => {
   return data;
 };
 
-export const editBooking = async endpoint => {
-  const { data } = await bookingService.put(`/${endpoint}/edit`);
+export const getEditBooking = async endpoint => {
+  const { data } = await bookingService.get(`/${endpoint}/edit`);
+  console.log("llega");
   return data;
 };
 
-export const editRestaurant = async (endpoint, { numhikers, comments }) => {
+export const editBooking = async (endpoint, { numhikers, comments }) => {
   try {
     const { data } = await bookingService.put(`/${endpoint}/edit`, {
       numhikers,
@@ -48,7 +49,7 @@ export const editRestaurant = async (endpoint, { numhikers, comments }) => {
   }
 };
 
-export const deleteRestaurant = async endpoint => {
+export const deleteBooking = async endpoint => {
   const { data } = await bookingService.post(`/${endpoint}/delete`);
   return data;
 };

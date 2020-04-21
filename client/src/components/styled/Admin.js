@@ -124,6 +124,36 @@ export const TitBookings = styled.h2`
   margin-bottom: 40px;
 `;
 
+export const NumHikers = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #eee;
+
+  && p {
+    margin-left: 5px;
+  }
+`;
+
+export const EditBookingCont = styled.div`
+  width: 400px;
+
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 30px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -200px;
+  z-index: 950;
+`;
+
 export const BgAdmin = styled.div`
   width: 100%;
   height: 100%;
