@@ -132,9 +132,10 @@ export const Home = () => {
               </NotFound>
             )}
             {plans && plans.length === 0 && !search ? (
-              <Backdrop style={{ zIndex: 1000 }} open={true}>
-                <CircularProgress color="primary" />
-              </Backdrop>
+              // <Backdrop style={{ zIndex: 1000 }} open={true}>
+              //   <CircularProgress color="primary" />
+              // </Backdrop>
+              <p>No plans found</p>
             ) : (
               plans &&
               plans.map(plan => {
