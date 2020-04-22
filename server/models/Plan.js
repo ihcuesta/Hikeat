@@ -24,6 +24,7 @@ const planSchema = new mongoose.Schema(
     lunchTime: String,
     brunch: Boolean,
     maxBookings: Number,
+    counterBookings: Number,
     bookings: Array,
     image1: String,
     image2: String,

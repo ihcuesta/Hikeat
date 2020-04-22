@@ -154,6 +154,40 @@ export const EditBookingCont = styled.div`
   z-index: 950;
 `;
 
+export const GrayCont = styled.div`
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
+
+  && p {
+    font-weight: 600;
+  }
+`;
+
+export const DialogCont = styled.div`
+  width: 700px;
+  height: 600px;
+  border-radius: 5px;
+  background-color: ${s.primary};
+  padding: 10px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -350px;
+  margin-left: -350px;
+  z-index: 950;
+  overflow: scroll;
+`;
+
+export const ContClose = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+`;
+
 export const BgAdmin = styled.div`
   width: 100%;
   height: 100%;

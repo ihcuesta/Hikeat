@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
     image: String,
     password: String,
     description: String,
+    fav: String,
     role: {
       type: String,
       enum: ["Hiker", "Restaurant Owner"]

@@ -51,14 +51,21 @@ import { BodyCard, LocationCont } from "../styled/CardStyled";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import { Link } from "react-router-dom";
 import PeopleAltRoundedIcon from "@material-ui/icons/PeopleAltRounded";
+import { CardFav } from "../UI/Cards";
+import {
+  getAllFavourites,
+  deleteFavourite
+} from "../../service/favouriteService";
 
 export const AdminHiker = ({ history }) => {
   const session = useUser();
   const [allBookings, setAllBookings] = useState();
+  const [oldhikers, setOldhikers] = useState(0);
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
+  const [bookingID, setBookingID] = useState();
   const [planID, setPlanID] = useState();
-  const [restid, setRestid] = useState();
+  const [favs, setFavs] = useState();
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -66,24 +73,42 @@ export const AdminHiker = ({ history }) => {
     getAllBookings().then(bookings => {
       setAllBookings(bookings.getBooking);
     });
-  }, []);
-
-  const openEdit = async bookingId => {
-    console.log("entra");
-    getEditBooking(bookingId).then(booking => {
-      console.log(booking);
+    getAllFavourites().then(favs => {
+      setFavs(favs);
     });
-
-    setOpen(true);
-  };
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSubmit = async (planid, numhikers, comments) => {
-    const editBook = await editBooking(planid, { numhikers, comments });
+  const handleSubmit = async (bookingID, numhikers, oldhikers, comments) => {
+    const newcounter = numhikers - oldhikers;
+    const editBook = await editBooking(bookingID, {
+      newcounter,
+      numhikers,
+      comments
+    });
     setOpen(false);
+  };
+
+  const retrieveEdit = value => {
+    setPlanID(value);
+    getEditBooking(value).then(booking => {
+      setOldhikers(booking.bookingToEdit.numhikers);
+      setNumhikers(booking.bookingToEdit.numhikers);
+      setComments(booking.bookingToEdit.comments);
+      setBookingID(booking.bookingToEdit._id);
+    });
+    setOpen(true);
+  };
+
+  const deleteFav = async id => {
+    console.log("entra");
+    const deleteFav = await deleteFavourite(id);
+    getAllFavourites().then(favs => {
+      setFavs(favs);
+    });
   };
 
   return (
@@ -109,72 +134,41 @@ export const AdminHiker = ({ history }) => {
                     <ContTit>
                       <Name>{session.user.username}</Name>
 
-                      {session.user.role === "Hiker" ? (
-                        <Role>
-                          <FilterHdrIcon
-                            style={{ color: "#FFF" }}
-                          ></FilterHdrIcon>
-                          <h3>Hiker</h3>
-                        </Role>
-                      ) : (
-                        <Role>
-                          <RestaurantMenuOutlinedIcon
-                            style={{ color: "#FFF" }}
-                          ></RestaurantMenuOutlinedIcon>
-                          <h3>Restaurant owner</h3>
-                        </Role>
-                      )}
+                      <Role>
+                        <FilterHdrIcon
+                          style={{ color: "#FFF" }}
+                        ></FilterHdrIcon>
+                        <h3>Hiker</h3>
+                      </Role>
                     </ContTit>
                     <Grid container>
                       <Grid item xs={12} sm={6} md={6} spacing={10}>
                         <p style={{ color: "#FFF" }}>
                           {session.user.description}
                         </p>
-                        {session.user.role === "Hiker" ? (
-                          <>
-                            <TextAlign>
-                              <p style={{ color: "#FFF" }}>Favourite hike:</p>
-                              <p style={{ marginTop: -15, color: "#FFF" }}>
-                                <i>{session.user.fav}</i>
-                              </p>
-                            </TextAlign>
-                          </>
-                        ) : (
-                          <>
-                            <TextAlign>
-                              <p style={{ color: "#FFF" }}>Favourite course:</p>
-                              <p style={{ marginTop: -15, color: "#FFF" }}>
-                                <i>{session.user.fav}</i>
-                              </p>
-                            </TextAlign>
-                          </>
-                        )}
+
+                        <>
+                          <TextAlign>
+                            <p style={{ color: "#FFF" }}>Favourite hike:</p>
+                            <p style={{ marginTop: -15, color: "#FFF" }}>
+                              <i>{session.user.fav}</i>
+                            </p>
+                          </TextAlign>
+                        </>
                       </Grid>
                       <Grid item xs={12} sm={6} md={6} spacing={10}>
                         <ContFav>
-                          {session.user.role === "Hiker" ? (
-                            <>
-                              <Fav>
-                                <ExploreIcon></ExploreIcon>
-                                <p>45 kms</p>
-                              </Fav>
-                              <Fav>
-                                <RestaurantIcon></RestaurantIcon>
-                                <p>10 plans</p>
-                              </Fav>
-                            </>
-                          ) : (
-                            <>
-                              <Fav>
-                                <DirectionsWalkIcon></DirectionsWalkIcon>
-                                <p>70 hikers</p>
-                              </Fav>
-                              <Fav>
-                                <RestaurantIcon></RestaurantIcon>
-                                <p>25 plans</p>
-                              </Fav>
-                            </>
-                          )}
+                          <>
+                            <Fav>
+                              <ExploreIcon></ExploreIcon>
+                              <p>45 kms</p>
+                            </Fav>
+                            <Fav>
+                              <RestaurantIcon></RestaurantIcon>
+                              <p>10 plans</p>
+                            </Fav>
+                          </>
+
                           {/* <TextAlign>
                             <p style={{ color: "#FFF" }}>LEVEL 1</p>
                           </TextAlign> */}
@@ -188,7 +182,7 @@ export const AdminHiker = ({ history }) => {
             </HeaderAdmin>
 
             <TitBookings>NEXT BOOKINGS</TitBookings>
-            <Grid container>
+            <Grid container spacing={2}>
               {allBookings && allBookings.length === 0 ? (
                 <p style={{ textAlign: "center" }}>
                   You don't have bookings. Take a look for a new plan!
@@ -295,10 +289,10 @@ export const AdminHiker = ({ history }) => {
                                   fullWidth
                                   variant="contained"
                                   color="primary"
-                                  onClick={() => {
-                                    setPlanID(booking.planid._id);
-                                    openEdit(planID);
-                                  }}
+                                  value={booking.planid._id}
+                                  onClick={e =>
+                                    retrieveEdit(e.currentTarget.value)
+                                  }
                                 >
                                   EDIT BOOKING
                                 </Button>
@@ -379,7 +373,13 @@ export const AdminHiker = ({ history }) => {
                           <form
                             onSubmit={e => {
                               e.preventDefault();
-                              handleSubmit(planID, numhikers, comments);
+                              handleSubmit(
+                                planID,
+                                bookingID,
+                                oldhikers,
+                                numhikers,
+                                comments
+                              );
                             }}
                           >
                             <TextField
@@ -402,7 +402,8 @@ export const AdminHiker = ({ history }) => {
                             <TextField
                               name="comments"
                               id="outlined-basic"
-                              label="Comments"
+                              label=""
+                              placeholder="Comments"
                               variant="outlined"
                               type="text"
                               multiline
@@ -429,6 +430,28 @@ export const AdminHiker = ({ history }) => {
                   );
                 })
               )}
+            </Grid>
+
+            <TitBookings>FAVOURITES</TitBookings>
+            <Grid container spacing={2}>
+              {favs &&
+                favs.map(fav => {
+                  return (
+                    <CardFav
+                      id={fav && fav.planid._id}
+                      image={fav && fav.planid.image1}
+                      region={fav && fav.restid.region}
+                      city={fav && fav.restid.city}
+                      name={fav && fav.planid.name}
+                      restaurant={fav && fav.restid.name}
+                      date={fav && fav.planid.date}
+                      time={fav && fav.planid.startTime}
+                      descr={fav && fav.planid.shortDescr}
+                      restid={fav && fav.restid._id}
+                      funcDelete={() => deleteFav(fav.planid._id)}
+                    ></CardFav>
+                  );
+                })}
             </Grid>
           </ContBody>
         )}

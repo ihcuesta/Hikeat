@@ -141,6 +141,7 @@ export const PlanDetail = props => {
         comments
       });
       if (response) {
+        console.log(response.isNewBooking);
         handleClickOpen(response.isNewBooking); //mostrar pop up
       } else {
         console.log("Algo ha fallado");
