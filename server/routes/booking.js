@@ -79,6 +79,7 @@ router.get("/:id/all", async (req, res, next) => {
     const getBooking = await Booking.find({
       planid: req.params.id
     }).populate("user");
+
     return res.status(200).json({ getBooking });
   } catch (error) {
     console.log("Error while retrieving booking: ", error);

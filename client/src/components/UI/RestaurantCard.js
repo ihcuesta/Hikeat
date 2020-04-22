@@ -136,29 +136,39 @@ export const RestaurantCard = ({
             </Grid>
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <OpinionsBox>
-                {comments.map(comment => {
-                  return (
-                    <Opinion>
-                      <Owner>
-                        <img src={comment.user.image}></img>
-                        <RateOp>
-                          <p>{comment.user.username}</p>
-                          <RatesOp>
-                            <Box component="fieldset" borderColor="transparent">
-                              <Rating name="read-only" value="4" readOnly />
-                            </Box>
-                            <p>
-                              <i>{comment.date}</i>
-                            </p>
-                          </RatesOp>
-                        </RateOp>
-                      </Owner>
-                      <OpText>
-                        <BodyLight>{comment.comment}</BodyLight>
-                      </OpText>
-                    </Opinion>
-                  );
-                })}
+                {comments && comments.length === 0 ? (
+                  <p>
+                    <i>No comments</i>
+                  </p>
+                ) : (
+                  comments &&
+                  comments.map(comment => {
+                    return (
+                      <Opinion>
+                        <Owner>
+                          <img src={comment.user.image}></img>
+                          <RateOp>
+                            <p>{comment.user.username}</p>
+                            <RatesOp>
+                              <Box
+                                component="fieldset"
+                                borderColor="transparent"
+                              >
+                                <Rating name="read-only" value="4" readOnly />
+                              </Box>
+                              <p>
+                                <i>{comment.date}</i>
+                              </p>
+                            </RatesOp>
+                          </RateOp>
+                        </Owner>
+                        <OpText>
+                          <BodyLight>{comment.comment}</BodyLight>
+                        </OpText>
+                      </Opinion>
+                    );
+                  })
+                )}
               </OpinionsBox>
             </Grid>
           </Grid>

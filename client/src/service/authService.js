@@ -41,7 +41,8 @@ export const doSignup = async ({
   password,
   role,
   description,
-  image
+  image,
+  fav
 }) => {
   try {
     const { data } = await authService.post("/signup", {
@@ -49,7 +50,8 @@ export const doSignup = async ({
       password,
       role,
       description,
-      image
+      image,
+      fav
     });
     return data;
   } catch (error) {

@@ -64,11 +64,15 @@ import {
 } from "../../service/favouriteService";
 import RestaurantRoundedIcon from "@material-ui/icons/RestaurantRounded";
 import { getAllPlans } from "../../service/planService";
+import { fetchRestCardAdmin } from "../../service/restaurantService";
+import { RestaurantCard } from "../UI/RestaurantCard";
 
 export const AdminRest = ({ history }) => {
   const session = useUser();
   const [allPlans, setAllPlans] = useState();
   const [bookingDetail, setBookingDetail] = useState();
+  const [infoRest, setInfoRest] = useState();
+  const [allComments, setAllComments] = useState();
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
   const [planID, setPlanID] = useState();
@@ -80,14 +84,14 @@ export const AdminRest = ({ history }) => {
     getAllPlans().then(plans => {
       setAllPlans(plans);
     });
+    fetchRestCardAdmin().then(restaurant => {
+      console.log(restaurant);
+      setInfoRest(restaurant.rest[0]);
+      setAllComments(restaurant.commentsRes);
+    });
   }, []);
 
-  //   const openEdit = async bookingId => {
-  //     getBookings(bookingId).then(booking => {
-  //       console.log(booking);
-  //     });
-  //     setOpen(true);
-  //   };
+  console.log(allPlans);
 
   const handleClose = () => {
     setOpen(false);
@@ -100,7 +104,7 @@ export const AdminRest = ({ history }) => {
     setOpen(true);
   };
 
-  console.log(bookingDetail);
+  console.log(infoRest && infoRest);
 
   return (
     <>
@@ -185,7 +189,7 @@ export const AdminRest = ({ history }) => {
                     <>
                       <Grid item xs={12} sm={12} md={6} lg={4}>
                         <Card data-aos="fade-up" elevation={3}>
-                          <Link to={`plan/${plan._id}`}>
+                          <Link to={`/plan/${plan._id}`}>
                             <CardMedia
                               style={{ height: 200 }}
                               image={plan.image1}
@@ -386,6 +390,28 @@ export const AdminRest = ({ history }) => {
                 })
               )}
             </Grid>
+
+            <TitBookings>RESTAURANT</TitBookings>
+            {infoRest && infoRest.length === 0 ? (
+              <p>You haven't include your restaurant yet.</p>
+            ) : (
+              <RestaurantCard
+                id={infoRest && infoRest._id}
+                img1={infoRest && infoRest.image1}
+                img2={infoRest && infoRest.image2}
+                img3={infoRest && infoRest.image3}
+                kind={infoRest && infoRest.kind}
+                name={infoRest && infoRest.name}
+                address={infoRest && infoRest.address}
+                city={infoRest && infoRest.city}
+                region={infoRest && infoRest.region}
+                descr={infoRest && infoRest.descr}
+                phone={infoRest && infoRest.phone}
+                website={infoRest && infoRest.website}
+                email={infoRest && infoRest.email}
+                comments={allComments && allComments}
+              ></RestaurantCard>
+            )}
           </ContBody>
         )}
         <Footer></Footer>

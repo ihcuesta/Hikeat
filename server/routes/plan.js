@@ -24,7 +24,12 @@ router.get("/all", async (req, res, next) => {
     const plans = await Plan.find({
       owner: req.user._id
     }).populate("restaurant");
-    return res.status(200).json({ plans });
+
+    if (plans) {
+      return res.status(200).json({ plans });
+    } else {
+      return res.status(200).json([]);
+    }
   } catch (err) {
     console.log("Error while retrieving plans", error);
     return res.status(500).json({ message: "Impossible to get the plans" });

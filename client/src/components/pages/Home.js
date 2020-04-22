@@ -150,6 +150,10 @@ export const Home = () => {
                     time={plan.startTime}
                     descr={plan.shortDescr}
                     restid={plan.restaurant && plan.restaurant._id}
+                    rate={plan.restaurant && plan.restaurant.rateAv}
+                    totalComments={
+                      plan.restaurant && plan.restaurant.totalComments
+                    }
                   ></CardHome>
                 );
               })

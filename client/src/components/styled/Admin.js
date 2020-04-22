@@ -121,7 +121,7 @@ export const TextAlign = styled.div`
 
 export const TitBookings = styled.h2`
   text-align: center;
-  margin-bottom: 40px;
+  margin: 70px 0px 40px;
 `;
 
 export const NumHikers = styled.div`

@@ -10,10 +10,12 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Chip
+  Chip,
+  Box
 } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 import { s } from "../styled/globalStyles";
-import { LocationCont, RestCont, BodyCard } from "../styled/CardStyled";
+import { LocationCont, RestCont, BodyCard, Rates } from "../styled/CardStyled";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
@@ -41,7 +43,9 @@ export const CardHome = ({
   date,
   time,
   descr,
-  restid
+  restid,
+  rate,
+  totalComments
 }) => {
   const [favourite, setFavourite] = useState(false);
 
@@ -92,6 +96,12 @@ export const CardHome = ({
             ></RestaurantMenuOutlinedIcon>
             <p>{restaurant}</p>
           </RestCont>
+          <Rates>
+            <Box mt={0.3} component="fieldset" borderColor="transparent">
+              <Rating name="read-only" value={rate} readOnly />
+            </Box>
+            <p>{totalComments} comments</p>
+          </Rates>
           <Grid container spacing={1}>
             <Grid item xs={5}>
               <Chip
