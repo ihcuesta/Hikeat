@@ -32,7 +32,12 @@ const debug = require("debug")(
 const app = express();
 
 // Cross Domain CORS setup
-const whitelist = [process.env.URL_BACK, process.env.URL_FRONT];
+const whitelist = [
+  process.env.URL_BACK,
+  process.env.URL_FRONT,
+  process.env.URL_BACK2,
+  process.env.URL_FRONT2
+];
 const corsOptions = {
   origin: function(origin, callback) {
     console.log(`Origin: ${origin}`);
