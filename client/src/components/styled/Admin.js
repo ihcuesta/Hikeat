@@ -121,7 +121,71 @@ export const TextAlign = styled.div`
 
 export const TitBookings = styled.h2`
   text-align: center;
-  margin-bottom: 40px;
+  margin: 70px 0px 40px;
+`;
+
+export const NumHikers = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding: 5px 20px;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #eee;
+
+  && p {
+    margin-left: 5px;
+  }
+`;
+
+export const EditBookingCont = styled.div`
+  width: 400px;
+
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 30px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -200px;
+  z-index: 950;
+`;
+
+export const GrayCont = styled.div`
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
+
+  && p {
+    font-weight: 600;
+  }
+`;
+
+export const DialogCont = styled.div`
+  width: 700px;
+  height: 600px;
+  border-radius: 5px;
+  background-color: ${s.primary};
+  padding: 10px;
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -350px;
+  margin-left: -350px;
+  z-index: 950;
+  overflow: scroll;
+`;
+
+export const ContClose = styled.div`
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
 `;
 
 export const BgAdmin = styled.div`

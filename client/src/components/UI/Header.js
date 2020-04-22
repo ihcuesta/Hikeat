@@ -111,7 +111,7 @@ export const Header = () => {
                   onClick={
                     session.user.role === "Hiker"
                       ? () => history.push("/hiker/admin")
-                      : () => history.push("/restaurant/admin")
+                      : () => history.push("/owner/admin")
                   }
                   color="primary"
                   to="#"

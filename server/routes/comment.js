@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Restaurant = require("../models/Restaurant");
 const Comment = require("../models/Comment");
 const _ = require("lodash");
 const passport = require("passport");
@@ -26,6 +27,28 @@ router.post("/:rest/new", async (req, res, next) => {
       comment,
       date
     });
+
+    const findRest = await Restaurant.findOne({
+      _id: req.params.rest
+    });
+
+    const newTotalComments = Number(findRest.totalComments) + 1;
+    const newTotalRate = Number(findRest.totalRate) + stars;
+    const newAv = Math.floor(newTotalRate / newTotalComments);
+
+    const updateRest = await Restaurant.findOneAndUpdate(
+      {
+        _id: req.params.rest
+      },
+      {
+        $set: {
+          totalComments: newTotalComments,
+          totalRate: newTotalRate,
+          rateAv: newAv
+        }
+      }
+    );
+
     console.log("Comment created");
     return res.status(200).json({ isComment: false });
   } catch (err) {

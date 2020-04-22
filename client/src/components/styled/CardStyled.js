@@ -12,6 +12,18 @@ export const LocationCont = styled.div`
   }
 `;
 
+export const Rates = styled.div`
+  max-width: 280px;
+  margin: -15px 0px 10px -15px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: top;
+  justify-content: space-between;
+  && p {
+    color: ${s.textSecondary};
+  }
+`;
+
 export const RestCont = styled(Link)`
   display: flex;
   flex-flow: row wrap;

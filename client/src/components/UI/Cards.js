@@ -10,10 +10,12 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Chip
+  Chip,
+  Box
 } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 import { s } from "../styled/globalStyles";
-import { LocationCont, RestCont, BodyCard } from "../styled/CardStyled";
+import { LocationCont, RestCont, BodyCard, Rates } from "../styled/CardStyled";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
@@ -41,7 +43,9 @@ export const CardHome = ({
   date,
   time,
   descr,
-  restid
+  restid,
+  rate,
+  totalComments
 }) => {
   const [favourite, setFavourite] = useState(false);
 
@@ -92,6 +96,12 @@ export const CardHome = ({
             ></RestaurantMenuOutlinedIcon>
             <p>{restaurant}</p>
           </RestCont>
+          <Rates>
+            <Box mt={0.3} component="fieldset" borderColor="transparent">
+              <Rating name="read-only" value={rate} readOnly />
+            </Box>
+            <p>{totalComments} comments</p>
+          </Rates>
           <Grid container spacing={1}>
             <Grid item xs={5}>
               <Chip
@@ -164,7 +174,7 @@ export const CardHome = ({
   );
 };
 
-export const CardBookings = ({
+export const CardFav = ({
   id,
   image,
   city,
@@ -175,13 +185,11 @@ export const CardBookings = ({
   time,
   descr,
   restid,
-  role,
-  actionOne,
-  actionTwo
+  funcDelete
 }) => {
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
-      <Card data-aos="fade-up" elevation={3}>
+      <Card data-aos="fade-up">
         <Link to={`plan/${id}`}>
           <CardMedia style={{ height: 200 }} image={image} />
         </Link>
@@ -245,40 +253,25 @@ export const CardBookings = ({
           }}
         >
           <Grid container>
-            <Grid
-              item
-              xs={6}
-              style={{
-                paddingRight: 5,
-                paddingLeft: 5,
-                boxSizing: "border-box"
-              }}
-            >
+            <Grid item xs={6}>
+              <FavoriteOutlinedIcon
+                style={{ fontSize: "35px", cursor: "pointer" }}
+                onClick={funcDelete}
+              ></FavoriteOutlinedIcon>
+
+              <ShareIcon
+                style={{ fontSize: "35px", marginLeft: 20, cursor: "pointer" }}
+              ></ShareIcon>
+            </Grid>
+            <Grid item xs={6}>
               <Button
+                component={Link}
+                to={`/plan/${id}`}
                 fullWidth
                 variant="contained"
-                color="primary"
-                onClick={actionOne}
+                color="secondary"
               >
-                {role === "Hiker" ? <>EDIT BOOKING</> : <>BOOKING DETAILS</>}
-              </Button>
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              style={{
-                paddingRight: 5,
-                paddingLeft: 5,
-                boxSizing: "border-box"
-              }}
-            >
-              <Button
-                fullWidth
-                variant="outlined"
-                color="primary"
-                onClick={actionTwo}
-              >
-                {role === "Hiker" ? <>CANCEL BOOKING</> : <>EDIT PLAN</>}
+                MORE INFO
               </Button>
             </Grid>
           </Grid>

@@ -9,6 +9,7 @@ export const newBooking = async ({ planid, restid, numhikers, comments }) => {
   try {
     const { data } = await bookingService.post("/new", {
       planid,
+
       restid,
       numhikers,
       comments
@@ -31,14 +32,27 @@ export const getSingleBooking = async endpoint => {
   return data;
 };
 
-export const editBooking = async endpoint => {
-  const { data } = await bookingService.put(`/${endpoint}/edit`);
+export const getEditBooking = async endpoint => {
+  console.log("llega", endpoint);
+  const { data } = await bookingService.get(`/${endpoint}/edit`);
+
   return data;
 };
 
-export const editRestaurant = async (endpoint, { numhikers, comments }) => {
+export const getBookingsOfPlan = async endpoint => {
+  const { data } = await bookingService.get(`/${endpoint}/all`);
+
+  return data;
+};
+
+export const editBooking = async (
+  endpoint,
+
+  { newcounter, numhikers, comments }
+) => {
   try {
     const { data } = await bookingService.put(`/${endpoint}/edit`, {
+      newcounter,
       numhikers,
       comments
     });
@@ -48,7 +62,7 @@ export const editRestaurant = async (endpoint, { numhikers, comments }) => {
   }
 };
 
-export const deleteRestaurant = async endpoint => {
+export const deleteBooking = async endpoint => {
   const { data } = await bookingService.post(`/${endpoint}/delete`);
   return data;
 };

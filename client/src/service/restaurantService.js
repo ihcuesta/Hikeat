@@ -68,6 +68,12 @@ export const fetchSingleRestaurant = async endpoint => {
   return data;
 };
 
+export const fetchRestCardAdmin = async () => {
+  const { data } = await restaurantService.get(`/restcard/admin`);
+  console.log(data);
+  return data;
+};
+
 export const checkIfManager = async endpoint => {
   const { data } = await restaurantService.get(`/manager/${endpoint}`);
   console.log(data);

@@ -75,7 +75,10 @@ router.post("/new", async (req, res, next) => {
       allergenCard,
       dogs,
       terrace,
-      kids
+      kids,
+      rateAv: 0,
+      totalRate: 0,
+      totalComments: 0
     });
     console.log("Restaurant created");
     return res.status(200).json({ newRestaurant });
@@ -114,6 +117,32 @@ router.get("/:id", async (req, res, next) => {
     }).populate("user");
 
     return res.status(200).json({ restaurantId, commentsRes });
+  } catch (error) {
+    console.log("Error while retrieving restaurant ID: ", error);
+    return res
+      .status(500)
+      .json({ message: "Impossible to get the restaurant" });
+  }
+});
+
+// Restaurant Card for Admin Owner
+router.get("/restcard/admin", async (req, res, next) => {
+  try {
+    const rest = await Restaurant.find({
+      owner: req.user._id
+    });
+
+    const commentsRes = await Comment.find({
+      restaurant: rest._id
+    }).populate("user");
+
+    if (rest.length > 0 && commentsRes > 0) {
+      return res.status(200).json({ rest, commentsRes });
+    } else if (rest.length > 0) {
+      return res.status(200).json({ rest, commentsRes: [] });
+    } else {
+      return res.status(200).json({ rest: [], commentsRes: [] });
+    }
   } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res

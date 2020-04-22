@@ -18,11 +18,18 @@ router.get("/lastplansrest/:id", async (req, res, next) => {
   }
 });
 
-// All
+// All by user
 router.get("/all", async (req, res, next) => {
   try {
-    const plans = await Plan.find({});
-    return res.status(200).json({ plans });
+    const plans = await Plan.find({
+      owner: req.user._id
+    }).populate("restaurant");
+
+    if (plans) {
+      return res.status(200).json({ plans });
+    } else {
+      return res.status(200).json([]);
+    }
   } catch (err) {
     console.log("Error while retrieving plans", error);
     return res.status(500).json({ message: "Impossible to get the plans" });
@@ -60,7 +67,9 @@ router.get("/pages/total/:region", async (req, res, next) => {
 router.get("/pages/:num", async (req, res, next) => {
   const skip = (Number(req.params.num) - 1) * 6;
   try {
-    const plans = await Plan.find({}, {}, { limit: 6, skip: skip });
+    const plans = await Plan.find({}, {}, { limit: 6, skip: skip }).populate(
+      "restaurant"
+    );
     return res.status(200).json({ plans });
   } catch (err) {
     console.log("Error while retrieving plans", error);
@@ -78,7 +87,7 @@ router.get("/pages/:region/:num", async (req, res, next) => {
       },
       {},
       { limit: 6, skip: skip }
-    );
+    ).populate("restaurant");
     return res.status(200).json({ plans });
   } catch (err) {
     console.log("Error while retrieving plans", error);
@@ -160,6 +169,7 @@ router.post("/new", async (req, res, next) => {
       lunchTime,
       brunch,
       maxBookings,
+      counterBookings: 0,
       bookings,
       breakfast,
       firstCourse,

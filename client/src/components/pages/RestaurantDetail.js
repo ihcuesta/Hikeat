@@ -27,7 +27,8 @@ import {
   CircularProgress,
   TextField,
   Collapse,
-  IconButton
+  IconButton,
+  Avatar
 } from "@material-ui/core";
 import { Rating, Alert } from "@material-ui/lab";
 import {
@@ -77,13 +78,16 @@ export const RestaurantDetail = props => {
   const [iscomment, setIscomment] = useState();
   const [ismanager, setIsmanager] = useState(false);
   const [isOldCom, setIsOldCom] = useState(false);
+  const [value, setValue] = React.useState(2);
 
   useEffect(() => {
     getLastPlansRest().then(plans => setPlans(plans));
     const id = props.match.params.id;
     fetchSingleRestaurant(id).then(restaurant => {
       setInfo(restaurant.restaurantId);
+      setValue(restaurant.restaurantId.rateAv);
       setAllcomments(restaurant.commentsRes);
+      console.log(restaurant);
     });
     getUserComment(id).then(comment => {
       if (comment.length > 0) {
@@ -166,9 +170,9 @@ export const RestaurantDetail = props => {
         </Head>
         <Rates>
           <Box mt={0.3} component="fieldset" borderColor="transparent">
-            <Rating name="read-only" value="5" readOnly />
+            <Rating name="read-only" value={value} readOnly />
           </Box>
-          <p>23 opinions</p>
+          <p>{info && info.totalComments} comments</p>
         </Rates>
         <ImgCont>
           <Grid container spacing={1}>
@@ -198,7 +202,14 @@ export const RestaurantDetail = props => {
           <Grid item xs={12} sm={12} md={4} lg={4}>
             <Contact>
               <Owner>
-                <img src={info && info.owner.image} />
+                <Avatar
+                  style={{
+                    width: 50,
+                    height: 50
+                  }}
+                  src={info && info.owner.image}
+                ></Avatar>
+
                 <OwnerTexts>
                   <p>
                     <i>Restaurant owner</i>
@@ -259,7 +270,14 @@ export const RestaurantDetail = props => {
                 return (
                   <Opinion>
                     <Owner>
-                      <img src={comment.user.image}></img>
+                      <Avatar
+                        style={{
+                          width: 50,
+                          height: 50
+                        }}
+                        src={comment.user.image}
+                      ></Avatar>
+
                       <RateOp>
                         <p>{comment.user.username}</p>
                         <RatesOp>
