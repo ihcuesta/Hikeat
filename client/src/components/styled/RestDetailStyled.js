@@ -137,3 +137,8 @@ export const ContBtnComment = styled.div`
   justify-content: flex-end;
   margin-top: -10px;
 `;
+
+export const MapContainer = styled.div`
+  width: 100%;
+  margin-top: 20px;
+`;

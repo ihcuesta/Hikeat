@@ -15,6 +15,7 @@ import {
   getPlansPageRegion,
   getTotalRegion
 } from "../../service/planService";
+import { MapLeaflet } from "../UI/map";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";

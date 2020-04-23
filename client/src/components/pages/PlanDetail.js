@@ -21,7 +21,8 @@ import {
   DialogContentText,
   DialogTitle,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Avatar
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import {
@@ -77,7 +78,9 @@ import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import { getComments } from "../../service/commentService";
-import { SheetsRegistry } from "jss";
+import { getLatLong } from "../../service/geocodeService";
+import { MapContainer } from "../styled/RestDetailStyled";
+import { MapLeaflet } from "../UI/map";
 
 export const PlanDetail = props => {
   const history = useHistory();
@@ -91,6 +94,7 @@ export const PlanDetail = props => {
   const [newbooking, setNewbooking] = useState();
   const [ismanager, setIsmanager] = useState();
   const [allComments, setAllComments] = useState();
+  const [pos, setPos] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -102,6 +106,11 @@ export const PlanDetail = props => {
       getComments(plan.planId.restaurant._id).then(comments => {
         console.log(comments);
         setAllComments(comments);
+      });
+      getLatLong(plan.planId.restaurant._id).then(coords => {
+        console.log(coords.data);
+        setPos(coords.data);
+        console.log(pos);
       });
     });
 
@@ -234,7 +243,11 @@ export const PlanDetail = props => {
                   icon={<FreeBreakfastIcon />}
                   label="Breakfast"
                   color={s.dark}
-                  style={{ padding: "20px 5px", marginRight: 10 }}
+                  style={{
+                    padding: "20px 5px",
+                    marginRight: 10,
+                    marginBottom: 5
+                  }}
                 />
               )}
 
@@ -243,7 +256,11 @@ export const PlanDetail = props => {
                   icon={<FastfoodIcon />}
                   label="Snacks"
                   color={s.dark}
-                  style={{ padding: "20px 5px", marginRight: 10 }}
+                  style={{
+                    padding: "20px 5px",
+                    marginRight: 10,
+                    marginBottom: 5
+                  }}
                 />
               )}
 
@@ -251,7 +268,11 @@ export const PlanDetail = props => {
                 icon={<MapIcon />}
                 label="Guidance"
                 color={s.dark}
-                style={{ padding: "20px 5px", marginRight: 10 }}
+                style={{
+                  padding: "20px 5px",
+                  marginRight: 10,
+                  marginBottom: 5
+                }}
               />
             </Hike>
           </Grid>
@@ -380,7 +401,14 @@ export const PlanDetail = props => {
             )}
             <Contact>
               <Owner>
-                <img src={info.owner && info.owner.image} />
+                <Avatar
+                  style={{
+                    width: 50,
+                    height: 50
+                  }}
+                  src={info.owner && info.owner.image}
+                ></Avatar>
+
                 <OwnerTexts>
                   <p>
                     <i>Organizer</i>
@@ -437,6 +465,14 @@ export const PlanDetail = props => {
                   </DateText>
                 </Location>
               </DetailsContact>
+              <MapContainer>
+                {pos && (
+                  <MapLeaflet
+                    lat={pos.Latitude}
+                    long={pos.Longitude}
+                  ></MapLeaflet>
+                )}
+              </MapContainer>
             </Contact>
 
             <Paper elevation={5} style={{ padding: "5%" }}>

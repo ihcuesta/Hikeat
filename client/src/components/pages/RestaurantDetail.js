@@ -17,7 +17,8 @@ import {
   IconsCont,
   TitComment,
   ContRating,
-  ContBtnComment
+  ContBtnComment,
+  MapContainer
 } from "../styled/RestDetailStyled";
 import {
   Grid,
@@ -63,6 +64,8 @@ import {
   getComments,
   deleteComment
 } from "../../service/commentService";
+import { getLatLong } from "../../service/geocodeService";
+import { MapLeaflet } from "../UI/map";
 
 export const RestaurantDetail = props => {
   const history = useHistory();
@@ -78,7 +81,8 @@ export const RestaurantDetail = props => {
   const [iscomment, setIscomment] = useState();
   const [ismanager, setIsmanager] = useState(false);
   const [isOldCom, setIsOldCom] = useState(false);
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = useState(2);
+  const [pos, setPos] = useState();
 
   useEffect(() => {
     getLastPlansRest().then(plans => setPlans(plans));
@@ -87,7 +91,6 @@ export const RestaurantDetail = props => {
       setInfo(restaurant.restaurantId);
       setValue(restaurant.restaurantId.rateAv);
       setAllcomments(restaurant.commentsRes);
-      console.log(restaurant);
     });
     getUserComment(id).then(comment => {
       if (comment.length > 0) {
@@ -98,6 +101,12 @@ export const RestaurantDetail = props => {
     });
     checkIfManager(id).then(restaurant => {
       setIsmanager(restaurant.isManager);
+    });
+
+    getLatLong(id).then(coords => {
+      console.log(coords.data);
+      setPos(coords.data);
+      console.log(pos);
     });
   }, []);
 
@@ -154,6 +163,8 @@ export const RestaurantDetail = props => {
     4: "Good",
     5: "Excellent"
   };
+
+  console.log(pos && pos.Latitude);
 
   return info === 0 ? (
     <Backdrop style={{ zIndex: 1000 }} open={true}>
@@ -262,6 +273,14 @@ export const RestaurantDetail = props => {
                   </Grid>
                 </Grid>
               </InfoBullets>
+              <MapContainer>
+                {pos && (
+                  <MapLeaflet
+                    lat={pos.Latitude}
+                    long={pos.Longitude}
+                  ></MapLeaflet>
+                )}
+              </MapContainer>
             </Contact>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6}>
