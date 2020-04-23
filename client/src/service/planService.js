@@ -5,9 +5,10 @@ const planService = axios.create({
   withCredentials: true
 });
 
-export const getLastPlansRest = async endpoint => {
-  const data = await planService.get(`/lastplansrest/${endpoint}`);
-  return data.data.plans;
+export const getPlansOfRestaurant = async endpoint => {
+  const data = await planService.get(`/restaurant/${endpoint}`);
+  console.log(data.data.getRest);
+  return data.data.getRest;
 };
 
 export const getPlansPage = async num => {

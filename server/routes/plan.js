@@ -5,16 +5,16 @@ const Restaurant = require("../models/Restaurant");
 const _ = require("lodash");
 const passport = require("passport");
 
-// Last plans restaurant detail page
-router.get("/lastplansrest/:id", async (req, res, next) => {
+// Get plans of that restaurant
+router.get("/restaurant/:id", async (req, res, next) => {
   try {
-    const plans = await Plan.find({
+    const getRest = await Plan.find({
       restaurant: req.params.id
     });
-    return res.status(200).json({ plans });
+    return res.status(200).json({ getRest });
   } catch (err) {
-    console.log("Error while retrieving plans", error);
-    return res.status(500).json({ message: "Impossible to get the plans" });
+    console.log("Imposible to get plans of that restaurant", err);
+    return res.status(500).json({ err });
   }
 });
 

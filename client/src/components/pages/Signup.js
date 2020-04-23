@@ -250,11 +250,11 @@ export const Signup = ({ history }) => {
             </Button>
           </Form>
         </FormCont>
+        <FooterAlt></FooterAlt>
       </FormBg>
       <Backdrop style={{ zIndex: 1000 }} open={openspin}>
         <CircularProgress color="primary" />
       </Backdrop>
-      <FooterAlt></FooterAlt>
     </>
   );
 };

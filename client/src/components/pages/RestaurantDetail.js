@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../../service/authService";
 import { useHistory } from "react-router";
 import {
   Head,
@@ -51,7 +52,7 @@ import LocalPharmacyIcon from "@material-ui/icons/LocalPharmacy";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import { Divider, BgHome } from "../styled/HomeStyles";
 import { CardLastPlansRest } from "../UI/Cards";
-import { getLastPlansRest } from "../../service/planService";
+import { getPlansOfRestaurant } from "../../service/planService";
 import {
   fetchSingleRestaurant,
   checkIfManager
@@ -68,6 +69,7 @@ import { getLatLong } from "../../service/geocodeService";
 import { MapLeaflet } from "../UI/map";
 
 export const RestaurantDetail = props => {
+  const session = useUser();
   const history = useHistory();
   const [plans, setPlans] = useState([]);
   const [info, setInfo] = useState();
@@ -85,8 +87,10 @@ export const RestaurantDetail = props => {
   const [pos, setPos] = useState();
 
   useEffect(() => {
-    getLastPlansRest().then(plans => setPlans(plans));
     const id = props.match.params.id;
+    getPlansOfRestaurant(id).then(plans => {
+      setPlans(plans);
+    });
     fetchSingleRestaurant(id).then(restaurant => {
       setInfo(restaurant.restaurantId);
       setValue(restaurant.restaurantId.rateAv);
@@ -328,7 +332,11 @@ export const RestaurantDetail = props => {
             <form
               onSubmit={e => {
                 e.preventDefault();
-                handleSubmit(rest, stars, comment, isOldCom);
+                if (session) {
+                  handleSubmit(rest, stars, comment, isOldCom);
+                } else {
+                  history.push("/login");
+                }
               }}
             >
               <ContRating>
@@ -509,11 +517,11 @@ export const RestaurantDetail = props => {
           </Grid>
         </Grid>
       </ContBody>
-      <Divider></Divider>
+      {/* <Divider></Divider>
       <BgHome>
         <ContBody>
           <Grid container spacing={2}>
-            {plans.length === 0 ? (
+            {plans && plans.length === 0 ? (
               <p>Loading</p>
             ) : (
               plans.map(plan => {
@@ -533,7 +541,7 @@ export const RestaurantDetail = props => {
             )}
           </Grid>
         </ContBody>
-      </BgHome>
+      </BgHome> */}
 
       <Footer></Footer>
     </>

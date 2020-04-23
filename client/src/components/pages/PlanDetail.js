@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import { useUser } from "../../service/authService";
 import {
   Head,
   ImgCont,
@@ -83,6 +84,7 @@ import { MapContainer } from "../styled/RestDetailStyled";
 import { MapLeaflet } from "../UI/map";
 
 export const PlanDetail = props => {
+  const session = useUser();
   const history = useHistory();
   const [info, setInfo] = useState([]);
   const [numhikers, setNumhikers] = useState(0);
@@ -480,7 +482,11 @@ export const PlanDetail = props => {
               <form
                 onSubmit={e => {
                   e.preventDefault();
-                  handleSubmit(planid, restid, numhikers, comments);
+                  if (session) {
+                    handleSubmit(planid, restid, numhikers, comments);
+                  } else {
+                    history.push("/login");
+                  }
                 }}
               >
                 <TextField

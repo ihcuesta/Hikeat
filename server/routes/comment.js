@@ -77,11 +77,17 @@ router.get("/:id", async (req, res, next) => {
 // Get comment of logged user
 router.get("/usercomment/:id", async (req, res, next) => {
   try {
-    const comments = await Comment.find({
-      restaurant: req.params.id,
-      user: req.user._id
-    });
-    return res.status(200).json({ comments });
+    if (req.isAuthenticated()) {
+      const comments = await Comment.find({
+        restaurant: req.params.id,
+        user: req.user._id
+      });
+
+      return res.status(200).json({ comments });
+    } else {
+      const comments = [];
+      return res.status(200).json({ comments });
+    }
   } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res.status(500).json({ message: "Impossible to get the comment" });

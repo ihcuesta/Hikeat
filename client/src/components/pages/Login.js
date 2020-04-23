@@ -62,8 +62,8 @@ export const Login = ({ history }) => {
             </Button>
           </Form>
         </FormCont>
+        <FooterAlt></FooterAlt>
       </FormBg>
-      <FooterAlt></FooterAlt>
     </>
   );
 };
