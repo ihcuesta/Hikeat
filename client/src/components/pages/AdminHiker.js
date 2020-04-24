@@ -175,6 +175,7 @@ export const AdminHiker = () => {
                           <Button
                             variant="contained"
                             size="small"
+                            onClick={() => history.push("/profile/edit")}
                             style={{
                               color: s.primary,
                               backgroundColor: "#FFF"
@@ -183,7 +184,7 @@ export const AdminHiker = () => {
                             Edit Profile
                           </Button>
                         </span>
-                        <span>
+                        {/* <span>
                           {" "}
                           <Button
                             variant="outlined"
@@ -192,7 +193,7 @@ export const AdminHiker = () => {
                           >
                             Delete
                           </Button>
-                        </span>
+                        </span> */}
                       </Name>
 
                       <Role>

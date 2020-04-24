@@ -168,7 +168,7 @@ export const AdminRest = props => {
                             Edit Profile
                           </Button>
                         </span>
-                        <span>
+                        {/* <span>
                           {" "}
                           <Button
                             variant="outlined"
@@ -177,7 +177,7 @@ export const AdminRest = props => {
                           >
                             Delete
                           </Button>
-                        </span>
+                        </span> */}
                       </Name>
                       <Role>
                         <RestaurantRoundedIcon
