@@ -27,6 +27,13 @@ export const txtField = {
   }
 };
 
+export const fabStyle = {
+  style: {
+    width: 40,
+    height: 40
+  }
+};
+
 export const txtFieldAlt = {
   style: {
     color: s.dark,

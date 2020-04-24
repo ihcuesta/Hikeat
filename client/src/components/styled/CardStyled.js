@@ -46,3 +46,15 @@ export const BodyCard = styled.p`
   margin-top: 20px;
   min-height: 80px;
 `;
+
+export const ContShare = styled.div`
+  height: 50px;
+  /* transform: translateZ(0px); */
+  /* flex-grow: 1; */
+`;
+
+export const ContIconsCard = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+`;

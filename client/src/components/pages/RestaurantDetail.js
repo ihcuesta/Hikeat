@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../../service/authService";
 import { useHistory } from "react-router";
+import "./../../App.css";
 import {
   Head,
   Rates,
@@ -19,7 +20,8 @@ import {
   TitComment,
   ContRating,
   ContBtnComment,
-  MapContainer
+  MapContainer,
+  ContImgResp
 } from "../styled/RestDetailStyled";
 import {
   Grid,
@@ -231,49 +233,69 @@ export const RestaurantDetail = props => {
         </Rates>
         <ImgCont>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
               <img
                 src={info && info.image1 ? info.image1 : "/placeholder4.jpg"}
                 width="100%"
                 height="auto"
+                data-aos="fade-down"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-out"
               />
             </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
+
+            <Grid item xs={12} sm={6} md={6} lg={6}>
               <Grid container>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6}>
                   <img
                     src={
                       info && info.image2 ? info.image2 : "/placeholder4.jpg"
                     }
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="100"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6}>
                   <img
                     src={
                       info && info.image3 ? info.image3 : "/placeholder4.jpg"
                     }
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="200"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
                   <img
                     src={
                       info && info.image4 ? info.image4 : "/placeholder4.jpg"
                     }
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="300"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
                   <img
                     src={
                       info && info.image5 ? info.image5 : "/placeholder4.jpg"
                     }
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="400"
                   />
                 </Grid>
               </Grid>
@@ -283,7 +305,12 @@ export const RestaurantDetail = props => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Contact>
+            <Contact
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="0"
+            >
               <Owner>
                 <Avatar
                   style={{
@@ -355,7 +382,17 @@ export const RestaurantDetail = props => {
               </MapContainer>
             </Contact>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={6}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={6}
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-easing="ease-in-out"
+            data-aos-delay="100"
+          >
             {allcomments &&
               allcomments.map(comment => {
                 return (
@@ -566,7 +603,12 @@ export const RestaurantDetail = props => {
                 </Button>
               </EditCont>
             )}
-            <IconsCont>
+            <IconsCont
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="200"
+            >
               {info && info.dogs ? (
                 <InfoIcon>
                   <PetsIcon color="primary"></PetsIcon>

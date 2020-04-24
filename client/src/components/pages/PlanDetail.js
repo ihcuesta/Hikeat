@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useUser } from "../../service/authService";
+import "./../../App.css";
 import {
   Head,
   ImgCont,
@@ -208,36 +209,56 @@ export const PlanDetail = props => {
                 src={info.image1 ? info.image1 : "/placeholder4.jpg"}
                 width="100%"
                 height="auto"
+                data-aos="fade-down"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="0"
               />
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <Grid container>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6}>
                   <img
                     src={info.image2 ? info.image2 : "/placeholder4.jpg"}
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="100"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6}>
                   <img
                     src={info.image3 ? info.image3 : "/placeholder4.jpg"}
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="200"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
                   <img
                     src={info.image4 ? info.image4 : "/placeholder4.jpg"}
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="300"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
                   <img
                     src={info.image5 ? info.image5 : "/placeholder4.jpg"}
                     width="100%"
                     height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="400"
                   />
                 </Grid>
               </Grid>
@@ -247,7 +268,12 @@ export const PlanDetail = props => {
 
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="100"
+            >
               <HikeTitle>
                 <FilterHdrRoundedIcon></FilterHdrRoundedIcon>
               </HikeTitle>
@@ -265,7 +291,12 @@ export const PlanDetail = props => {
                   );
                 })}
             </Hike>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="200"
+            >
               <Infographic>
                 <p>{info.startTime}</p>
                 <p>
@@ -279,7 +310,12 @@ export const PlanDetail = props => {
                 <img src={infographic} width="100%" height="auto" />
               </InfographImg>
             </Hike>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="300"
+            >
               {info.breakfast && (
                 <Chip
                   icon={<FreeBreakfastIcon />}
@@ -320,7 +356,12 @@ export const PlanDetail = props => {
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Menu>
+            <Menu
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="400"
+            >
               <MenuTitle>
                 <RestaurantMenuOutlinedIcon></RestaurantMenuOutlinedIcon>
               </MenuTitle>
@@ -442,7 +483,12 @@ export const PlanDetail = props => {
                 </Button>
               </EditCont>
             )}
-            <Contact>
+            <Contact
+              data-aos="fade-left"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="500"
+            >
               <Owner>
                 <Avatar
                   style={{
@@ -518,7 +564,14 @@ export const PlanDetail = props => {
               </MapContainer>
             </Contact>
 
-            <Paper elevation={5} style={{ padding: "5%" }}>
+            <Paper
+              elevation={5}
+              style={{ padding: "5%" }}
+              data-aos="fade-left"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="500"
+            >
               <TitleBooking>BOOKING</TitleBooking>
               <form
                 onSubmit={e => {

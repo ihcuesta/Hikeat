@@ -43,10 +43,16 @@ export const RestaurantCard = ({
 }) => {
   return (
     <>
-      <Paper elevation={1}>
+      <Paper
+        elevation={1}
+        data-aos="fade-up"
+        data-aos-duration="500"
+        data-aos-easing="ease-in-out"
+        data-aos-delay="400"
+      >
         <BgRestCard>
-          <Grid container spacing={3}>
-            <Grid item xs={4} sm={4} md={4} lg={4}>
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
               <img
                 src={img1 ? img1 : "/placeholder4.jpg"}
                 width="100%"
@@ -70,8 +76,8 @@ export const RestaurantCard = ({
               </Grid> */}
             </Grid>
 
-            <Grid item xs={4} sm={4} md={4} lg={4}>
-              <div style={{ color: s.dark }}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <div style={{ color: s.dark, padding: "0% 5%" }}>
                 <p style={{ marginBottom: 5, fontSize: 14 }}>
                   <i>{kind}</i>
                 </p>
@@ -100,7 +106,10 @@ export const RestaurantCard = ({
                 <Rates
                   style={{
                     marginLeft: 0,
-                    width: 270,
+                    width: "100%",
+                    display: "flex",
+                    flexFlow: "row wrap",
+                    justifyContent: "flex-start",
                     marginTop: -5,
                     marginBottom: 30
                   }}
@@ -148,7 +157,7 @@ export const RestaurantCard = ({
                 </InfoBullets>
               </div>
             </Grid>
-            <Grid item xs={4} sm={4} md={4} lg={4}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
               <OpinionsBox>
                 {comments && comments.length === 0 ? (
                   <p style={{ marginTop: 20, marginLeft: 20 }}>

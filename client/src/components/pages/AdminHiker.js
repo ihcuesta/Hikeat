@@ -33,7 +33,8 @@ import {
   EditBookingCont,
   EditBookingBg,
   NumHikers,
-  Descr
+  Descr,
+  RoleWrap
 } from "../styled/Admin";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
@@ -152,7 +153,7 @@ export const AdminHiker = () => {
         )}
         {session && (
           <ContBody>
-            <HeaderAdmin>
+            <HeaderAdmin data-aos="fade-right">
               <Grid container>
                 <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
                   <Pic>
@@ -197,10 +198,12 @@ export const AdminHiker = () => {
                       </Name>
 
                       <Role>
-                        <FilterHdrIcon
-                          style={{ color: "#FFF" }}
-                        ></FilterHdrIcon>
-                        <h3>Hiker</h3>
+                        <RoleWrap>
+                          <FilterHdrIcon
+                            style={{ color: "#FFF" }}
+                          ></FilterHdrIcon>
+                          <h3>Hiker</h3>
+                        </RoleWrap>
                       </Role>
                     </ContTit>
                     <Grid container>

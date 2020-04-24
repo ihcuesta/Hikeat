@@ -47,12 +47,9 @@ export const Name = styled.h2`
 `;
 
 export const Role = styled.div`
-  width: 100%;
+  width: 100px;
   margin: auto;
-  display: flex;
-  flex-direction: row wrap;
-  align-items: center;
-  margin-top: -40px;
+  display: block;
 
   && h3 {
     font-size: 20px;
@@ -64,6 +61,15 @@ export const Role = styled.div`
     margin: -40px 0px 0px 0px;
     justify-content: flex-start;
   }
+`;
+
+export const RoleWrap = styled.div`
+  display: flex;
+  flex-direction: row wrap;
+  align-items: center;
+  margin-top: -30px;
+  width: 100px;
+  justify-content: space-between;
 `;
 
 export const Fav = styled.div`
@@ -192,6 +198,11 @@ export const ContClose = styled.div`
 export const Descr = styled.p`
   color: #fff;
   min-height: 70px;
+  text-align: center;
+
+  @media (min-width: 600px) {
+    text-align: left;
+  }
 `;
 
 export const BgAdmin = styled.div`

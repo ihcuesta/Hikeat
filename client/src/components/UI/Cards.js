@@ -16,12 +16,20 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { s } from "../styled/globalStyles";
-import { LocationCont, RestCont, BodyCard, Rates } from "../styled/CardStyled";
+import {
+  LocationCont,
+  RestCont,
+  BodyCard,
+  Rates,
+  Social
+} from "../styled/CardStyled";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
 import {
@@ -159,9 +167,33 @@ export const CardHome = ({
                 ></FavoriteBorderOutlinedIcon>
               )}
 
-              <ShareIcon
-                style={{ fontSize: "35px", marginLeft: 20, cursor: "pointer" }}
-              ></ShareIcon>
+              <a
+                style={{ color: s.primary }}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                target="_blank"
+              >
+                <FacebookIcon
+                  color="primary"
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></FacebookIcon>
+              </a>
+              <a
+                style={{ color: s.primary }}
+                href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
+                target="_blank"
+              >
+                <TwitterIcon
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></TwitterIcon>
+              </a>
             </Grid>
             <Grid item xs={6}>
               <Button

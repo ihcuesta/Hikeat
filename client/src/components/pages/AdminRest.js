@@ -38,7 +38,8 @@ import {
   GrayCont,
   DialogCont,
   ContClose,
-  Descr
+  Descr,
+  RoleWrap
 } from "../styled/Admin";
 
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
@@ -137,7 +138,7 @@ export const AdminRest = props => {
         )}
         {session && (
           <ContBody>
-            <HeaderAdmin>
+            <HeaderAdmin data-aos="fade-right">
               <Grid container>
                 <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
                   <Pic>
@@ -180,10 +181,12 @@ export const AdminRest = props => {
                         </span> */}
                       </Name>
                       <Role>
-                        <RestaurantRoundedIcon
-                          style={{ color: "#FFF" }}
-                        ></RestaurantRoundedIcon>
-                        <h3>Restaurant owner</h3>
+                        <RoleWrap>
+                          <RestaurantRoundedIcon
+                            style={{ color: "#FFF" }}
+                          ></RestaurantRoundedIcon>
+                          <h3>Restaurant owner</h3>
+                        </RoleWrap>
                       </Role>
                     </ContTit>
                     <Grid container>
