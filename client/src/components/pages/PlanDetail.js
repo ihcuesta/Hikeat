@@ -35,7 +35,11 @@ import {
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import FilterHdrRoundedIcon from "@material-ui/icons/FilterHdrRounded";
 import { CardRestaurant } from "../UI/Cards";
-import { fetchSinglePlan, checkIfManager } from "../../service/planService";
+import {
+  fetchSinglePlan,
+  checkIfManager,
+  deletePlan
+} from "../../service/planService";
 import {
   NameRest,
   Hike,
@@ -93,6 +97,7 @@ export const PlanDetail = props => {
   const [restid, setRestid] = useState();
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
   const [newbooking, setNewbooking] = useState();
   const [ismanager, setIsmanager] = useState();
   const [allComments, setAllComments] = useState();
@@ -129,6 +134,21 @@ export const PlanDetail = props => {
         return comment.comment;
       })
   );
+
+  const handleClickOpenDel = () => {
+    setOpenDel(true);
+  };
+
+  const handleCloseDel = () => {
+    setOpenDel(false);
+  };
+
+  const handleDelete = id => {
+    deletePlan(id).then(del => {
+      console.log(del);
+    });
+    history.push("/owner/admin");
+  };
 
   const handleClickOpen = isNewBooking => {
     if (isNewBooking) {
@@ -184,21 +204,41 @@ export const PlanDetail = props => {
         <ImgCont>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-              <img src={info.image1} width="100%" height="auto" />
+              <img
+                src={info.image1 ? info.image1 : "/placeholder4.jpg"}
+                width="100%"
+                height="auto"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <Grid container>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image2} width="100%" height="auto" />
+                  <img
+                    src={info.image2 ? info.image2 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image3} width="100%" height="auto" />
+                  <img
+                    src={info.image3 ? info.image3 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image4} width="100%" height="auto" />
+                  <img
+                    src={info.image4 ? info.image4 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image5} width="100%" height="auto" />
+                  <img
+                    src={info.image5 ? info.image5 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -396,6 +436,7 @@ export const PlanDetail = props => {
                     textAlign: "center",
                     marginTop: 15
                   }}
+                  onClick={handleClickOpenDel}
                 >
                   Delete
                 </Button>
@@ -505,7 +546,7 @@ export const PlanDetail = props => {
                       : " "
                   }
                 />
-                <Gap></Gap>
+
                 <TextField
                   name="comments"
                   id="outlined-basic"
@@ -531,7 +572,7 @@ export const PlanDetail = props => {
                 </BookButton>
               </form>
             </Paper>
-            <IconsCont>
+            {/* <IconsCont>
               <FavoriteBorderOutlinedIcon
                 color="primary"
                 style={{ fontSize: "35px" }}
@@ -540,7 +581,7 @@ export const PlanDetail = props => {
                 color="primary"
                 style={{ fontSize: "35px", marginLeft: 20, marginRight: 20 }}
               ></ShareIcon>
-            </IconsCont>
+            </IconsCont> */}
           </Grid>
         </Grid>
         <TitleRest>THE RESTAURANT</TitleRest>
@@ -560,6 +601,8 @@ export const PlanDetail = props => {
             website={info.restaurant && info.restaurant.website}
             email={info.restaurant && info.restaurant.email}
             comments={allComments}
+            rate={info.restaurant && info.restaurant.rateAv}
+            totalComments={info.restaurant && info.restaurant.totalComments}
           ></RestaurantCard>
         )}
       </ContBody>
@@ -610,12 +653,47 @@ export const PlanDetail = props => {
               Close
             </Button>
             <Button
-              onClick={() => history.push("/admin")}
+              onClick={() => history.push("/hiker/admin")}
               color="secondary"
               variant="contained"
               autoFocus
             >
               Admin
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+
+      <div>
+        <Dialog
+          open={openDel}
+          onClose={handleCloseDel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <>
+            <DialogTitle id="alert-dialog-title" style={{ color: s.dark }}>
+              {"Confirm delete"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure that you want to delete this plan?<br></br>
+                This action is irreversible.
+              </DialogContentText>
+            </DialogContent>
+          </>
+
+          <DialogActions>
+            <Button onClick={handleCloseDel} color="primary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDelete(id)}
+              color="secondary"
+              variant="contained"
+              autoFocus
+            >
+              Delete
             </Button>
           </DialogActions>
         </Dialog>

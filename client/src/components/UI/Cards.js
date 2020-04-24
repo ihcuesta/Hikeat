@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { useUser } from "../../service/authService";
 import {
   Grid,
@@ -48,6 +49,8 @@ export const CardHome = ({
   totalComments
 }) => {
   const [favourite, setFavourite] = useState(false);
+  const session = useUser();
+  const history = useHistory();
 
   useEffect(() => {
     getFavourite(id).then(fav => {
@@ -57,14 +60,18 @@ export const CardHome = ({
   }, []);
 
   const handleFav = async id => {
-    if (!favourite) {
-      const addFav = await newFavourite(id);
-      console.log(addFav);
+    if (session) {
+      if (!favourite) {
+        const addFav = await newFavourite(id);
+        console.log(addFav);
+      } else {
+        const deleteFav = await deleteFavourite(id);
+        console.log(deleteFav);
+      }
+      setFavourite(!favourite);
     } else {
-      const deleteFav = await deleteFavourite(id);
-      console.log(deleteFav);
+      history.push("/login");
     }
-    setFavourite(!favourite);
   };
 
   return (

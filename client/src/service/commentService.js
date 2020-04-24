@@ -43,7 +43,7 @@ export const getUserComment = async endpoint => {
 };
 
 export const deleteComment = async endpoint => {
-  const data = await commentService.post(`/${endpoint}/delete`);
+  const data = await commentService.post(`/usercomment/${endpoint}/delete`);
   console.log(data);
-  return data.data.comments;
+  return data;
 };

@@ -1262,7 +1262,7 @@ export const EditPlan = props => {
   return (
     <>
       <FormBg>
-        <FormTitle>New Plan</FormTitle>
+        <FormTitle>Edit Plan</FormTitle>
         <FormCont style={{ paddingTop: 30 }}>
           <Form
             onSubmit={e => {

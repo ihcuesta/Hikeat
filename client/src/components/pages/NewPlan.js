@@ -481,7 +481,7 @@ export const NewPlan = ({ history }) => {
               <Error></Error>
             </Grid>
             <Gap></Gap>
-            <div>
+            {/* <div>
               <TextField
                 id="maxBookings"
                 fullWidth
@@ -502,7 +502,7 @@ export const NewPlan = ({ history }) => {
                 <Error></Error>
               )}
             </div>
-            <Gap></Gap>
+            <Gap></Gap> */}
             <Grid container>
               <Grid item item xs={12} sm={6} md={6} lg={6}>
                 <FormControlLabel
@@ -1151,7 +1151,12 @@ export const NewPlan = ({ history }) => {
         }
         break;
       case 1:
-        if (hikelevel !== "" && kms > 0 && date !== "" && maxBookings > 0) {
+        if (
+          hikelevel !== "" &&
+          kms > 0 &&
+          date !== ""
+          // && maxBookings > 0
+        ) {
           handleNext();
         } else {
           setValidated1(true);
@@ -1201,7 +1206,7 @@ export const NewPlan = ({ history }) => {
                 image3,
                 image4,
                 image5,
-                maxBookings,
+                // maxBookings,
                 breakfast,
                 brunch,
                 firstCourse,

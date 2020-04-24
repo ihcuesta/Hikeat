@@ -162,7 +162,9 @@ export const Home = () => {
           </Grid>
           {!search ? (
             <>
-              <p>Page {numPage}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPage}
+              </p>
               <Pagination
                 count={pages}
                 color="primary"
@@ -173,7 +175,9 @@ export const Home = () => {
             </>
           ) : (
             <>
-              <p>Page {numPageReg}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPageReg}
+              </p>
               <Pagination
                 count={pagesReg}
                 color="primary"

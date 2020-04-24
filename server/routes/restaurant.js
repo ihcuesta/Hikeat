@@ -254,7 +254,7 @@ router.put("/:id/edit", async (req, res, next) => {
 // Send delete action
 router.post("/:id/delete", async (req, res, next) => {
   try {
-    let restaurantCheck = await Plan.findOne({
+    let restaurantCheck = await Restaurant.findOne({
       _id: req.params.id
     });
 
@@ -262,7 +262,11 @@ router.post("/:id/delete", async (req, res, next) => {
       const restaurantDeleted = await Restaurant.findOneAndRemove({
         _id: req.params.id
       });
-      return res.status(200).json({ restaurantDeleted });
+
+      const deletedPlans = await Plan.deleteMany({
+        restaurant: req.params.id
+      });
+      return res.status(200).json({ restaurantDeleted, deletedPlans });
     } else {
       console.log("Only the owner is allowed to delete this restaurant");
       return res.status(403).json({ message: "Forbidden access" });

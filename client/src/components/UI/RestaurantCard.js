@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Box } from "@material-ui/core";
+import { Grid, Paper, Box, Avatar } from "@material-ui/core";
 import { s, BodyLight } from "../styled/globalStyles";
 import rest1 from "../../images/rest/rest1.jpg";
 import rest2 from "../../images/rest/rest2.jpg";
@@ -37,7 +37,9 @@ export const RestaurantCard = ({
   phone,
   website,
   email,
-  comments
+  comments,
+  rate,
+  totalComments
 }) => {
   return (
     <>
@@ -45,15 +47,27 @@ export const RestaurantCard = ({
         <BgRestCard>
           <Grid container spacing={3}>
             <Grid item xs={4} sm={4} md={4} lg={4}>
-              <img src={img1} width="100%" height="auto" />
-              <Grid container>
+              <img
+                src={img1 ? img1 : "/placeholder4.jpg"}
+                width="100%"
+                height="auto"
+              />
+              {/* <Grid container>
                 <Grid item xs={6}>
-                  <img src={img2} width="100%" height="auto" />
+                  <img
+                    src={img2 ? img2 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <img src={img3} width="100%" height="auto" />
+                  <img
+                    src={img3 ? img3 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid item xs={4} sm={4} md={4} lg={4}>
@@ -86,9 +100,9 @@ export const RestaurantCard = ({
                 <Rates
                   style={{
                     marginLeft: 0,
-                    width: 245,
+                    width: 270,
                     marginTop: -5,
-                    marginBottom: -10
+                    marginBottom: 30
                   }}
                 >
                   <Box
@@ -97,11 +111,11 @@ export const RestaurantCard = ({
                     component="fieldset"
                     borderColor="transparent"
                   >
-                    <Rating name="read-only" value="5" readOnly />
+                    <Rating name="read-only" value={rate} readOnly />
                   </Box>
-                  <p>23 opinions</p>
+                  <p>{totalComments} comments</p>
                 </Rates>
-                <BodyLight style={{ marginBottom: 30 }}>{descr}</BodyLight>
+                {/* <BodyLight style={{ marginBottom: 30 }}>{descr}</BodyLight> */}
                 <InfoBullets>
                   <Grid container>
                     <Grid item xs={3} align="center">
@@ -137,8 +151,8 @@ export const RestaurantCard = ({
             <Grid item xs={4} sm={4} md={4} lg={4}>
               <OpinionsBox>
                 {comments && comments.length === 0 ? (
-                  <p>
-                    <i>No comments</i>
+                  <p style={{ marginTop: 20, marginLeft: 20 }}>
+                    <i>No comments yet</i>
                   </p>
                 ) : (
                   comments &&
@@ -146,7 +160,13 @@ export const RestaurantCard = ({
                     return (
                       <Opinion>
                         <Owner>
-                          <img src={comment.user.image}></img>
+                          <Avatar
+                            style={{
+                              width: 50,
+                              height: 50
+                            }}
+                            src={comment.user.image}
+                          ></Avatar>
                           <RateOp>
                             <p>{comment.user.username}</p>
                             <RatesOp>

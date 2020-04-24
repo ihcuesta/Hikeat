@@ -47,7 +47,7 @@ export const Name = styled.h2`
 `;
 
 export const Role = styled.div`
-  max-width: 220px;
+  width: 100%;
   margin: auto;
   display: flex;
   flex-direction: row wrap;
@@ -61,8 +61,8 @@ export const Role = styled.div`
     margin-left: 10px;
   }
   @media (min-width: 600px) {
-    margin: -40px 0px 0px -60px;
-    justify-content: center;
+    margin: -40px 0px 0px 0px;
+    justify-content: flex-start;
   }
 `;
 
@@ -91,7 +91,7 @@ export const Level = styled.div`
   text-align: center;
   padding: 7px 0px;
   color: #fff;
-  margin-top: -5px;
+  margin-top: 5px;
 `;
 
 export const ContTit = styled.div`
@@ -113,6 +113,7 @@ export const WrapperResp = styled.div`
 
 export const TextAlign = styled.div`
   text-align: center;
+  margin-top: 20px;
 
   @media (min-width: 600px) {
     text-align: left;
@@ -188,9 +189,14 @@ export const ContClose = styled.div`
   justify-content: flex-end;
 `;
 
+export const Descr = styled.p`
+  color: #fff;
+  min-height: 70px;
+`;
+
 export const BgAdmin = styled.div`
   width: 100%;
-  height: 100%;
+
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,ffffff+0,eeeeee+100 */
   background: #1e5799; /* Old browsers */
   background: -moz-linear-gradient(

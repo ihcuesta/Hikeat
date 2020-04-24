@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../service/authService";
+import { useHistory } from "react-router";
 import {
   Container,
   Grid,
@@ -12,7 +13,9 @@ import {
   CardActions,
   Card,
   CardMedia,
-  CardContent
+  CardContent,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import {
   HeaderAdmin,
@@ -29,7 +32,8 @@ import {
   BgAdmin,
   EditBookingCont,
   EditBookingBg,
-  NumHikers
+  NumHikers,
+  Descr
 } from "../styled/Admin";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
@@ -46,7 +50,7 @@ import { CardBookings } from "../UI/Cards";
 import { getAllBookings, getEditBooking } from "../../service/bookingService";
 import { TitleBooking, Booking, BookButton } from "../styled/PlanDetailStyled";
 import { Gap, s } from "../styled/globalStyles";
-import { editBooking } from "../../service/bookingService";
+import { editBooking, deleteBooking } from "../../service/bookingService";
 import { BodyCard, LocationCont } from "../styled/CardStyled";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import { Link } from "react-router-dom";
@@ -57,15 +61,16 @@ import {
   deleteFavourite
 } from "../../service/favouriteService";
 
-export const AdminHiker = ({ history }) => {
+export const AdminHiker = () => {
+  const history = useHistory();
   const session = useUser();
-  const [allBookings, setAllBookings] = useState();
+  const [allBookings, setAllBookings] = useState(0);
   const [oldhikers, setOldhikers] = useState(0);
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
   const [bookingID, setBookingID] = useState();
   const [planID, setPlanID] = useState();
-  const [favs, setFavs] = useState();
+  const [favs, setFavs] = useState(0);
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -82,12 +87,24 @@ export const AdminHiker = ({ history }) => {
     setOpen(false);
   };
 
-  const handleSubmit = async (bookingID, numhikers, oldhikers, comments) => {
+  const handleCancel = async bookingID => {
+    const cancel = await deleteBooking(bookingID);
+    getAllBookings().then(bookings => {
+      setAllBookings(bookings.getBooking);
+    });
+  };
+
+  const handleSubmit = async (bookingID, oldhikers, numhikers, comments) => {
+    console.log(numhikers);
     const newcounter = numhikers - oldhikers;
-    const editBook = await editBooking(bookingID, {
+    const editBook = await editBooking(
+      bookingID,
       newcounter,
       numhikers,
       comments
+    );
+    getAllBookings().then(bookings => {
+      setAllBookings(bookings.getBooking);
     });
     setOpen(false);
   };
@@ -111,9 +128,28 @@ export const AdminHiker = ({ history }) => {
     });
   };
 
+  const getKms = allBookings => {
+    if (allBookings) {
+      let counter = 0;
+      allBookings.forEach(booking => {
+        counter += booking.planid.kms;
+      });
+      return counter;
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <>
       <BgAdmin>
+        {!session ? (
+          <Backdrop style={{ zIndex: 1000 }} open={true}>
+            <CircularProgress color="primary" />
+          </Backdrop>
+        ) : (
+          !session && history.push("/login")
+        )}
         {session && (
           <ContBody>
             <HeaderAdmin>
@@ -132,7 +168,32 @@ export const AdminHiker = ({ history }) => {
                 <Grid item xs={12} sm={12} md={8}>
                   <WrapperResp>
                     <ContTit>
-                      <Name>{session.user.username}</Name>
+                      <Name>
+                        {session.user.username}
+                        <span>
+                          {" "}
+                          <Button
+                            variant="contained"
+                            size="small"
+                            style={{
+                              color: s.primary,
+                              backgroundColor: "#FFF"
+                            }}
+                          >
+                            Edit Profile
+                          </Button>
+                        </span>
+                        <span>
+                          {" "}
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            style={{ color: "#FFF" }}
+                          >
+                            Delete
+                          </Button>
+                        </span>
+                      </Name>
 
                       <Role>
                         <FilterHdrIcon
@@ -143,9 +204,7 @@ export const AdminHiker = ({ history }) => {
                     </ContTit>
                     <Grid container>
                       <Grid item xs={12} sm={6} md={6} spacing={10}>
-                        <p style={{ color: "#FFF" }}>
-                          {session.user.description}
-                        </p>
+                        <Descr>{session.user.description}</Descr>
 
                         <>
                           <TextAlign>
@@ -161,11 +220,11 @@ export const AdminHiker = ({ history }) => {
                           <>
                             <Fav>
                               <ExploreIcon></ExploreIcon>
-                              <p>45 kms</p>
+                              <p>{getKms(allBookings)} kms</p>
                             </Fav>
                             <Fav>
                               <RestaurantIcon></RestaurantIcon>
-                              <p>10 plans</p>
+                              <p>{allBookings.length} plans</p>
                             </Fav>
                           </>
 
@@ -184,8 +243,15 @@ export const AdminHiker = ({ history }) => {
             <TitBookings>NEXT BOOKINGS</TitBookings>
             <Grid container spacing={2}>
               {allBookings && allBookings.length === 0 ? (
-                <p style={{ textAlign: "center" }}>
-                  You don't have bookings. Take a look for a new plan!
+                <p
+                  style={{
+                    textAlign: "center",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    display: "block"
+                  }}
+                >
+                  Still thinking in the next hike? ⛰
                 </p>
               ) : (
                 allBookings &&
@@ -194,7 +260,7 @@ export const AdminHiker = ({ history }) => {
                     <>
                       <Grid item xs={12} sm={12} md={6} lg={4}>
                         <Card data-aos="fade-up" elevation={3}>
-                          <Link to={`plan/${booking.planid._id}`}>
+                          <Link to={`/plan/${booking.planid._id}`}>
                             <CardMedia
                               style={{ height: 200 }}
                               image={booking.planid.image1}
@@ -310,7 +376,10 @@ export const AdminHiker = ({ history }) => {
                                   fullWidth
                                   variant="outlined"
                                   color="primary"
-                                  // onClick={actionTwo}
+                                  value={booking._id}
+                                  onClick={e =>
+                                    handleCancel(e.currentTarget.value)
+                                  }
                                 >
                                   CANCEL BOOKING
                                 </Button>
@@ -374,7 +443,6 @@ export const AdminHiker = ({ history }) => {
                             onSubmit={e => {
                               e.preventDefault();
                               handleSubmit(
-                                planID,
                                 bookingID,
                                 oldhikers,
                                 numhikers,
@@ -434,7 +502,19 @@ export const AdminHiker = ({ history }) => {
 
             <TitBookings>FAVOURITES</TitBookings>
             <Grid container spacing={2}>
-              {favs &&
+              {favs.length === 0 && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    display: "block"
+                  }}
+                >
+                  You don't have favourites yet. Take a look of our plans! 😉
+                </p>
+              )}
+              {favs.length > 0 &&
                 favs.map(fav => {
                   return (
                     <CardFav
@@ -457,7 +537,6 @@ export const AdminHiker = ({ history }) => {
         )}
         <Footer></Footer>
       </BgAdmin>
-      )}
     </>
   );
 };
