@@ -96,7 +96,7 @@ router.get("/usercomment/:id", async (req, res, next) => {
 
 // Edit comment of logged user
 router.put("/usercomment/:rest/edit", async (req, res, next) => {
-  const { stars, comment, date } = req.body;
+  const { comment, date } = req.body;
   try {
     const commentUpdated = await Comment.findOneAndUpdate(
       {
@@ -105,7 +105,6 @@ router.put("/usercomment/:rest/edit", async (req, res, next) => {
       },
       {
         $set: {
-          stars,
           comment,
           date
         }

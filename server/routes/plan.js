@@ -280,17 +280,14 @@ router.put("/:id/edit", async (req, res, next) => {
     coffee,
     status
   } = req.body;
+  console.log(req.body.price);
   try {
     const planToEdit = await Plan.findOne({
       _id: req.params.id
     });
 
     if (String(planToEdit.owner) === String(req.user._id)) {
-      const registeredPlan = await Plan.findOne({ name });
-      if (registeredPlan) {
-        console.log(`Plan ${name} already exists`);
-        return res.status(400).json({ message: "Plan name already taken" });
-      }
+      console.log(req.body.price);
       const planUpdated = await Plan.findOneAndUpdate(
         {
           _id: req.params.id

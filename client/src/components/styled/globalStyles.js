@@ -15,7 +15,14 @@ export const s = {
 
 export const changeFormat = price => {
   price = String(price);
-  return price.replace(".", ",").padEnd(5, "0");
+  if (price.includes(".")) {
+    price = price.split(".");
+    price[1] = price[1].padEnd(2, "0");
+    price = price.join(",");
+  } else {
+    price = price + ",00";
+  }
+  return price;
 };
 
 export const GlobalStyles = styled.div`

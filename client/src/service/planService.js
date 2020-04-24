@@ -166,6 +166,7 @@ export const editPlan = async (
   }
 ) => {
   try {
+    console.log(price);
     const { data } = await planService.put(`/${endpoint}/edit`, {
       name,
       hikelevel,

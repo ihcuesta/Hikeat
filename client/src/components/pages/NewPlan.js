@@ -220,6 +220,9 @@ export const NewPlan = ({ history }) => {
               id="shortDescr"
               name="shortDescr"
               label="Short Description"
+              inputProps={{
+                maxlength: 150
+              }}
               multiline
               rows="4"
               fullWidth="true"
@@ -229,7 +232,9 @@ export const NewPlan = ({ history }) => {
               onChange={e => setShortDescr(e.target.value)}
               error={shortDescr === "" && validated0}
               helperText={
-                shortDescr === "" && validated0 ? "Empty field!" : " "
+                shortDescr === "" && validated0
+                  ? `${shortDescr.length}/150 Empty field!`
+                  : `${shortDescr.length}/150`
               }
             />
             <Gap></Gap>
@@ -1316,12 +1321,12 @@ export const NewPlan = ({ history }) => {
               Homepage
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={() => history.push("/owner/admin")}
               color="secondary"
               variant="contained"
               autoFocus
             >
-              Profile
+              Admin
             </Button>
           </DialogActions>
         </Dialog>

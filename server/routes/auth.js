@@ -55,19 +55,19 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, failureDetails) => {
     if (err) {
       console.log(err);
-      return res.json({ status: 500, message: "Authentication error" });
+      return res.status(500).json({ message: "Authentication error" });
     }
 
     if (!user) {
-      return res.json({ status: 401, message: failureDetails.message });
+      return res.status(401).json({ message: "Authentication error" });
     }
 
     req.login(user, err => {
       if (err) {
-        return res.status(500).json({ message: "Session save went bad." });
+        return res.status(500).json({ message: "Authentication error" });
       }
 
-      return res.json({ status: 200, message: "Logged in successfully", user });
+      return res.status(200).json({ message: "Logged in successfully", user });
     });
   })(req, res, next);
 });

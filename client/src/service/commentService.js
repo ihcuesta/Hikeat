@@ -20,9 +20,8 @@ export const newComment = async (rest, stars, comment, date) => {
   }
 };
 
-export const editComment = async (rest, stars, comment, date) => {
+export const editComment = async (rest, comment, date) => {
   const data = await commentService.put(`/usercomment/${rest}/edit`, {
-    stars,
     comment,
     date
   });

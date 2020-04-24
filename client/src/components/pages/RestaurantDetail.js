@@ -179,7 +179,7 @@ export const RestaurantDetail = props => {
       if (isOldCom) {
         setOpenNew(false);
         const date = getDate();
-        const response = await editComment(rest, stars, comment, date);
+        const response = await editComment(rest, comment, date);
 
         getComments(rest).then(comments => {
           setAllcomments(comments);
@@ -192,6 +192,9 @@ export const RestaurantDetail = props => {
 
         getComments(rest).then(comments => {
           setAllcomments(comments);
+        });
+        fetchSingleRestaurant(rest).then(restaurant => {
+          setValue(restaurant.restaurantId.rateAv);
         });
         setIsOldCom(true);
         setOpenNew(true);

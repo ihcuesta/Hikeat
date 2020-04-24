@@ -226,9 +226,41 @@ router.post("/:id/delete", async (req, res, next) => {
     });
 
     if (String(bookingCheck.user) === String(req.user._id)) {
+      let bookingToDelete = await Booking.findOne({
+        _id: req.params.id
+      });
+
+      let hikersBook = bookingToDelete.numhikers;
+      let planID = bookingToDelete.planid;
+      console.log("Este es el plan id :" + planID);
+
+      const findPlan = await Plan.findOne({
+        _id: planID
+      });
+
+      console.log("Este es el plan: " + findPlan);
+      console.log(
+        "Esto es el hikersBook: " + hikersBook + " " + typeof hikersBook
+      );
+      let counterB = findPlan.counterBookings;
+      console.log("Esto es el counterB: " + counterB + " " + typeof counterB);
+      let newCounter = Number(counterB) - Number(hikersBook);
+      console.log("Esto es el new counter: " + newCounter);
+      const updatePlan = await Plan.findOneAndUpdate(
+        {
+          _id: planID
+        },
+        {
+          $set: {
+            counterBookings: newCounter
+          }
+        }
+      );
+
       const bookingDeleted = await Booking.findOneAndRemove({
         _id: req.params.id
       });
+
       return res.status(200).json({ bookingDeleted });
     } else {
       console.log("Only the owner is allowed to delete this booking");

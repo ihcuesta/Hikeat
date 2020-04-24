@@ -33,7 +33,7 @@ export const HomeHead = ({ scrollPlans }) => {
                 data-aos-easing="ease-in-out"
                 data-aos-delay="50"
               >
-                <h3 style={{ color: s.dark }}>
+                <h3 style={{ color: s.dark, fontWeight: 400, fontSize: 25 }}>
                   Is there anything better than a<br />
                   <b style={{ color: s.primary }}>good meal</b> after a{" "}
                   <b>hiking trail</b>?
