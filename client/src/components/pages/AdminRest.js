@@ -39,7 +39,8 @@ import {
   DialogCont,
   ContClose,
   Descr,
-  RoleWrap
+  RoleWrap,
+  MessageBookingsDetail
 } from "../styled/Admin";
 
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
@@ -384,7 +385,7 @@ export const AdminRest = props => {
                                     )
                                   }
                                 >
-                                  SEE BOOKINGS
+                                  VIEW BOOKINGS
                                 </Button>
                               </Grid>
                               <Grid
@@ -421,6 +422,16 @@ export const AdminRest = props => {
                               </IconButton>
                             </Tooltip>
                           </ContClose>
+                          {bookingDetail && bookingDetail.length === 0 && (
+                            <MessageBookingsDetail>
+                              <p>There are not bookings yet, but it will 😉</p>
+                              <img
+                                src="/mountain.gif"
+                                width="50"
+                                height="auto"
+                              />
+                            </MessageBookingsDetail>
+                          )}
                           {bookingDetail &&
                             bookingDetail.map(book => {
                               return (

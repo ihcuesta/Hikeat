@@ -205,6 +205,20 @@ export const Descr = styled.p`
   }
 `;
 
+export const MessageBookingsDetail = styled.div`
+  && p {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 20px;
+  }
+
+  && img {
+    display: block;
+    margin: auto;
+  }
+`;
+
 export const BgAdmin = styled.div`
   width: 100%;
 
