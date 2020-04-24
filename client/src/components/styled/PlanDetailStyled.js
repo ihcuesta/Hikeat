@@ -176,5 +176,6 @@ export const IconsCont = styled.div`
 export const Price = styled.p`
   color: ${s.textSecondary};
   font-size: 23px;
-  margin-right: 50px;
+  margin: 7px 50px 7px 0px;
+  padding: 0px;
 `;

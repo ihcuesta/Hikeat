@@ -624,7 +624,7 @@ export const PlanDetail = props => {
                   <Button
                     color="secondary"
                     variant="contained"
-                    style={{ width: 150 }}
+                    style={{ width: 150, padding: 0 }}
                     type="submit"
                   >
                     BOOK

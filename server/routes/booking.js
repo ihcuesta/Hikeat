@@ -165,6 +165,7 @@ router.put("/:bookingid/edit", async (req, res, next) => {
       user: req.user._id
     });
 
+    let old = bookingToEdit.numhikers;
     console.log("Esta es la reserva: " + bookingToEdit);
 
     // Check if it's possible book or is full
@@ -193,15 +194,27 @@ router.put("/:bookingid/edit", async (req, res, next) => {
           }
         }
       );
+      console.log(newcounter);
+      console.log(numhikers);
 
       // Increase the counter of bookings
+      let planID = bookingToEdit.planid;
+      const searchPlan = await Plan.findOne({
+        _id: planID
+      });
+
+      console.log(searchPlan);
+
+      let contador = searchPlan.counterBookings;
+      let countUpdate = contador + (Number(numhikers) - Number(old));
+
       const counterBooking = await Plan.findOneAndUpdate(
         {
-          _id: planid
+          _id: planID
         },
         {
           $set: {
-            counterBooking: Number(newcounter) + Number(numhikers)
+            counterBookings: countUpdate
           }
         }
       );
