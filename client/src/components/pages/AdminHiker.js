@@ -15,7 +15,11 @@ import {
   CardMedia,
   CardContent,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 import {
   HeaderAdmin,
@@ -38,8 +42,8 @@ import {
 } from "../styled/Admin";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
-import { RestCont } from "../styled/CardStyled";
-import { ContBody } from "../styled/globalStyles";
+import { RestCont, ContChips } from "../styled/CardStyled";
+import { ContBody, changeFormat } from "../styled/globalStyles";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
 import ExploreIcon from "@material-ui/icons/Explore";
@@ -61,6 +65,7 @@ import {
   getAllFavourites,
   deleteFavourite
 } from "../../service/favouriteService";
+import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
 
 export const AdminHiker = () => {
   const history = useHistory();
@@ -74,6 +79,7 @@ export const AdminHiker = () => {
   const [favs, setFavs] = useState(0);
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openCanc, setOpenCanc] = useState(false);
 
   useEffect(() => {
     getAllBookings().then(bookings => {
@@ -86,6 +92,10 @@ export const AdminHiker = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseCanc = () => {
+    setOpenCanc(false);
   };
 
   const handleCancel = async bookingID => {
@@ -297,40 +307,55 @@ export const AdminHiker = () => {
                               ></RestaurantMenuOutlinedIcon>
                               <p>{booking.restid.name}</p>
                             </RestCont>
-                            <Grid container spacing={1}>
-                              <Grid item xs={5}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <CalendarTodayIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={booking.planid.date}
-                                />
-                              </Grid>
-                              <Grid item xs={4}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <WatchLaterOutlinedIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={booking.planid.startTime}
-                                />
-                              </Grid>
-                            </Grid>
+                            <ContChips>
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <CalendarTodayIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={booking.planid.date}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <WatchLaterOutlinedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={booking.planid.startTime}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light
+                                }}
+                                size="medium"
+                                icon={
+                                  <EuroRoundedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={changeFormat(booking.planid.price)}
+                              />
+                            </ContChips>
+
                             <BodyCard>{booking.planid.shortDescr}</BodyCard>
                           </CardContent>
                           <NumHikers>
@@ -380,10 +405,8 @@ export const AdminHiker = () => {
                                   fullWidth
                                   variant="outlined"
                                   color="primary"
-                                  value={booking._id}
-                                  onClick={e =>
-                                    handleCancel(e.currentTarget.value)
-                                  }
+                                  // value={booking._id}
+                                  onClick={() => setOpenCanc(true)}
                                 >
                                   CANCEL BOOKING
                                 </Button>
@@ -408,40 +431,52 @@ export const AdminHiker = () => {
                             ></RestaurantMenuOutlinedIcon>
                             <p>{booking.restid.name}</p>
                           </RestCont>
-                          <Grid container spacing={1}>
-                            <Grid item xs={6}>
-                              <Chip
-                                style={{
-                                  padding: "20px 5px",
-                                  color: s.dark,
-                                  backgroundColor: s.light
-                                }}
-                                size="medium"
-                                icon={
-                                  <CalendarTodayIcon
-                                    style={{ color: s.primary }}
-                                  />
-                                }
-                                label={booking.planid.date}
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <Chip
-                                style={{
-                                  padding: "20px 5px",
-                                  color: s.dark,
-                                  backgroundColor: s.light
-                                }}
-                                size="medium"
-                                icon={
-                                  <WatchLaterOutlinedIcon
-                                    style={{ color: s.primary }}
-                                  />
-                                }
-                                label={booking.planid.startTime}
-                              />
-                            </Grid>
-                          </Grid>
+                          <ContChips>
+                            <Chip
+                              style={{
+                                padding: "20px 5px",
+                                color: s.dark,
+                                backgroundColor: s.light,
+                                marginRight: 5
+                              }}
+                              size="medium"
+                              icon={
+                                <CalendarTodayIcon
+                                  style={{ color: s.primary }}
+                                />
+                              }
+                              label={booking.planid.date}
+                            />
+
+                            <Chip
+                              style={{
+                                padding: "20px 5px",
+                                color: s.dark,
+                                backgroundColor: s.light,
+                                marginRight: 5
+                              }}
+                              size="medium"
+                              icon={
+                                <WatchLaterOutlinedIcon
+                                  style={{ color: s.primary }}
+                                />
+                              }
+                              label={booking.planid.startTime}
+                            />
+
+                            <Chip
+                              style={{
+                                padding: "20px 5px",
+                                color: s.dark,
+                                backgroundColor: s.light
+                              }}
+                              size="medium"
+                              icon={
+                                <EuroRoundedIcon style={{ color: s.primary }} />
+                              }
+                              label={changeFormat(booking.planid.price)}
+                            />
+                          </ContChips>
                           <Gap></Gap>
                           <form
                             onSubmit={e => {
@@ -497,6 +532,43 @@ export const AdminHiker = () => {
                             </BookButton>
                           </form>
                         </EditBookingCont>
+                      </Dialog>
+
+                      <Dialog
+                        open={openCanc}
+                        onClose={handleCloseCanc}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <>
+                          <DialogTitle
+                            id="alert-dialog-title"
+                            style={{ color: s.dark }}
+                          >
+                            {"Confirm cancel booking"}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                              Are you sure that you want to cancel the booking
+                              for {booking.planid.name} on {booking.planid.date}{" "}
+                              for {booking.numhikers} persons?
+                            </DialogContentText>
+                          </DialogContent>
+                        </>
+
+                        <DialogActions>
+                          <Button onClick={handleCloseCanc} color="primary">
+                            Back
+                          </Button>
+                          <Button
+                            onClick={() => handleCancel(booking._id)}
+                            color="secondary"
+                            variant="contained"
+                            autoFocus
+                          >
+                            Cancel booking
+                          </Button>
+                        </DialogActions>
                       </Dialog>
                     </>
                   );

@@ -147,7 +147,7 @@ export const NumHikers = styled.div`
 `;
 
 export const EditBookingCont = styled.div`
-  width: 400px;
+  width: 430px;
 
   border-radius: 5px;
   background-color: #fff;

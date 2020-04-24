@@ -44,7 +44,7 @@ import {
 
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
-import { RestCont } from "../styled/CardStyled";
+import { RestCont, ContChips } from "../styled/CardStyled";
 import { ContBody } from "../styled/globalStyles";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
@@ -56,7 +56,7 @@ import { whoami } from "../../service/authService";
 import { CardBookings } from "../UI/Cards";
 import { getAllBookings, getEditBooking } from "../../service/bookingService";
 import { TitleBooking, Booking, BookButton } from "../styled/PlanDetailStyled";
-import { Gap, s } from "../styled/globalStyles";
+import { Gap, s, changeFormat } from "../styled/globalStyles";
 import { editBooking, getBookingsOfPlan } from "../../service/bookingService";
 import { BodyCard, LocationCont } from "../styled/CardStyled";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
@@ -72,6 +72,7 @@ import RestaurantRoundedIcon from "@material-ui/icons/RestaurantRounded";
 import { getAllPlans } from "../../service/planService";
 import { fetchRestCardAdmin } from "../../service/restaurantService";
 import { RestaurantCard } from "../UI/RestaurantCard";
+import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
 
 export const AdminRest = props => {
   const session = useUser();
@@ -299,40 +300,55 @@ export const AdminRest = props => {
                               ></RestaurantMenuOutlinedIcon>
                               <p>{plan.restaurant.name}</p>
                             </RestCont>
-                            <Grid container spacing={1}>
-                              <Grid item xs={5}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <CalendarTodayIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={plan.date}
-                                />
-                              </Grid>
-                              <Grid item xs={4}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <WatchLaterOutlinedIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={plan.startTime}
-                                />
-                              </Grid>
-                            </Grid>
+                            <ContChips>
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <CalendarTodayIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={plan.date}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <WatchLaterOutlinedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={plan.startTime}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light
+                                }}
+                                size="medium"
+                                icon={
+                                  <EuroRoundedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={changeFormat(plan.price)}
+                              />
+                            </ContChips>
+
                             <BodyCard>{plan.shortDescr}</BodyCard>
                           </CardContent>
                           <NumHikers>

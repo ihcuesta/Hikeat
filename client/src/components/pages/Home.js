@@ -6,7 +6,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
-import { ContBody } from "../styled/globalStyles";
+import { ContBody, changeFormat } from "../styled/globalStyles";
 import {
   getAllPlans,
   getByRegion,
@@ -71,11 +71,6 @@ export const Home = () => {
 
   const calcPagesReg = total => {
     setPagesReg(cPages(total));
-  };
-
-  const changeFormat = price => {
-    price = String(price);
-    return price.replace(".", ",").padEnd(5, "0");
   };
 
   const handleFilter = region => {

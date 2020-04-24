@@ -13,6 +13,11 @@ export const s = {
   }
 };
 
+export const changeFormat = price => {
+  price = String(price);
+  return price.replace(".", ",").padEnd(5, "0");
+};
+
 export const GlobalStyles = styled.div`
   @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap");
   font-family: "Montserrat", sans-serif;
