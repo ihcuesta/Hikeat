@@ -36,7 +36,7 @@ export const HomeHead = ({ scrollPlans }) => {
                 <h3 style={{ color: s.dark, fontWeight: 400, fontSize: 25 }}>
                   Is there anything better than a<br />
                   <b style={{ color: s.primary }}>good meal</b> after a{" "}
-                  <b>hiking trail</b>?
+                  <b>hike</b>?
                 </h3>
                 <p>
                   No one better than the local restaurants to give you advice.
@@ -66,7 +66,7 @@ export const HomeHead = ({ scrollPlans }) => {
                   </Grid>
                   <Grid item xs={10}>
                     <p style={{ marginTop: 0 }}>
-                      Enjoy & share a morning of hiking with other hikers.
+                      Enjoy & share a morning hike with other hikers.
                     </p>
                   </Grid>
                 </Grid>

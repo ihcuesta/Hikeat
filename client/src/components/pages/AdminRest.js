@@ -354,7 +354,7 @@ export const AdminRest = props => {
                           </CardContent>
                           <NumHikers>
                             <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
-                            <p>{plan.counterBookings} persons</p>
+                            <p>{plan.counterBookings} guests</p>
                           </NumHikers>
                           <CardActions
                             style={{

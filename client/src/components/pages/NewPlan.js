@@ -837,7 +837,7 @@ export const NewPlan = ({ history }) => {
                               }
                             />
                           }
-                          label="Celiacs"
+                          label="Gluten free"
                         />
                       </Container>
                       {i === 0 && firstCourse[0].course === "" && validated3 ? (

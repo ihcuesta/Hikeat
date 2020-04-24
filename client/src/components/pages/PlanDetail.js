@@ -447,7 +447,7 @@ export const PlanDetail = props => {
               <Legend>
                 <div>
                   <img src={veggies} width="20" height="auto" />
-                  <p>* Appropiate for vegans</p>
+                  <p>* Vegan friendly</p>
                 </div>
                 <div>
                   <img src={gluten} width="20" height="auto" />
@@ -543,7 +543,7 @@ export const PlanDetail = props => {
                   ></LocationOnIcon>
                   <DateText>
                     <p>
-                      <b>Start Point</b>
+                      <b>Starting Point</b>
                     </p>
                     <p>{info.restaurant && info.restaurant.name}</p>
                     <p>
@@ -586,7 +586,7 @@ export const PlanDetail = props => {
                 <TextField
                   name="numhikers"
                   id="outlined-basic"
-                  label="Persons"
+                  label="Guests"
                   variant="outlined"
                   type="number"
                   fullWidth
