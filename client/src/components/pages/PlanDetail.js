@@ -62,7 +62,8 @@ import {
   Booking,
   BookButton,
   Legend,
-  IconsCont
+  IconsCont,
+  Price
 } from "../styled/PlanDetailStyled";
 import infographic from "../../images/infographic.svg";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
@@ -70,7 +71,7 @@ import veggies from "../../images/veggies.svg";
 import gluten from "../../images/gluten.svg";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import QueryBuilderRoundedIcon from "@material-ui/icons/QueryBuilderRounded";
-import { s } from "../styled/globalStyles";
+import { s, changeFormat } from "../styled/globalStyles";
 import { Gap } from "../styled/globalStyles";
 import { RestaurantCard } from "../UI/RestaurantCard";
 import { TitleRest } from "../styled/PlanDetailStyled";
@@ -92,7 +93,7 @@ export const PlanDetail = props => {
   const session = useUser();
   const history = useHistory();
   const [info, setInfo] = useState([]);
-  const [numhikers, setNumhikers] = useState(0);
+  const [numhikers, setNumhikers] = useState(1);
   const [comments, setComments] = useState();
   const [planid, setPlanid] = useState();
   const [restid, setRestid] = useState();
@@ -103,6 +104,7 @@ export const PlanDetail = props => {
   const [ismanager, setIsmanager] = useState();
   const [allComments, setAllComments] = useState();
   const [pos, setPos] = useState();
+  const [totPrice, setTotPrice] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -110,6 +112,7 @@ export const PlanDetail = props => {
     fetchSinglePlan(id).then(plan => {
       setPlanid(plan.planId._id);
       setInfo(plan.planId);
+      setTotPrice(plan.planId.price);
       setRestid(plan.planId.restaurant._id);
       getComments(plan.planId.restaurant._id).then(comments => {
         console.log(comments);
@@ -591,7 +594,10 @@ export const PlanDetail = props => {
                   type="number"
                   fullWidth
                   value={numhikers}
-                  onChange={e => setNumhikers(e.target.value)}
+                  onChange={e => {
+                    setNumhikers(e.target.value);
+                    setTotPrice(e.target.value * info.price);
+                  }}
                   error={numhikers === 0 && validated}
                   helperText={
                     numhikers === 0 && validated
@@ -614,6 +620,7 @@ export const PlanDetail = props => {
                 />
                 <Gap></Gap>
                 <BookButton>
+                  <Price>{changeFormat(totPrice)} € </Price>
                   <Button
                     color="secondary"
                     variant="contained"
