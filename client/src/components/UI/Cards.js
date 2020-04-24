@@ -21,7 +21,8 @@ import {
   RestCont,
   BodyCard,
   Rates,
-  Social
+  Social,
+  ContChips
 } from "../styled/CardStyled";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
@@ -32,15 +33,12 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
+import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
 import {
   newFavourite,
   deleteFavourite,
   getFavourite
 } from "../../service/favouriteService";
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-// ..
-AOS.init();
 
 export const CardHome = ({
   id,
@@ -54,7 +52,8 @@ export const CardHome = ({
   descr,
   restid,
   rate,
-  totalComments
+  totalComments,
+  price
 }) => {
   const [favourite, setFavourite] = useState(false);
   const session = useUser();
@@ -117,32 +116,42 @@ export const CardHome = ({
             </Box>
             <p>{totalComments} comments</p>
           </Rates>
-          <Grid container spacing={1}>
-            <Grid item xs={5}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<CalendarTodayIcon style={{ color: s.primary }} />}
-                label={date}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
-                label={time}
-              />
-            </Grid>
-          </Grid>
+          <ContChips>
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<CalendarTodayIcon style={{ color: s.primary }} />}
+              label={date}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
+              label={time}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light
+              }}
+              size="medium"
+              icon={<EuroRoundedIcon style={{ color: s.primary }} />}
+              label={price}
+            />
+          </ContChips>
           <BodyCard>{descr}</BodyCard>
         </CardContent>
 

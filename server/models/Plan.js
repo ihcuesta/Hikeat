@@ -38,6 +38,7 @@ const planSchema = new mongoose.Schema(
     drinks: Boolean,
     coffee: Boolean,
     bread: Boolean,
+    price: Number,
     status: {
       type: String,
       enum: ["publish", "draft"]

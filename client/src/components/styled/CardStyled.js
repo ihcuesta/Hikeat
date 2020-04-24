@@ -58,3 +58,10 @@ export const ContIconsCard = styled.div`
   flex-flow: row wrap;
   justify-content: flex-start;
 `;
+
+export const ContChips = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+`;

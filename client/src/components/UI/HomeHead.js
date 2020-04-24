@@ -7,10 +7,6 @@ import FilterHdrOutlinedIcon from "@material-ui/icons/FilterHdrOutlined";
 import RestaurantOutlinedIcon from "@material-ui/icons/RestaurantOutlined";
 import { s } from "../styled/globalStyles";
 import ScrollIntoView from "react-scroll-into-view";
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-// ..
-AOS.init();
 
 export const HomeHead = ({ scrollPlans }) => {
   return (

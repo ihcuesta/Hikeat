@@ -59,6 +59,7 @@ export const NewPlan = ({ history }) => {
   const [highlights, setHighlights] = useState([""]);
   const [hikelevel, setHikelevel] = useState("");
   const [kms, setKms] = useState(0);
+  const [price, setPrice] = useState(0);
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [lunchTime, setLunchTime] = useState("14:30");
@@ -503,6 +504,34 @@ export const NewPlan = ({ history }) => {
               )}
             </div>
             <Gap></Gap> */}
+
+            <div>
+              <OutlinedInput
+                id="price"
+                name="price"
+                type="number"
+                value={price}
+                label="Price"
+                style={{
+                  color: s.dark,
+                  maxWidth: 150
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                endAdornment={<InputAdornment position="end">€</InputAdornment>}
+                onChange={e => setPrice(e.target.value)}
+                error={price === 0 && validated1}
+                helperText={price === "" && validated1 ? "Empty field!" : " "}
+              />
+              {price === 0 && validated1 ? (
+                <Error>Include the price</Error>
+              ) : (
+                <Error></Error>
+              )}
+            </div>
+            <Gap></Gap>
+
             <Grid container>
               <Grid item item xs={12} sm={6} md={6} lg={6}>
                 <FormControlLabel
@@ -1154,8 +1183,9 @@ export const NewPlan = ({ history }) => {
         if (
           hikelevel !== "" &&
           kms > 0 &&
-          date !== ""
+          date !== "" &&
           // && maxBookings > 0
+          price > 0
         ) {
           handleNext();
         } else {
@@ -1206,6 +1236,7 @@ export const NewPlan = ({ history }) => {
                 image3,
                 image4,
                 image5,
+                price,
                 // maxBookings,
                 breakfast,
                 brunch,

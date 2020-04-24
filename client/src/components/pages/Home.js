@@ -73,6 +73,11 @@ export const Home = () => {
     setPagesReg(cPages(total));
   };
 
+  const changeFormat = price => {
+    price = String(price);
+    return price.replace(".", ",").padEnd(5, "0");
+  };
+
   const handleFilter = region => {
     setRegion(region);
     if (region === "all") {
@@ -155,6 +160,7 @@ export const Home = () => {
                     totalComments={
                       plan.restaurant && plan.restaurant.totalComments
                     }
+                    price={changeFormat(plan.price)}
                   ></CardHome>
                 );
               })
