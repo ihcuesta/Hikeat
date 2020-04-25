@@ -5,9 +5,10 @@ const planService = axios.create({
   withCredentials: true
 });
 
-export const getLastPlansRest = async endpoint => {
-  const data = await planService.get(`/lastplansrest/${endpoint}`);
-  return data.data.plans;
+export const getPlansOfRestaurant = async endpoint => {
+  const data = await planService.get(`/restaurant/${endpoint}`);
+  console.log(data.data.getRest);
+  return data.data.getRest;
 };
 
 export const getPlansPage = async num => {
@@ -65,7 +66,8 @@ export const newPlan = async ({
   lunchTime,
   kids,
   brunch,
-  maxBookings,
+  price,
+  // maxBookings,
   bookings,
   breakfast,
   firstCourse,
@@ -96,7 +98,8 @@ export const newPlan = async ({
       lunchTime,
       kids,
       brunch,
-      maxBookings,
+      price,
+      // maxBookings,
       bookings,
       breakfast,
       firstCourse,
@@ -149,7 +152,8 @@ export const editPlan = async (
     lunchTime,
     kids,
     brunch,
-    maxBookings,
+    price,
+    // maxBookings,
     bookings,
     breakfast,
     firstCourse,
@@ -162,6 +166,7 @@ export const editPlan = async (
   }
 ) => {
   try {
+    console.log(price);
     const { data } = await planService.put(`/${endpoint}/edit`, {
       name,
       hikelevel,
@@ -180,7 +185,8 @@ export const editPlan = async (
       lunchTime,
       kids,
       brunch,
-      maxBookings,
+      price,
+      // maxBookings,
       bookings,
       breakfast,
       firstCourse,

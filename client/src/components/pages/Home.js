@@ -6,7 +6,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
-import { ContBody } from "../styled/globalStyles";
+import { ContBody, changeFormat } from "../styled/globalStyles";
 import {
   getAllPlans,
   getByRegion,
@@ -15,6 +15,7 @@ import {
   getPlansPageRegion,
   getTotalRegion
 } from "../../service/planService";
+import { MapLeaflet } from "../UI/map";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";
@@ -132,9 +133,7 @@ export const Home = () => {
               </NotFound>
             )}
             {plans && plans.length === 0 && !search ? (
-              <Backdrop style={{ zIndex: 1000 }} open={true}>
-                <CircularProgress color="primary" />
-              </Backdrop>
+              <p>No plans found</p>
             ) : (
               plans &&
               plans.map(plan => {
@@ -154,6 +153,7 @@ export const Home = () => {
                     totalComments={
                       plan.restaurant && plan.restaurant.totalComments
                     }
+                    price={changeFormat(plan.price)}
                   ></CardHome>
                 );
               })
@@ -161,7 +161,9 @@ export const Home = () => {
           </Grid>
           {!search ? (
             <>
-              <p>Page {numPage}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPage}
+              </p>
               <Pagination
                 count={pages}
                 color="primary"
@@ -172,7 +174,9 @@ export const Home = () => {
             </>
           ) : (
             <>
-              <p>Page {numPageReg}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPageReg}
+              </p>
               <Pagination
                 count={pagesReg}
                 color="primary"

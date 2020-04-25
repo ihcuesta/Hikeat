@@ -34,7 +34,18 @@ export const ImRestaurant = styled.div`
 `;
 
 export const WelcomeMsg = styled.p`
-  font-size: 14px;
-  color: ${s.primary};
-  margin-right: 30px;
+  display: none;
+
+  @media (min-width: 600px) {
+    display: block;
+    font-size: 14px;
+    color: ${s.primary};
+    margin-right: 30px;
+  }
+`;
+
+export const LogoLeft = styled.p`
+  font-size: 18px;
+  color: ${s.dark};
+  font-weight: 600;
 `;

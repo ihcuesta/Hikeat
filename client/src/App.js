@@ -18,6 +18,7 @@ import { PlanDetail } from "./components/pages/PlanDetail";
 import { Header } from "./components/UI/Header";
 import { EditRestaurant } from "./components/pages/EditRestaurant";
 import { EditPlan } from "./components/pages/EditPlan";
+import { EditUser } from "./components/pages/EditUser";
 
 import ScrollMemory from "react-router-scroll-memory";
 import AOS from "aos";
@@ -45,6 +46,7 @@ export const App = withAuthentication(() => (
         <Route path="/plan/:id" component={PlanDetail} />
         <Route path="/hiker/admin" component={AdminHiker} />
         <Route path="/owner/admin" component={AdminRest} />
+        <Route path="/profile/edit" component={EditUser} />
       </Switch>
     </GlobalStyles>
   </Router>

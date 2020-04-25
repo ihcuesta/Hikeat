@@ -55,19 +55,19 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, failureDetails) => {
     if (err) {
       console.log(err);
-      return res.json({ status: 500, message: "Authentication error" });
+      return res.status(500).json({ message: "Authentication error" });
     }
 
     if (!user) {
-      return res.json({ status: 401, message: failureDetails.message });
+      return res.status(401).json({ message: "Authentication error" });
     }
 
     req.login(user, err => {
       if (err) {
-        return res.status(500).json({ message: "Session save went bad." });
+        return res.status(500).json({ message: "Authentication error" });
       }
 
-      return res.json({ status: 200, message: "Logged in successfully", user });
+      return res.status(200).json({ message: "Logged in successfully", user });
     });
   })(req, res, next);
 });
@@ -91,6 +91,54 @@ router.post("/logout", (req, res, next) => {
   }
 
   return res.json({ message: "Cannot logout if not authenticated" });
+});
+
+// Edit user
+router.get("/profile/edit", async (req, res, next) => {
+  try {
+    const userToEdit = await User.findOne({
+      _id: req.user._id
+    });
+
+    if (String(userToEdit._id) === String(req.user._id)) {
+      console.log("Acceso permitido" + userToEdit.user + "  " + req.user._id);
+      return res.status(200).json({ userToEdit });
+    } else {
+      console.log("Only the owner is allowed to edit his user profile");
+      return res.status(403).json({ message: "Forbidden access" });
+    }
+  } catch (err) {
+    console.log("Error trying to get information to edit the profile: ", err);
+    return res.status(500).json({
+      message: "Error trying to get information to edit the profile"
+    });
+  }
+});
+
+// Send updates of user
+router.put("/profile/edit", async (req, res, next) => {
+  const { image, description, fav } = req.body;
+  try {
+    const userUpdated = await User.findOneAndUpdate(
+      {
+        _id: req.user._id
+      },
+      {
+        $set: {
+          image,
+          description,
+          fav
+        }
+      }
+    );
+
+    return res.status(200).json({ userUpdated });
+  } catch (err) {
+    console.log("Error trying to update the user: ", err);
+    return res.status(500).json({
+      message: "Error trying to update the user"
+    });
+  }
 });
 
 module.exports = router;

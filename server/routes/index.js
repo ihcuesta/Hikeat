@@ -24,6 +24,9 @@ router.use("/comment", comment);
 const cloudinary = require("./cloudinary");
 router.use("/cloudinary", cloudinary);
 
+const geocode = require("./geocode");
+router.use("/geocode", geocode);
+
 /* GET home page */
 router.get("/", (req, res, next) => {
   res.render("index");

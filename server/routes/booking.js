@@ -158,11 +158,15 @@ router.get("/:id/edit", async (req, res, next) => {
 // Send the updates after edit
 router.put("/:bookingid/edit", async (req, res, next) => {
   const { newcounter, numhikers, comments } = req.body;
+
   try {
     const bookingToEdit = await Booking.findOne({
       _id: req.params.bookingid,
       user: req.user._id
     });
+
+    let old = bookingToEdit.numhikers;
+    console.log("Esta es la reserva: " + bookingToEdit);
 
     // Check if it's possible book or is full
     // const checkAvailability = await Plan.findOne({
@@ -185,20 +189,32 @@ router.put("/:bookingid/edit", async (req, res, next) => {
         },
         {
           $set: {
-            numhikers,
-            comments
+            numhikers: numhikers,
+            comments: comments
           }
         }
       );
+      console.log(newcounter);
+      console.log(numhikers);
 
       // Increase the counter of bookings
+      let planID = bookingToEdit.planid;
+      const searchPlan = await Plan.findOne({
+        _id: planID
+      });
+
+      console.log(searchPlan);
+
+      let contador = searchPlan.counterBookings;
+      let countUpdate = contador + (Number(numhikers) - Number(old));
+
       const counterBooking = await Plan.findOneAndUpdate(
         {
-          _id: planid
+          _id: planID
         },
         {
           $set: {
-            counterBooking: Number(counter) + Number(numhikers)
+            counterBookings: countUpdate
           }
         }
       );
@@ -209,7 +225,7 @@ router.put("/:bookingid/edit", async (req, res, next) => {
     }
   } catch (err) {
     console.log("Error trying to update the booking details: ", err);
-    return status(500).json({
+    return res.status(500).json({
       message: "Error trying to update the booking details"
     });
   }
@@ -223,9 +239,41 @@ router.post("/:id/delete", async (req, res, next) => {
     });
 
     if (String(bookingCheck.user) === String(req.user._id)) {
+      let bookingToDelete = await Booking.findOne({
+        _id: req.params.id
+      });
+
+      let hikersBook = bookingToDelete.numhikers;
+      let planID = bookingToDelete.planid;
+      console.log("Este es el plan id :" + planID);
+
+      const findPlan = await Plan.findOne({
+        _id: planID
+      });
+
+      console.log("Este es el plan: " + findPlan);
+      console.log(
+        "Esto es el hikersBook: " + hikersBook + " " + typeof hikersBook
+      );
+      let counterB = findPlan.counterBookings;
+      console.log("Esto es el counterB: " + counterB + " " + typeof counterB);
+      let newCounter = Number(counterB) - Number(hikersBook);
+      console.log("Esto es el new counter: " + newCounter);
+      const updatePlan = await Plan.findOneAndUpdate(
+        {
+          _id: planID
+        },
+        {
+          $set: {
+            counterBookings: newCounter
+          }
+        }
+      );
+
       const bookingDeleted = await Booking.findOneAndRemove({
         _id: req.params.id
       });
+
       return res.status(200).json({ bookingDeleted });
     } else {
       console.log("Only the owner is allowed to delete this booking");
@@ -233,7 +281,7 @@ router.post("/:id/delete", async (req, res, next) => {
     }
   } catch (err) {
     console.log("Error trying to delete the booking: ", err);
-    return status(500).json({
+    return res.status(500).json({
       message: "Error trying to delete the booking"
     });
   }

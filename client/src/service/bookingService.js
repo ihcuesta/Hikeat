@@ -48,9 +48,12 @@ export const getBookingsOfPlan = async endpoint => {
 export const editBooking = async (
   endpoint,
 
-  { newcounter, numhikers, comments }
+  newcounter,
+  numhikers,
+  comments
 ) => {
   try {
+    console.log(numhikers);
     const { data } = await bookingService.put(`/${endpoint}/edit`, {
       newcounter,
       numhikers,
@@ -63,6 +66,7 @@ export const editBooking = async (
 };
 
 export const deleteBooking = async endpoint => {
+  console.log(endpoint);
   const { data } = await bookingService.post(`/${endpoint}/delete`);
   return data;
 };

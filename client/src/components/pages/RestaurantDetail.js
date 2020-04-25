@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../../service/authService";
 import { useHistory } from "react-router";
+import "./../../App.css";
 import {
   Head,
   Rates,
@@ -17,7 +19,9 @@ import {
   IconsCont,
   TitComment,
   ContRating,
-  ContBtnComment
+  ContBtnComment,
+  MapContainer,
+  ContImgResp
 } from "../styled/RestDetailStyled";
 import {
   Grid,
@@ -28,7 +32,12 @@ import {
   TextField,
   Collapse,
   IconButton,
-  Avatar
+  Avatar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
 } from "@material-ui/core";
 import { Rating, Alert } from "@material-ui/lab";
 import {
@@ -50,10 +59,11 @@ import LocalPharmacyIcon from "@material-ui/icons/LocalPharmacy";
 import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import { Divider, BgHome } from "../styled/HomeStyles";
 import { CardLastPlansRest } from "../UI/Cards";
-import { getLastPlansRest } from "../../service/planService";
+import { getPlansOfRestaurant } from "../../service/planService";
 import {
   fetchSingleRestaurant,
-  checkIfManager
+  checkIfManager,
+  deleteRestaurant
 } from "../../service/restaurantService";
 import { Footer } from "../UI/Footer";
 import {
@@ -63,8 +73,11 @@ import {
   getComments,
   deleteComment
 } from "../../service/commentService";
+import { getLatLong } from "../../service/geocodeService";
+import { MapLeaflet } from "../UI/map";
 
 export const RestaurantDetail = props => {
+  const session = useUser();
   const history = useHistory();
   const [plans, setPlans] = useState([]);
   const [info, setInfo] = useState();
@@ -73,21 +86,27 @@ export const RestaurantDetail = props => {
   const [comment, setComment] = useState("");
   const [validated, setValidated] = useState(false);
   const [hover, setHover] = useState(-1);
-  const [open, setOpen] = useState(false);
+  const [openNew, setOpenNew] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openEdited, setOpenEdited] = useState(false);
   const [iscomment, setIscomment] = useState();
   const [ismanager, setIsmanager] = useState(false);
   const [isOldCom, setIsOldCom] = useState(false);
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = useState(2);
+  const [pos, setPos] = useState();
+  const [totComments, setTotalComments] = useState();
 
   useEffect(() => {
-    getLastPlansRest().then(plans => setPlans(plans));
     const id = props.match.params.id;
+    getPlansOfRestaurant(id).then(plans => {
+      setPlans(plans);
+    });
     fetchSingleRestaurant(id).then(restaurant => {
       setInfo(restaurant.restaurantId);
       setValue(restaurant.restaurantId.rateAv);
       setAllcomments(restaurant.commentsRes);
-      console.log(restaurant);
+      setTotalComments(restaurant.restaurantId.totalComments);
     });
     getUserComment(id).then(comment => {
       if (comment.length > 0) {
@@ -99,8 +118,15 @@ export const RestaurantDetail = props => {
     checkIfManager(id).then(restaurant => {
       setIsmanager(restaurant.isManager);
     });
+
+    getLatLong(id).then(coords => {
+      console.log(coords.data);
+      setPos(coords.data);
+      console.log(pos);
+    });
   }, []);
 
+  const id = props.match.params.id;
   const rest = info && info._id;
   const getDate = () => {
     const today = new Date();
@@ -110,40 +136,79 @@ export const RestaurantDetail = props => {
     return dd + "-" + mm + "-" + yyyy;
   };
 
-  const deleteCom = async () => {
-    setOpen(false);
-    const response = await deleteComment(rest);
-    getComments(rest).then(comments => {
-      setAllcomments(comments);
+  // const editCom = async () => {
+  //   setOpen(false);
+  //   const response = await deleteComment(rest);
+  //   getComments(rest).then(comments => {
+  //     setAllcomments(comments);
+  //   });
+  //   setIsOldCom(false);
+  //   setOpenDelete(true);
+  // };
+
+  const handleClickOpenDel = () => {
+    setOpenDel(true);
+  };
+
+  const handleCloseDel = () => {
+    setOpenDel(false);
+  };
+
+  const handleDelete = id => {
+    deleteRestaurant(id).then(del => {
+      console.log(del);
+    });
+    history.push("/owner/admin");
+  };
+
+  const commentDelete = id => {
+    deleteComment(id).then(comment => {
+      console.log(comment);
+      getComments(id).then(comments => {
+        setAllcomments(comments);
+      });
+      fetchSingleRestaurant(rest).then(restaurant => {
+        setValue(restaurant.restaurantId.rateAv);
+        setTotalComments(restaurant.restaurantId.totalComments);
+      });
     });
     setIsOldCom(false);
     setOpenDelete(true);
+    setOpenEdited(false);
+    setOpenNew(false);
   };
 
   const handleSubmit = async (rest, stars, comment, isOldCom) => {
-    setOpenDelete(false);
-    if (isOldCom) {
-      const date = getDate();
-      const response = await editComment(rest, stars, comment, date);
+    if (comment !== "") {
+      setOpenDelete(false);
 
-      getComments(rest).then(comments => {
-        setAllcomments(comments);
-      });
-      setOpen(true);
-    } else {
-      if (comment !== "") {
+      if (isOldCom) {
+        setOpenNew(false);
+        const date = getDate();
+        const response = await editComment(rest, comment, date);
+
+        getComments(rest).then(comments => {
+          setAllcomments(comments);
+        });
+        setOpenEdited(true);
+      } else {
+        setOpenEdited(false);
         const date = getDate();
         const response = await newComment(rest, stars, comment, date);
 
         getComments(rest).then(comments => {
           setAllcomments(comments);
         });
+        fetchSingleRestaurant(rest).then(restaurant => {
+          setValue(restaurant.restaurantId.rateAv);
+          setTotalComments(restaurant.restaurantId.totalComments);
+        });
         setIsOldCom(true);
-        setOpen(true);
+        setOpenNew(true);
         // response.data.isComment ? setIscomment(true) : setIscomment(false);
-      } else {
-        setValidated(true);
       }
+    } else {
+      setValidated(true);
     }
   };
 
@@ -154,6 +219,8 @@ export const RestaurantDetail = props => {
     4: "Good",
     5: "Excellent"
   };
+
+  console.log(pos && pos.Latitude);
 
   return info === 0 ? (
     <Backdrop style={{ zIndex: 1000 }} open={true}>
@@ -172,26 +239,74 @@ export const RestaurantDetail = props => {
           <Box mt={0.3} component="fieldset" borderColor="transparent">
             <Rating name="read-only" value={value} readOnly />
           </Box>
-          <p>{info && info.totalComments} comments</p>
+          <p>{totComments && totComments} comments</p>
         </Rates>
         <ImgCont>
           <Grid container spacing={1}>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
-              <img src={info && info.image1} width="100%" height="auto" />
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <img
+                src={info && info.image1 ? info.image1 : "/placeholder4.jpg"}
+                width="100%"
+                height="auto"
+                data-aos="fade-down"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-out"
+              />
             </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
+
+            <Grid item xs={12} sm={6} md={6} lg={6}>
               <Grid container>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info && info.image2} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6}>
+                  <img
+                    src={
+                      info && info.image2 ? info.image2 : "/placeholder4.jpg"
+                    }
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="100"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info && info.image3} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6}>
+                  <img
+                    src={
+                      info && info.image3 ? info.image3 : "/placeholder4.jpg"
+                    }
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="200"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info && info.image4} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
+                  <img
+                    src={
+                      info && info.image4 ? info.image4 : "/placeholder4.jpg"
+                    }
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="300"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info && info.image5} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
+                  <img
+                    src={
+                      info && info.image5 ? info.image5 : "/placeholder4.jpg"
+                    }
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="400"
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -200,7 +315,12 @@ export const RestaurantDetail = props => {
 
         <Grid container spacing={4}>
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Contact>
+            <Contact
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="0"
+            >
               <Owner>
                 <Avatar
                   style={{
@@ -262,9 +382,27 @@ export const RestaurantDetail = props => {
                   </Grid>
                 </Grid>
               </InfoBullets>
+              <MapContainer>
+                {pos && (
+                  <MapLeaflet
+                    lat={pos.Latitude}
+                    long={pos.Longitude}
+                  ></MapLeaflet>
+                )}
+              </MapContainer>
             </Contact>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={6}>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={6}
+            lg={6}
+            data-aos="fade-right"
+            data-aos-duration="500"
+            data-aos-easing="ease-in-out"
+            data-aos-delay="100"
+          >
             {allcomments &&
               allcomments.map(comment => {
                 return (
@@ -309,11 +447,16 @@ export const RestaurantDetail = props => {
             <form
               onSubmit={e => {
                 e.preventDefault();
-                handleSubmit(rest, stars, comment, isOldCom);
+                if (session) {
+                  handleSubmit(rest, stars, comment, isOldCom);
+                } else {
+                  history.push("/login");
+                }
               }}
             >
               <ContRating>
                 <Rating
+                  readOnly={isOldCom ? true : false}
                   name="hover-feedback"
                   value={stars}
                   precision={1}
@@ -363,7 +506,7 @@ export const RestaurantDetail = props => {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => deleteCom(rest)}
+                      onClick={() => commentDelete(id)}
                     >
                       Delete
                     </Button>
@@ -375,7 +518,7 @@ export const RestaurantDetail = props => {
                 )}
               </ContBtnComment>
               <div style={{ width: "100%", marginTop: 10 }}>
-                <Collapse in={open}>
+                <Collapse in={openNew}>
                   <Alert
                     severity="success"
                     action={
@@ -384,18 +527,34 @@ export const RestaurantDetail = props => {
                         color="inherit"
                         size="small"
                         onClick={() => {
-                          setOpen(false);
+                          setOpenNew(false);
                         }}
                       >
                         <CloseIcon fontSize="inherit" />
                       </IconButton>
                     }
                   >
-                    {isOldCom ? (
-                      <>Comment edited!</>
-                    ) : (
-                      <>Thank you for your comment!</>
-                    )}
+                    Thank you for your comment!
+                  </Alert>
+                </Collapse>
+
+                <Collapse in={openEdited}>
+                  <Alert
+                    severity="success"
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpenEdited(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                  >
+                    Comment edited!
                   </Alert>
                 </Collapse>
 
@@ -448,12 +607,18 @@ export const RestaurantDetail = props => {
                     marginTop: 15,
                     padding: "5px 35px"
                   }}
+                  onClick={handleClickOpenDel}
                 >
                   Delete
                 </Button>
               </EditCont>
             )}
-            <IconsCont>
+            <IconsCont
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="200"
+            >
               {info && info.dogs ? (
                 <InfoIcon>
                   <PetsIcon color="primary"></PetsIcon>
@@ -490,11 +655,11 @@ export const RestaurantDetail = props => {
           </Grid>
         </Grid>
       </ContBody>
-      <Divider></Divider>
+      {/* <Divider></Divider>
       <BgHome>
         <ContBody>
           <Grid container spacing={2}>
-            {plans.length === 0 ? (
+            {plans && plans.length === 0 ? (
               <p>Loading</p>
             ) : (
               plans.map(plan => {
@@ -514,8 +679,43 @@ export const RestaurantDetail = props => {
             )}
           </Grid>
         </ContBody>
-      </BgHome>
+      </BgHome> */}
+      <div>
+        <Dialog
+          open={openDel}
+          onClose={handleCloseDel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <>
+            <DialogTitle id="alert-dialog-title" style={{ color: s.dark }}>
+              {"Confirm delete"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure that you want to delete this restaurant?<br></br>
+                <span style={{ color: s.error }}>
+                  All associated plans will be deleted too.
+                </span>
+              </DialogContentText>
+            </DialogContent>
+          </>
 
+          <DialogActions>
+            <Button onClick={handleCloseDel} color="primary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDelete(id)}
+              color="secondary"
+              variant="contained"
+              autoFocus
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       <Footer></Footer>
     </>
   );

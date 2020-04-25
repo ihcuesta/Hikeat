@@ -61,10 +61,11 @@ export const EditPlan = props => {
   const [highlights, setHighlights] = useState([""]);
   const [hikelevel, setHikelevel] = useState("");
   const [kms, setKms] = useState(0);
+  const [price, setPrice] = useState(0);
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [lunchTime, setLunchTime] = useState("14:30");
-  const [maxBookings, setMaxBookings] = useState(0);
+  // const [maxBookings, setMaxBookings] = useState(0);
   const [firstCourse, setFirstCourse] = useState([
     { course: "", vegans: false, celiacs: false }
   ]);
@@ -103,8 +104,8 @@ export const EditPlan = props => {
       setDate(rest.planToEdit.date);
       setStartTime(rest.planToEdit.startTime);
       setLunchTime(rest.planToEdit.lunchTime);
-      setMaxBookings(rest.planToEdit.maxBookings);
-
+      // setMaxBookings(rest.planToEdit.maxBookings);
+      setPrice(rest.planToEdit.price);
       setFirstCourse(rest.planToEdit.firstCourse);
       setSecondCourse(rest.planToEdit.secondCourse);
       setDessert(rest.planToEdit.dessert);
@@ -139,7 +140,7 @@ export const EditPlan = props => {
     if (resp) {
       console.log("Image deleted in Cloudinary");
     }
-    setImg(null);
+    setImg("");
   };
 
   const handleChangeFile = async (e, setImg) => {
@@ -173,7 +174,8 @@ export const EditPlan = props => {
     image3,
     image4,
     image5,
-    maxBookings,
+    price,
+    // maxBookings,
     breakfast,
     brunch,
     firstCourse,
@@ -183,6 +185,7 @@ export const EditPlan = props => {
     drinks,
     coffee
   ) => {
+    console.log(price);
     const response = await editPlan(id, {
       name,
       shortDescr,
@@ -198,7 +201,8 @@ export const EditPlan = props => {
       image3,
       image4,
       image5,
-      maxBookings,
+      price,
+      // maxBookings,
       breakfast,
       brunch,
       firstCourse,
@@ -562,7 +566,7 @@ export const EditPlan = props => {
               <Error></Error>
             </Grid>
             <Gap></Gap>
-            <div>
+            {/* <div>
               <TextField
                 id="maxBookings"
                 fullWidth
@@ -583,7 +587,35 @@ export const EditPlan = props => {
                 <Error></Error>
               )}
             </div>
+            <Gap></Gap> */}
+
+            <div>
+              <OutlinedInput
+                id="price"
+                name="price"
+                type="number"
+                value={price}
+                label="Price"
+                style={{
+                  color: s.dark,
+                  maxWidth: 150
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                endAdornment={<InputAdornment position="end">€</InputAdornment>}
+                onChange={e => setPrice(e.target.value)}
+                error={price === 0 && validated1}
+                helperText={price === "" && validated1 ? "Empty field!" : " "}
+              />
+              {price === 0 && validated1 ? (
+                <Error>Include the price</Error>
+              ) : (
+                <Error></Error>
+              )}
+            </div>
             <Gap></Gap>
+
             <Grid container>
               <Grid item item xs={12} sm={6} md={6} lg={6}>
                 <FormControlLabel
@@ -639,7 +671,7 @@ export const EditPlan = props => {
                 >
                   <AddImg>
                     <label for="file-input1">
-                      <img src={image1 === null ? placeholder : image1} />
+                      <img src={image1 === "" ? placeholder : image1} />
                     </label>
 
                     <input
@@ -648,7 +680,7 @@ export const EditPlan = props => {
                       onChange={e => handleChangeFile(e, setImage1)}
                     />
                     <ContIcon>
-                      {image1 === null ? (
+                      {image1 === "" ? (
                         ""
                       ) : (
                         <Fab
@@ -665,7 +697,7 @@ export const EditPlan = props => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input2">
-                      <img src={image2 === null ? placeholder : image2} />
+                      <img src={image2 === "" ? placeholder : image2} />
                     </label>
 
                     <input
@@ -675,7 +707,7 @@ export const EditPlan = props => {
                     />
 
                     <ContIcon>
-                      {image2 === null ? (
+                      {image2 === "" ? (
                         ""
                       ) : (
                         <Fab
@@ -692,7 +724,7 @@ export const EditPlan = props => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input3">
-                      <img src={image3 === null ? placeholder : image3} />
+                      <img src={image3 === "" ? placeholder : image3} />
                     </label>
 
                     <input
@@ -702,7 +734,7 @@ export const EditPlan = props => {
                     />
 
                     <ContIcon>
-                      {image3 === null ? (
+                      {image3 === "" ? (
                         ""
                       ) : (
                         <Fab
@@ -719,7 +751,7 @@ export const EditPlan = props => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input4">
-                      <img src={image4 === null ? placeholder : image4} />
+                      <img src={image4 === "" ? placeholder : image4} />
                     </label>
 
                     <input
@@ -729,7 +761,7 @@ export const EditPlan = props => {
                     />
 
                     <ContIcon>
-                      {image4 === null ? (
+                      {image4 === "" ? (
                         ""
                       ) : (
                         <Fab
@@ -746,7 +778,7 @@ export const EditPlan = props => {
                 <Grid item xs={12} sm={4} md={4} lg={4}>
                   <AddImg>
                     <label for="file-input5">
-                      <img src={image5 === null ? placeholder : image5} />
+                      <img src={image5 === "" ? placeholder : image5} />
                     </label>
 
                     <input
@@ -756,7 +788,7 @@ export const EditPlan = props => {
                     />
 
                     <ContIcon>
-                      {image5 === null ? (
+                      {image5 === "" ? (
                         ""
                       ) : (
                         <Fab
@@ -784,7 +816,7 @@ export const EditPlan = props => {
               align="center"
               style={{ marginBottom: 15 }}
             >
-              Menú
+              Menu
             </Typography>
 
             <Paper
@@ -1232,7 +1264,7 @@ export const EditPlan = props => {
         }
         break;
       case 1:
-        if (hikelevel !== "" && kms > 0 && date !== "" && maxBookings > 0) {
+        if (hikelevel !== "" && kms > 0 && date !== "" && price > 0) {
           handleNext();
         } else {
           setValidated1(true);
@@ -1262,7 +1294,7 @@ export const EditPlan = props => {
   return (
     <>
       <FormBg>
-        <FormTitle>New Plan</FormTitle>
+        <FormTitle>Edit Plan</FormTitle>
         <FormCont style={{ paddingTop: 30 }}>
           <Form
             onSubmit={e => {
@@ -1282,7 +1314,8 @@ export const EditPlan = props => {
                 image3,
                 image4,
                 image5,
-                maxBookings,
+                price,
+                // maxBookings,
                 breakfast,
                 brunch,
                 firstCourse,
@@ -1313,7 +1346,7 @@ export const EditPlan = props => {
                       Back
                     </Button>
                     <Button variant="contained" color="secondary" type="submit">
-                      Create
+                      Edit
                     </Button>
                   </div>
                 ) : (
@@ -1356,7 +1389,10 @@ export const EditPlan = props => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => history.push("/admin")} color="primary">
+            <Button
+              onClick={() => history.push("/owner/admin")}
+              color="primary"
+            >
               Admin
             </Button>
             <Button

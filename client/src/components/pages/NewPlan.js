@@ -59,6 +59,7 @@ export const NewPlan = ({ history }) => {
   const [highlights, setHighlights] = useState([""]);
   const [hikelevel, setHikelevel] = useState("");
   const [kms, setKms] = useState(0);
+  const [price, setPrice] = useState(0);
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("08:00");
   const [lunchTime, setLunchTime] = useState("14:30");
@@ -219,6 +220,9 @@ export const NewPlan = ({ history }) => {
               id="shortDescr"
               name="shortDescr"
               label="Short Description"
+              inputProps={{
+                maxlength: 150
+              }}
               multiline
               rows="4"
               fullWidth="true"
@@ -228,7 +232,9 @@ export const NewPlan = ({ history }) => {
               onChange={e => setShortDescr(e.target.value)}
               error={shortDescr === "" && validated0}
               helperText={
-                shortDescr === "" && validated0 ? "Empty field!" : " "
+                shortDescr === "" && validated0
+                  ? `${shortDescr.length}/150 Empty field!`
+                  : `${shortDescr.length}/150`
               }
             />
             <Gap></Gap>
@@ -481,7 +487,7 @@ export const NewPlan = ({ history }) => {
               <Error></Error>
             </Grid>
             <Gap></Gap>
-            <div>
+            {/* <div>
               <TextField
                 id="maxBookings"
                 fullWidth
@@ -502,7 +508,35 @@ export const NewPlan = ({ history }) => {
                 <Error></Error>
               )}
             </div>
+            <Gap></Gap> */}
+
+            <div>
+              <OutlinedInput
+                id="price"
+                name="price"
+                type="number"
+                value={price}
+                label="Price"
+                style={{
+                  color: s.dark,
+                  maxWidth: 150
+                }}
+                InputLabelProps={{
+                  shrink: true
+                }}
+                endAdornment={<InputAdornment position="end">€</InputAdornment>}
+                onChange={e => setPrice(e.target.value)}
+                error={price === 0 && validated1}
+                helperText={price === "" && validated1 ? "Empty field!" : " "}
+              />
+              {price === 0 && validated1 ? (
+                <Error>Include the price</Error>
+              ) : (
+                <Error></Error>
+              )}
+            </div>
             <Gap></Gap>
+
             <Grid container>
               <Grid item item xs={12} sm={6} md={6} lg={6}>
                 <FormControlLabel
@@ -703,7 +737,7 @@ export const NewPlan = ({ history }) => {
               align="center"
               style={{ marginBottom: 15 }}
             >
-              Menú
+              Menu
             </Typography>
 
             <Paper
@@ -803,7 +837,7 @@ export const NewPlan = ({ history }) => {
                               }
                             />
                           }
-                          label="Celiacs"
+                          label="Gluten free"
                         />
                       </Container>
                       {i === 0 && firstCourse[0].course === "" && validated3 ? (
@@ -1151,7 +1185,13 @@ export const NewPlan = ({ history }) => {
         }
         break;
       case 1:
-        if (hikelevel !== "" && kms > 0 && date !== "" && maxBookings > 0) {
+        if (
+          hikelevel !== "" &&
+          kms > 0 &&
+          date !== "" &&
+          // && maxBookings > 0
+          price > 0
+        ) {
           handleNext();
         } else {
           setValidated1(true);
@@ -1201,7 +1241,8 @@ export const NewPlan = ({ history }) => {
                 image3,
                 image4,
                 image5,
-                maxBookings,
+                price,
+                // maxBookings,
                 breakfast,
                 brunch,
                 firstCourse,
@@ -1280,12 +1321,12 @@ export const NewPlan = ({ history }) => {
               Homepage
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={() => history.push("/owner/admin")}
               color="secondary"
               variant="contained"
               autoFocus
             >
-              Profile
+              Admin
             </Button>
           </DialogActions>
         </Dialog>

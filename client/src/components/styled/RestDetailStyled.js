@@ -13,8 +13,16 @@ export const Rates = styled.div`
   }
 `;
 
+export const ContImgResp = styled.div`
+  display: none;
+
+  @media (min-width: 700px) {
+    display: block;
+  }
+`;
+
 export const Head = styled.div`
-  margin-top: 100px;
+  margin-top: 80px;
   text-align: center;
   margin-bottom: -20px;
   && p {
@@ -136,4 +144,9 @@ export const ContBtnComment = styled.div`
   flex-direction: row wrap;
   justify-content: flex-end;
   margin-top: -10px;
+`;
+
+export const MapContainer = styled.div`
+  width: 100%;
+  margin-top: 20px;
 `;

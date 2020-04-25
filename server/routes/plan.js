@@ -5,16 +5,16 @@ const Restaurant = require("../models/Restaurant");
 const _ = require("lodash");
 const passport = require("passport");
 
-// Last plans restaurant detail page
-router.get("/lastplansrest/:id", async (req, res, next) => {
+// Get plans of that restaurant
+router.get("/restaurant/:id", async (req, res, next) => {
   try {
-    const plans = await Plan.find({
+    const getRest = await Plan.find({
       restaurant: req.params.id
     });
-    return res.status(200).json({ plans });
+    return res.status(200).json({ getRest });
   } catch (err) {
-    console.log("Error while retrieving plans", error);
-    return res.status(500).json({ message: "Impossible to get the plans" });
+    console.log("Imposible to get plans of that restaurant", err);
+    return res.status(500).json({ err });
   }
 });
 
@@ -127,7 +127,8 @@ router.post("/new", async (req, res, next) => {
     startTime,
     lunchTime,
     brunch,
-    maxBookings,
+    price,
+    // maxBookings,
     bookings,
     breakfast,
     firstCourse,
@@ -168,7 +169,8 @@ router.post("/new", async (req, res, next) => {
       startTime,
       lunchTime,
       brunch,
-      maxBookings,
+      // maxBookings,
+      price,
       counterBookings: 0,
       bookings,
       breakfast,
@@ -266,7 +268,8 @@ router.put("/:id/edit", async (req, res, next) => {
     startTime,
     lunchTime,
     brunch,
-    maxBookings,
+    price,
+    // maxBookings,
     bookings,
     breakfast,
     firstCourse,
@@ -277,17 +280,14 @@ router.put("/:id/edit", async (req, res, next) => {
     coffee,
     status
   } = req.body;
+  console.log(req.body.price);
   try {
     const planToEdit = await Plan.findOne({
       _id: req.params.id
     });
 
     if (String(planToEdit.owner) === String(req.user._id)) {
-      const registeredPlan = await Plan.findOne({ name });
-      if (registeredPlan) {
-        console.log(`Plan ${name} already exists`);
-        return res.status(400).json({ message: "Plan name already taken" });
-      }
+      console.log(req.body.price);
       const planUpdated = await Plan.findOneAndUpdate(
         {
           _id: req.params.id
@@ -309,7 +309,8 @@ router.put("/:id/edit", async (req, res, next) => {
             startTime,
             lunchTime,
             brunch,
-            maxBookings,
+            price,
+            // maxBookings,
             bookings,
             breakfast,
             firstCourse,

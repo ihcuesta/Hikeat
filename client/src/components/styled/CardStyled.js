@@ -44,4 +44,24 @@ export const BodyCard = styled.p`
   font-weight: 500;
   line-height: 1.35rem;
   margin-top: 20px;
+  min-height: 85px;
+`;
+
+export const ContShare = styled.div`
+  height: 50px;
+  /* transform: translateZ(0px); */
+  /* flex-grow: 1; */
+`;
+
+export const ContIconsCard = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+`;
+
+export const ContChips = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
 `;

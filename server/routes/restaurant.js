@@ -6,6 +6,7 @@ const Comment = require("../models/Comment");
 const Plan = require("../models/Plan");
 const _ = require("lodash");
 const passport = require("passport");
+const { hashPassword } = require("../lib/hashing");
 
 // Check if user has got restaurant created
 router.get("/searchrest/:id", async (req, res, next) => {
@@ -88,14 +89,18 @@ router.post("/new", async (req, res, next) => {
 // Check it its manager of the restaurant
 router.get("/manager/:id", async (req, res, next) => {
   try {
-    const checkIfManager = await Restaurant.find({
-      _id: req.params.id,
-      owner: req.user._id
-    });
-    if (checkIfManager.length === 0) {
-      return res.status(200).json({ isManager: false });
+    if (req.isAuthenticated()) {
+      const checkIfManager = await Restaurant.find({
+        _id: req.params.id,
+        owner: req.user._id
+      });
+      if (checkIfManager.length === 0) {
+        return res.status(200).json({ isManager: false });
+      } else {
+        return res.status(200).json({ isManager: true });
+      }
     } else {
-      return res.status(200).json({ isManager: true });
+      return res.status(200).json({ isManager: false });
     }
   } catch (error) {
     console.log("Error while trying to find out if its manager: ", error);
@@ -249,7 +254,7 @@ router.put("/:id/edit", async (req, res, next) => {
 // Send delete action
 router.post("/:id/delete", async (req, res, next) => {
   try {
-    let restaurantCheck = await Plan.findOne({
+    let restaurantCheck = await Restaurant.findOne({
       _id: req.params.id
     });
 
@@ -257,7 +262,11 @@ router.post("/:id/delete", async (req, res, next) => {
       const restaurantDeleted = await Restaurant.findOneAndRemove({
         _id: req.params.id
       });
-      return res.status(200).json({ restaurantDeleted });
+
+      const deletedPlans = await Plan.deleteMany({
+        restaurant: req.params.id
+      });
+      return res.status(200).json({ restaurantDeleted, deletedPlans });
     } else {
       console.log("Only the owner is allowed to delete this restaurant");
       return res.status(403).json({ message: "Forbidden access" });

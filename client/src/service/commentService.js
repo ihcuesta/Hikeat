@@ -20,9 +20,8 @@ export const newComment = async (rest, stars, comment, date) => {
   }
 };
 
-export const editComment = async (rest, stars, comment, date) => {
+export const editComment = async (rest, comment, date) => {
   const data = await commentService.put(`/usercomment/${rest}/edit`, {
-    stars,
     comment,
     date
   });
@@ -43,7 +42,7 @@ export const getUserComment = async endpoint => {
 };
 
 export const deleteComment = async endpoint => {
-  const data = await commentService.post(`/${endpoint}/delete`);
+  const data = await commentService.post(`/usercomment/${endpoint}/delete`);
   console.log(data);
-  return data.data.comments;
+  return data;
 };

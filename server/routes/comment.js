@@ -77,11 +77,17 @@ router.get("/:id", async (req, res, next) => {
 // Get comment of logged user
 router.get("/usercomment/:id", async (req, res, next) => {
   try {
-    const comments = await Comment.find({
-      restaurant: req.params.id,
-      user: req.user._id
-    });
-    return res.status(200).json({ comments });
+    if (req.isAuthenticated()) {
+      const comments = await Comment.find({
+        restaurant: req.params.id,
+        user: req.user._id
+      });
+
+      return res.status(200).json({ comments });
+    } else {
+      const comments = [];
+      return res.status(200).json({ comments });
+    }
   } catch (error) {
     console.log("Error while retrieving restaurant ID: ", error);
     return res.status(500).json({ message: "Impossible to get the comment" });
@@ -90,7 +96,7 @@ router.get("/usercomment/:id", async (req, res, next) => {
 
 // Edit comment of logged user
 router.put("/usercomment/:rest/edit", async (req, res, next) => {
-  const { stars, comment, date } = req.body;
+  const { comment, date } = req.body;
   try {
     const commentUpdated = await Comment.findOneAndUpdate(
       {
@@ -99,12 +105,12 @@ router.put("/usercomment/:rest/edit", async (req, res, next) => {
       },
       {
         $set: {
-          stars,
           comment,
           date
         }
       }
     );
+
     return res.status(200).json({ commentUpdated });
   } catch (err) {
     console.log("Error trying to update the comment: ", err);
@@ -114,85 +120,51 @@ router.put("/usercomment/:rest/edit", async (req, res, next) => {
   }
 });
 
-// Send the updates after edit
-router.put("/:id/edit", async (req, res, next) => {
-  const {
-    name,
-    kind,
-    descr,
-    phone,
-    website,
-    email,
-    region,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    city,
-    address,
-    allergenCard,
-    dogs,
-    terrace,
-    kids
-  } = req.body;
-  try {
-    const restaurantToEdit = await Restaurant.findOne({
-      _id: req.params.id
-    });
-
-    if (String(restaurantToEdit.owner) === String(req.user._id)) {
-      const restaurantUpdated = await Restaurant.findOneAndUpdate(
-        {
-          _id: req.params.id
-        },
-        {
-          $set: {
-            name,
-            kind,
-            descr,
-            phone,
-            website,
-            email,
-            image1,
-            image2,
-            image3,
-            image4,
-            image5,
-            region,
-            city,
-            address,
-            allergenCard,
-            dogs,
-            terrace,
-            kids
-          }
-        }
-      );
-      return res.status(200).json({ restaurantUpdated });
-    } else {
-      console.log("Only the owner is allowed to edit this restaurant");
-      return res.status(403).json({ message: "Forbidden access" });
-    }
-  } catch (err) {
-    console.log("Error trying to update the restaurant details: ", err);
-    return res.status(500).json({
-      message: "Error trying to update the restaurant details"
-    });
-  }
-});
-
 // Send delete action
-router.post("/:rest/delete", async (req, res, next) => {
+router.post("/usercomment/:rest/delete", async (req, res, next) => {
   try {
-    const restaurantDeleted = await Comment.findOneAndRemove({
+    const commentSearched = await Comment.findOne({
       restaurant: req.params.rest,
       user: req.user._id
     });
-    return res.status(200).json({ restaurantDeleted });
+
+    const stars = commentSearched.stars;
+
+    const restSearched = await Restaurant.findOne({
+      _id: req.params.rest
+    });
+
+    let totalRate = restSearched.totalRate - stars;
+
+    let totalComments = restSearched.totalComments - 1;
+    console.log("The totalComments are " + totalComments);
+    let newAv;
+    totalComments === 0 ? (newAv = 0) : (newAv = totalRate / totalComments);
+
+    console.log("The newAv is " + newAv);
+
+    const restUpdated = await Restaurant.findOneAndUpdate(
+      {
+        _id: req.params.rest
+      },
+      {
+        $set: {
+          totalRate: totalRate,
+          totalComments: totalComments,
+          rateAv: Number(newAv)
+        }
+      }
+    );
+
+    const commentDeleted = await Comment.findOneAndRemove({
+      restaurant: req.params.rest,
+      user: req.user._id
+    });
+
+    return res.status(200).json({ commentDeleted });
   } catch (err) {
     console.log("Error trying to delete the comment: ", err);
-    return status(500).json({
+    return res.status(500).json({
       message: "Error trying to delete the comment"
     });
   }

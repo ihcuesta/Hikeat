@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../service/authService";
+import { useHistory } from "react-router";
 import {
   Container,
   Grid,
@@ -14,7 +15,9 @@ import {
   CardMedia,
   CardContent,
   Tooltip,
-  IconButton
+  IconButton,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import {
   HeaderAdmin,
@@ -34,11 +37,15 @@ import {
   NumHikers,
   GrayCont,
   DialogCont,
-  ContClose
+  ContClose,
+  Descr,
+  RoleWrap,
+  MessageBookingsDetail
 } from "../styled/Admin";
+
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
-import { RestCont } from "../styled/CardStyled";
+import { RestCont, ContChips } from "../styled/CardStyled";
 import { ContBody } from "../styled/globalStyles";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import FilterHdrIcon from "@material-ui/icons/FilterHdr";
@@ -50,7 +57,7 @@ import { whoami } from "../../service/authService";
 import { CardBookings } from "../UI/Cards";
 import { getAllBookings, getEditBooking } from "../../service/bookingService";
 import { TitleBooking, Booking, BookButton } from "../styled/PlanDetailStyled";
-import { Gap, s } from "../styled/globalStyles";
+import { Gap, s, changeFormat } from "../styled/globalStyles";
 import { editBooking, getBookingsOfPlan } from "../../service/bookingService";
 import { BodyCard, LocationCont } from "../styled/CardStyled";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
@@ -66,13 +73,18 @@ import RestaurantRoundedIcon from "@material-ui/icons/RestaurantRounded";
 import { getAllPlans } from "../../service/planService";
 import { fetchRestCardAdmin } from "../../service/restaurantService";
 import { RestaurantCard } from "../UI/RestaurantCard";
+import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
+import { getComments } from "../../service/commentService";
 
-export const AdminRest = ({ history }) => {
+export const AdminRest = props => {
   const session = useUser();
-  const [allPlans, setAllPlans] = useState();
+  const history = useHistory();
+  const [allPlans, setAllPlans] = useState(0);
+  const [totalPlans, setTotalPlans] = useState();
+  const [totalHikers, setTotalHikers] = useState();
   const [bookingDetail, setBookingDetail] = useState();
-  const [infoRest, setInfoRest] = useState();
-  const [allComments, setAllComments] = useState();
+  const [infoRest, setInfoRest] = useState(0);
+  const [allComments, setAllComments] = useState(0);
   const [numhikers, setNumhikers] = useState(0);
   const [comments, setComments] = useState();
   const [planID, setPlanID] = useState();
@@ -83,15 +95,25 @@ export const AdminRest = ({ history }) => {
   useEffect(() => {
     getAllPlans().then(plans => {
       setAllPlans(plans);
+      setTotalPlans(plans.length);
+      setTotalHikers(getTotalHikers(plans));
     });
     fetchRestCardAdmin().then(restaurant => {
       console.log(restaurant);
-      setInfoRest(restaurant.rest[0]);
-      setAllComments(restaurant.commentsRes);
+      if (restaurant.rest.length > 0) {
+        setInfoRest(restaurant.rest[0]);
+      } else {
+        setInfoRest([]);
+      }
+      getComments(restaurant.rest[0]._id).then(comments => {
+        console.log(comments);
+        setAllComments(comments);
+      });
+      // setAllComments(restaurant.commentsRes);
     });
   }, []);
 
-  console.log(allPlans);
+  console.log(allComments);
 
   const handleClose = () => {
     setOpen(false);
@@ -104,14 +126,27 @@ export const AdminRest = ({ history }) => {
     setOpen(true);
   };
 
-  console.log(infoRest && infoRest);
+  const getTotalHikers = plans => {
+    let counter = 0;
+    plans.forEach(plan => {
+      counter += plan.counterBookings;
+    });
+    return counter;
+  };
 
   return (
     <>
       <BgAdmin>
+        {infoRest === 0 || allPlans === 0 || allComments === 0 ? (
+          <Backdrop style={{ zIndex: 1000 }} open={true}>
+            <CircularProgress color="primary" />
+          </Backdrop>
+        ) : (
+          !session && history.push("/login")
+        )}
         {session && (
           <ContBody>
-            <HeaderAdmin>
+            <HeaderAdmin data-aos="fade-right">
               <Grid container>
                 <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
                   <Pic>
@@ -127,20 +162,45 @@ export const AdminRest = ({ history }) => {
                 <Grid item xs={12} sm={12} md={8}>
                   <WrapperResp>
                     <ContTit>
-                      <Name>{session.user.username}</Name>
-
+                      <Name>
+                        {session.user.username}{" "}
+                        <span>
+                          {" "}
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={() => history.push("/profile/edit")}
+                            style={{
+                              color: s.primary,
+                              backgroundColor: "#FFF"
+                            }}
+                          >
+                            Edit Profile
+                          </Button>
+                        </span>
+                        {/* <span>
+                          {" "}
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            style={{ color: "#FFF" }}
+                          >
+                            Delete
+                          </Button>
+                        </span> */}
+                      </Name>
                       <Role>
-                        <RestaurantRoundedIcon
-                          style={{ color: "#FFF" }}
-                        ></RestaurantRoundedIcon>
-                        <h3>Restaurant owner</h3>
+                        <RoleWrap>
+                          <RestaurantRoundedIcon
+                            style={{ color: "#FFF" }}
+                          ></RestaurantRoundedIcon>
+                          <h3>Restaurant owner</h3>
+                        </RoleWrap>
                       </Role>
                     </ContTit>
                     <Grid container>
                       <Grid item xs={12} sm={6} md={6} spacing={10}>
-                        <p style={{ color: "#FFF" }}>
-                          {session.user.description}
-                        </p>
+                        <Descr>{session.user.description}</Descr>
 
                         <>
                           <TextAlign>
@@ -156,11 +216,11 @@ export const AdminRest = ({ history }) => {
                           <>
                             <Fav>
                               <RestaurantIcon></RestaurantIcon>
-                              <p>10 plans</p>
+                              <p>{totalPlans} plans</p>
                             </Fav>
                             <Fav>
                               <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
-                              <p>45 hikers</p>
+                              <p>{totalHikers} hikers</p>
                             </Fav>
                           </>
 
@@ -179,9 +239,35 @@ export const AdminRest = ({ history }) => {
             <TitBookings>NEXT PLANS</TitBookings>
             <Grid container spacing={2}>
               {allPlans && allPlans.length === 0 ? (
-                <p style={{ textAlign: "center" }}>
-                  You don't have plans. It's the moment to create the first one!
-                </p>
+                <Grid xs={12}>
+                  <p
+                    style={{
+                      textAlign: "center",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      display: "block"
+                    }}
+                  >
+                    You don't have plans. It's the moment to create the first
+                    one!
+                  </p>
+                  <Button
+                    style={{
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      display: "block"
+                    }}
+                    variant="contained"
+                    color="secondary"
+                    onClick={
+                      infoRest && infoRest.length === 0
+                        ? () => history.push(`/restaurant/new`)
+                        : () => history.push(`/plan/new`)
+                    }
+                  >
+                    Create plan
+                  </Button>
+                </Grid>
               ) : (
                 allPlans &&
                 allPlans.map((plan, i) => {
@@ -222,45 +308,60 @@ export const AdminRest = ({ history }) => {
                               ></RestaurantMenuOutlinedIcon>
                               <p>{plan.restaurant.name}</p>
                             </RestCont>
-                            <Grid container spacing={1}>
-                              <Grid item xs={5}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <CalendarTodayIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={plan.date}
-                                />
-                              </Grid>
-                              <Grid item xs={4}>
-                                <Chip
-                                  style={{
-                                    padding: "20px 5px",
-                                    color: s.dark,
-                                    backgroundColor: s.light
-                                  }}
-                                  size="medium"
-                                  icon={
-                                    <WatchLaterOutlinedIcon
-                                      style={{ color: s.primary }}
-                                    />
-                                  }
-                                  label={plan.startTime}
-                                />
-                              </Grid>
-                            </Grid>
+                            <ContChips>
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <CalendarTodayIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={plan.date}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light,
+                                  marginRight: 5
+                                }}
+                                size="medium"
+                                icon={
+                                  <WatchLaterOutlinedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={plan.startTime}
+                              />
+
+                              <Chip
+                                style={{
+                                  padding: "20px 5px",
+                                  color: s.dark,
+                                  backgroundColor: s.light
+                                }}
+                                size="medium"
+                                icon={
+                                  <EuroRoundedIcon
+                                    style={{ color: s.primary }}
+                                  />
+                                }
+                                label={changeFormat(plan.price)}
+                              />
+                            </ContChips>
+
                             <BodyCard>{plan.shortDescr}</BodyCard>
                           </CardContent>
                           <NumHikers>
                             <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
-                            <p>{plan.counterBookings} persons</p>
+                            <p>{plan.counterBookings} guests</p>
                           </NumHikers>
                           <CardActions
                             style={{
@@ -291,7 +392,7 @@ export const AdminRest = ({ history }) => {
                                     )
                                   }
                                 >
-                                  SEE BOOKINGS
+                                  VIEW BOOKINGS
                                 </Button>
                               </Grid>
                               <Grid
@@ -307,7 +408,9 @@ export const AdminRest = ({ history }) => {
                                   fullWidth
                                   variant="outlined"
                                   color="primary"
-                                  // onClick={actionTwo}
+                                  onClick={() =>
+                                    history.push(`/plan/${plan._id}/edit`)
+                                  }
                                 >
                                   EDIT PLAN
                                 </Button>
@@ -326,6 +429,19 @@ export const AdminRest = ({ history }) => {
                               </IconButton>
                             </Tooltip>
                           </ContClose>
+                          {bookingDetail && bookingDetail.length === 0 && (
+                            <MessageBookingsDetail>
+                              <p>
+                                There are not bookings yet, but there will be
+                                soon 😉
+                              </p>
+                              <img
+                                src="/mountain.gif"
+                                width="50"
+                                height="auto"
+                              />
+                            </MessageBookingsDetail>
+                          )}
                           {bookingDetail &&
                             bookingDetail.map(book => {
                               return (
@@ -393,30 +509,66 @@ export const AdminRest = ({ history }) => {
 
             <TitBookings>RESTAURANT</TitBookings>
             {infoRest && infoRest.length === 0 ? (
-              <p>You haven't include your restaurant yet.</p>
+              <>
+                <p
+                  style={{
+                    textAlign: "center"
+                  }}
+                >
+                  You haven't include your restaurant yet.
+                </p>
+                <Button
+                  style={{
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    display: "block"
+                  }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => history.push("/restaurant/new")}
+                >
+                  Create restaurant
+                </Button>
+              </>
             ) : (
-              <RestaurantCard
-                id={infoRest && infoRest._id}
-                img1={infoRest && infoRest.image1}
-                img2={infoRest && infoRest.image2}
-                img3={infoRest && infoRest.image3}
-                kind={infoRest && infoRest.kind}
-                name={infoRest && infoRest.name}
-                address={infoRest && infoRest.address}
-                city={infoRest && infoRest.city}
-                region={infoRest && infoRest.region}
-                descr={infoRest && infoRest.descr}
-                phone={infoRest && infoRest.phone}
-                website={infoRest && infoRest.website}
-                email={infoRest && infoRest.email}
-                comments={allComments && allComments}
-              ></RestaurantCard>
+              <>
+                <RestaurantCard
+                  id={infoRest && infoRest._id}
+                  img1={infoRest && infoRest.image1}
+                  img2={infoRest && infoRest.image2}
+                  img3={infoRest && infoRest.image3}
+                  kind={infoRest && infoRest.kind}
+                  name={infoRest && infoRest.name}
+                  address={infoRest && infoRest.address}
+                  city={infoRest && infoRest.city}
+                  region={infoRest && infoRest.region}
+                  descr={infoRest && infoRest.descr}
+                  phone={infoRest && infoRest.phone}
+                  website={infoRest && infoRest.website}
+                  email={infoRest && infoRest.email}
+                  comments={allComments && allComments}
+                ></RestaurantCard>
+                <Button
+                  style={{
+                    marginTop: -20,
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    display: "block"
+                  }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() =>
+                    history.push(`/restaurant/${infoRest._id}/edit`)
+                  }
+                >
+                  Edit restaurant
+                </Button>
+              </>
             )}
           </ContBody>
         )}
         <Footer></Footer>
       </BgAdmin>
-      )}
     </>
   );
 };

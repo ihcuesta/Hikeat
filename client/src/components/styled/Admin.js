@@ -47,12 +47,9 @@ export const Name = styled.h2`
 `;
 
 export const Role = styled.div`
-  max-width: 220px;
+  width: 100px;
   margin: auto;
-  display: flex;
-  flex-direction: row wrap;
-  align-items: center;
-  margin-top: -40px;
+  display: block;
 
   && h3 {
     font-size: 20px;
@@ -61,9 +58,18 @@ export const Role = styled.div`
     margin-left: 10px;
   }
   @media (min-width: 600px) {
-    margin: -40px 0px 0px -60px;
-    justify-content: center;
+    margin: -40px 0px 0px 0px;
+    justify-content: flex-start;
   }
+`;
+
+export const RoleWrap = styled.div`
+  display: flex;
+  flex-direction: row wrap;
+  align-items: center;
+  margin-top: -30px;
+  width: 100px;
+  justify-content: space-between;
 `;
 
 export const Fav = styled.div`
@@ -91,7 +97,7 @@ export const Level = styled.div`
   text-align: center;
   padding: 7px 0px;
   color: #fff;
-  margin-top: -5px;
+  margin-top: 5px;
 `;
 
 export const ContTit = styled.div`
@@ -113,6 +119,7 @@ export const WrapperResp = styled.div`
 
 export const TextAlign = styled.div`
   text-align: center;
+  margin-top: 20px;
 
   @media (min-width: 600px) {
     text-align: left;
@@ -140,7 +147,7 @@ export const NumHikers = styled.div`
 `;
 
 export const EditBookingCont = styled.div`
-  width: 400px;
+  width: 430px;
 
   border-radius: 5px;
   background-color: #fff;
@@ -178,7 +185,7 @@ export const DialogCont = styled.div`
   margin-top: -350px;
   margin-left: -350px;
   z-index: 950;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 export const ContClose = styled.div`
@@ -188,9 +195,33 @@ export const ContClose = styled.div`
   justify-content: flex-end;
 `;
 
+export const Descr = styled.p`
+  color: #fff;
+  min-height: 70px;
+  text-align: center;
+
+  @media (min-width: 600px) {
+    text-align: left;
+  }
+`;
+
+export const MessageBookingsDetail = styled.div`
+  && p {
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 20px;
+  }
+
+  && img {
+    display: block;
+    margin: auto;
+  }
+`;
+
 export const BgAdmin = styled.div`
   width: 100%;
-  height: 100%;
+
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#1e5799+0,ffffff+0,eeeeee+100 */
   background: #1e5799; /* Old browsers */
   background: -moz-linear-gradient(
