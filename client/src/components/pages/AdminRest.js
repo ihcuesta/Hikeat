@@ -74,6 +74,7 @@ import { getAllPlans } from "../../service/planService";
 import { fetchRestCardAdmin } from "../../service/restaurantService";
 import { RestaurantCard } from "../UI/RestaurantCard";
 import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
+import { getComments } from "../../service/commentService";
 
 export const AdminRest = props => {
   const session = useUser();
@@ -104,10 +105,15 @@ export const AdminRest = props => {
       } else {
         setInfoRest([]);
       }
-
-      setAllComments(restaurant.commentsRes);
+      getComments(restaurant.rest[0]._id).then(comments => {
+        console.log(comments);
+        setAllComments(comments);
+      });
+      // setAllComments(restaurant.commentsRes);
     });
   }, []);
+
+  console.log(allComments);
 
   const handleClose = () => {
     setOpen(false);
@@ -163,6 +169,7 @@ export const AdminRest = props => {
                           <Button
                             variant="contained"
                             size="small"
+                            onClick={() => history.push("/profile/edit")}
                             style={{
                               color: s.primary,
                               backgroundColor: "#FFF"
@@ -424,7 +431,10 @@ export const AdminRest = props => {
                           </ContClose>
                           {bookingDetail && bookingDetail.length === 0 && (
                             <MessageBookingsDetail>
-                              <p>There are not bookings yet, but it will 😉</p>
+                              <p>
+                                There are not bookings yet, but there will be
+                                soon 😉
+                              </p>
                               <img
                                 src="/mountain.gif"
                                 width="50"

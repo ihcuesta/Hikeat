@@ -231,6 +231,7 @@ export const CardFav = ({
   restaurant,
   date,
   time,
+  price,
   descr,
   restid,
   funcDelete
@@ -264,32 +265,42 @@ export const CardFav = ({
             ></RestaurantMenuOutlinedIcon>
             <p>{restaurant}</p>
           </RestCont>
-          <Grid container spacing={1}>
-            <Grid item xs={5}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<CalendarTodayIcon style={{ color: s.primary }} />}
-                label={date}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
-                label={time}
-              />
-            </Grid>
-          </Grid>
+          <ContChips>
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<CalendarTodayIcon style={{ color: s.primary }} />}
+              label={date}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
+              label={time}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light
+              }}
+              size="medium"
+              icon={<EuroRoundedIcon style={{ color: s.primary }} />}
+              label={price}
+            />
+          </ContChips>
           <BodyCard>{descr}</BodyCard>
         </CardContent>
 
@@ -307,9 +318,33 @@ export const CardFav = ({
                 onClick={funcDelete}
               ></FavoriteOutlinedIcon>
 
-              <ShareIcon
-                style={{ fontSize: "35px", marginLeft: 20, cursor: "pointer" }}
-              ></ShareIcon>
+              <a
+                style={{ color: s.primary }}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                target="_blank"
+              >
+                <FacebookIcon
+                  color="primary"
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></FacebookIcon>
+              </a>
+              <a
+                style={{ color: s.primary }}
+                href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
+                target="_blank"
+              >
+                <TwitterIcon
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></TwitterIcon>
+              </a>
             </Grid>
             <Grid item xs={6}>
               <Button

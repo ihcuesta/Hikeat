@@ -737,7 +737,7 @@ export const NewPlan = ({ history }) => {
               align="center"
               style={{ marginBottom: 15 }}
             >
-              Menú
+              Menu
             </Typography>
 
             <Paper

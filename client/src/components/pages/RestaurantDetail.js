@@ -95,6 +95,7 @@ export const RestaurantDetail = props => {
   const [isOldCom, setIsOldCom] = useState(false);
   const [value, setValue] = useState(2);
   const [pos, setPos] = useState();
+  const [totComments, setTotalComments] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -105,6 +106,7 @@ export const RestaurantDetail = props => {
       setInfo(restaurant.restaurantId);
       setValue(restaurant.restaurantId.rateAv);
       setAllcomments(restaurant.commentsRes);
+      setTotalComments(restaurant.restaurantId.totalComments);
     });
     getUserComment(id).then(comment => {
       if (comment.length > 0) {
@@ -165,6 +167,10 @@ export const RestaurantDetail = props => {
       getComments(id).then(comments => {
         setAllcomments(comments);
       });
+      fetchSingleRestaurant(rest).then(restaurant => {
+        setValue(restaurant.restaurantId.rateAv);
+        setTotalComments(restaurant.restaurantId.totalComments);
+      });
     });
     setIsOldCom(false);
     setOpenDelete(true);
@@ -195,6 +201,7 @@ export const RestaurantDetail = props => {
         });
         fetchSingleRestaurant(rest).then(restaurant => {
           setValue(restaurant.restaurantId.rateAv);
+          setTotalComments(restaurant.restaurantId.totalComments);
         });
         setIsOldCom(true);
         setOpenNew(true);
@@ -232,7 +239,7 @@ export const RestaurantDetail = props => {
           <Box mt={0.3} component="fieldset" borderColor="transparent">
             <Rating name="read-only" value={value} readOnly />
           </Box>
-          <p>{info && info.totalComments} comments</p>
+          <p>{totComments && totComments} comments</p>
         </Rates>
         <ImgCont>
           <Grid container spacing={1}>

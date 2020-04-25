@@ -207,8 +207,7 @@ export const Signup = ({ history }) => {
                 required: {
                   value: true,
                   message: "Description required"
-                },
-                maxLength: 100
+                }
               })}
             />
             {errors.description ? (

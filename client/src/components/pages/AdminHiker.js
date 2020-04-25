@@ -80,6 +80,7 @@ export const AdminHiker = () => {
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
   const [openCanc, setOpenCanc] = useState(false);
+  const [bookingToDelete, setBookingToDelete] = useState();
 
   useEffect(() => {
     getAllBookings().then(bookings => {
@@ -104,6 +105,7 @@ export const AdminHiker = () => {
     getAllBookings().then(bookings => {
       setAllBookings(bookings.getBooking);
     });
+    setOpenCanc(false);
   };
 
   const handleSubmit = async (bookingID, oldhikers, numhikers, comments) => {
@@ -409,8 +411,13 @@ export const AdminHiker = () => {
                                     fullWidth
                                     variant="outlined"
                                     color="primary"
+                                    value={booking._id}
                                     // value={booking._id}
-                                    onClick={() => setOpenCanc(true)}
+                                    onClick={e => {
+                                      setOpenCanc(true);
+                                      console.log(e.currentTarget.value);
+                                      setBookingToDelete(e.currentTarget.value);
+                                    }}
                                   >
                                     CANCEL BOOKING
                                   </Button>
@@ -572,7 +579,9 @@ export const AdminHiker = () => {
                               Back
                             </Button>
                             <Button
-                              onClick={() => handleCancel(booking._id)}
+                              onClick={() => {
+                                handleCancel(bookingToDelete);
+                              }}
                               color="secondary"
                               variant="contained"
                               autoFocus
@@ -613,6 +622,7 @@ export const AdminHiker = () => {
                         restaurant={fav && fav.restid.name}
                         date={fav && fav.planid.date}
                         time={fav && fav.planid.startTime}
+                        price={fav && fav.planid.price}
                         descr={fav && fav.planid.shortDescr}
                         restid={fav && fav.restid._id}
                         funcDelete={() => deleteFav(fav.planid._id)}

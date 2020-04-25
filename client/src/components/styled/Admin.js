@@ -185,7 +185,7 @@ export const DialogCont = styled.div`
   margin-top: -350px;
   margin-left: -350px;
   z-index: 950;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 export const ContClose = styled.div`

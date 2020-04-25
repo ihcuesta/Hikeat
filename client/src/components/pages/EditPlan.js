@@ -816,7 +816,7 @@ export const EditPlan = props => {
               align="center"
               style={{ marginBottom: 15 }}
             >
-              Menú
+              Menu
             </Typography>
 
             <Paper

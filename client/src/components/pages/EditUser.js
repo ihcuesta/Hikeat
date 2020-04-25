@@ -46,7 +46,7 @@ export const EditUser = ({ history }) => {
         if (session && session.user.role === "Hiker") {
           history.push("/hiker/admin");
         }
-        if (session && session.user.role === "Restaurant owner") {
+        if (session && session.user.role === "Restaurant Owner") {
           history.push("/owner/admin");
         }
       } else {
@@ -83,8 +83,7 @@ export const EditUser = ({ history }) => {
     if (resp) {
       console.log("Image deleted in Cloudinary");
     }
-    // setValue("image", "");
-    setImage("");
+    setImg("");
   };
 
   return (
@@ -104,7 +103,7 @@ export const EditUser = ({ history }) => {
                 <img
                   width="200"
                   height="200"
-                  src={image === null ? "/placeholder-profile.jpg" : image}
+                  src={image === "" ? "/placeholder-profile.jpg" : image}
                 />
               </label>
 
