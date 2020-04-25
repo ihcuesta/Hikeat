@@ -10,8 +10,8 @@ export const BgRestCard = styled.div`
 
 export const OpinionsBox = styled.div`
   background-color: #fff;
-
+  padding: 5px;
   color: ${s.dark};
   overflow-y: scroll;
-  height: 430px;
+  height: 308px;
 `;

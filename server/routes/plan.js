@@ -5,24 +5,31 @@ const Restaurant = require("../models/Restaurant");
 const _ = require("lodash");
 const passport = require("passport");
 
-// Last plans restaurant detail page
-router.get("/lastplansrest/:id", async (req, res, next) => {
+// Get plans of that restaurant
+router.get("/restaurant/:id", async (req, res, next) => {
   try {
-    const plans = await Plan.find({
+    const getRest = await Plan.find({
       restaurant: req.params.id
     });
-    return res.status(200).json({ plans });
+    return res.status(200).json({ getRest });
   } catch (err) {
-    console.log("Error while retrieving plans", error);
-    return res.status(500).json({ message: "Impossible to get the plans" });
+    console.log("Imposible to get plans of that restaurant", err);
+    return res.status(500).json({ err });
   }
 });
 
-// All
+// All by user
 router.get("/all", async (req, res, next) => {
   try {
-    const plans = await Plan.find({});
-    return res.status(200).json({ plans });
+    const plans = await Plan.find({
+      owner: req.user._id
+    }).populate("restaurant");
+
+    if (plans) {
+      return res.status(200).json({ plans });
+    } else {
+      return res.status(200).json([]);
+    }
   } catch (err) {
     console.log("Error while retrieving plans", error);
     return res.status(500).json({ message: "Impossible to get the plans" });
@@ -60,7 +67,9 @@ router.get("/pages/total/:region", async (req, res, next) => {
 router.get("/pages/:num", async (req, res, next) => {
   const skip = (Number(req.params.num) - 1) * 6;
   try {
-    const plans = await Plan.find({}, {}, { limit: 6, skip: skip });
+    const plans = await Plan.find({}, {}, { limit: 6, skip: skip }).populate(
+      "restaurant"
+    );
     return res.status(200).json({ plans });
   } catch (err) {
     console.log("Error while retrieving plans", error);
@@ -78,7 +87,7 @@ router.get("/pages/:region/:num", async (req, res, next) => {
       },
       {},
       { limit: 6, skip: skip }
-    );
+    ).populate("restaurant");
     return res.status(200).json({ plans });
   } catch (err) {
     console.log("Error while retrieving plans", error);
@@ -118,7 +127,8 @@ router.post("/new", async (req, res, next) => {
     startTime,
     lunchTime,
     brunch,
-    maxBookings,
+    price,
+    // maxBookings,
     bookings,
     breakfast,
     firstCourse,
@@ -159,7 +169,9 @@ router.post("/new", async (req, res, next) => {
       startTime,
       lunchTime,
       brunch,
-      maxBookings,
+      // maxBookings,
+      price,
+      counterBookings: 0,
       bookings,
       breakfast,
       firstCourse,
@@ -256,7 +268,8 @@ router.put("/:id/edit", async (req, res, next) => {
     startTime,
     lunchTime,
     brunch,
-    maxBookings,
+    price,
+    // maxBookings,
     bookings,
     breakfast,
     firstCourse,
@@ -267,17 +280,14 @@ router.put("/:id/edit", async (req, res, next) => {
     coffee,
     status
   } = req.body;
+  console.log(req.body.price);
   try {
     const planToEdit = await Plan.findOne({
       _id: req.params.id
     });
 
     if (String(planToEdit.owner) === String(req.user._id)) {
-      const registeredPlan = await Plan.findOne({ name });
-      if (registeredPlan) {
-        console.log(`Plan ${name} already exists`);
-        return res.status(400).json({ message: "Plan name already taken" });
-      }
+      console.log(req.body.price);
       const planUpdated = await Plan.findOneAndUpdate(
         {
           _id: req.params.id
@@ -299,7 +309,8 @@ router.put("/:id/edit", async (req, res, next) => {
             startTime,
             lunchTime,
             brunch,
-            maxBookings,
+            price,
+            // maxBookings,
             bookings,
             breakfast,
             firstCourse,

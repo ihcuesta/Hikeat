@@ -24,6 +24,7 @@ const planSchema = new mongoose.Schema(
     lunchTime: String,
     brunch: Boolean,
     maxBookings: Number,
+    counterBookings: Number,
     bookings: Array,
     image1: String,
     image2: String,
@@ -37,6 +38,7 @@ const planSchema = new mongoose.Schema(
     drinks: Boolean,
     coffee: Boolean,
     bread: Boolean,
+    price: Number,
     status: {
       type: String,
       enum: ["publish", "draft"]

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { useUser } from "../../service/authService";
 import {
   Grid,
@@ -10,26 +11,34 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Chip
+  Chip,
+  Box
 } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 import { s } from "../styled/globalStyles";
-import { LocationCont, RestCont, BodyCard } from "../styled/CardStyled";
+import {
+  LocationCont,
+  RestCont,
+  BodyCard,
+  Rates,
+  Social,
+  ContChips
+} from "../styled/CardStyled";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
 import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteOutlined";
+import EuroRoundedIcon from "@material-ui/icons/EuroRounded";
 import {
   newFavourite,
   deleteFavourite,
   getFavourite
 } from "../../service/favouriteService";
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-// ..
-AOS.init();
 
 export const CardHome = ({
   id,
@@ -41,9 +50,14 @@ export const CardHome = ({
   date,
   time,
   descr,
-  restid
+  restid,
+  rate,
+  totalComments,
+  price
 }) => {
   const [favourite, setFavourite] = useState(false);
+  const session = useUser();
+  const history = useHistory();
 
   useEffect(() => {
     getFavourite(id).then(fav => {
@@ -53,14 +67,18 @@ export const CardHome = ({
   }, []);
 
   const handleFav = async id => {
-    if (!favourite) {
-      const addFav = await newFavourite(id);
-      console.log(addFav);
+    if (session) {
+      if (!favourite) {
+        const addFav = await newFavourite(id);
+        console.log(addFav);
+      } else {
+        const deleteFav = await deleteFavourite(id);
+        console.log(deleteFav);
+      }
+      setFavourite(!favourite);
     } else {
-      const deleteFav = await deleteFavourite(id);
-      console.log(deleteFav);
+      history.push("/login");
     }
-    setFavourite(!favourite);
   };
 
   return (
@@ -92,32 +110,48 @@ export const CardHome = ({
             ></RestaurantMenuOutlinedIcon>
             <p>{restaurant}</p>
           </RestCont>
-          <Grid container spacing={1}>
-            <Grid item xs={5}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<CalendarTodayIcon style={{ color: s.primary }} />}
-                label={date}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
-                label={time}
-              />
-            </Grid>
-          </Grid>
+          <Rates>
+            <Box mt={0.3} component="fieldset" borderColor="transparent">
+              <Rating name="read-only" value={rate} readOnly />
+            </Box>
+            <p>{totalComments} comments</p>
+          </Rates>
+          <ContChips>
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<CalendarTodayIcon style={{ color: s.primary }} />}
+              label={date}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
+              label={time}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light
+              }}
+              size="medium"
+              icon={<EuroRoundedIcon style={{ color: s.primary }} />}
+              label={price}
+            />
+          </ContChips>
           <BodyCard>{descr}</BodyCard>
         </CardContent>
 
@@ -142,9 +176,33 @@ export const CardHome = ({
                 ></FavoriteBorderOutlinedIcon>
               )}
 
-              <ShareIcon
-                style={{ fontSize: "35px", marginLeft: 20, cursor: "pointer" }}
-              ></ShareIcon>
+              <a
+                style={{ color: s.primary }}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                target="_blank"
+              >
+                <FacebookIcon
+                  color="primary"
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></FacebookIcon>
+              </a>
+              <a
+                style={{ color: s.primary }}
+                href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
+                target="_blank"
+              >
+                <TwitterIcon
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></TwitterIcon>
+              </a>
             </Grid>
             <Grid item xs={6}>
               <Button
@@ -164,7 +222,7 @@ export const CardHome = ({
   );
 };
 
-export const CardBookings = ({
+export const CardFav = ({
   id,
   image,
   city,
@@ -173,15 +231,14 @@ export const CardBookings = ({
   restaurant,
   date,
   time,
+  price,
   descr,
   restid,
-  role,
-  actionOne,
-  actionTwo
+  funcDelete
 }) => {
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
-      <Card data-aos="fade-up" elevation={3}>
+      <Card data-aos="fade-up">
         <Link to={`plan/${id}`}>
           <CardMedia style={{ height: 200 }} image={image} />
         </Link>
@@ -208,32 +265,42 @@ export const CardBookings = ({
             ></RestaurantMenuOutlinedIcon>
             <p>{restaurant}</p>
           </RestCont>
-          <Grid container spacing={1}>
-            <Grid item xs={5}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<CalendarTodayIcon style={{ color: s.primary }} />}
-                label={date}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Chip
-                style={{
-                  padding: "20px 5px",
-                  color: s.dark,
-                  backgroundColor: s.light
-                }}
-                size="medium"
-                icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
-                label={time}
-              />
-            </Grid>
-          </Grid>
+          <ContChips>
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<CalendarTodayIcon style={{ color: s.primary }} />}
+              label={date}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light,
+                marginRight: 5
+              }}
+              size="medium"
+              icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
+              label={time}
+            />
+
+            <Chip
+              style={{
+                padding: "20px 5px",
+                color: s.dark,
+                backgroundColor: s.light
+              }}
+              size="medium"
+              icon={<EuroRoundedIcon style={{ color: s.primary }} />}
+              label={price}
+            />
+          </ContChips>
           <BodyCard>{descr}</BodyCard>
         </CardContent>
 
@@ -245,40 +312,49 @@ export const CardBookings = ({
           }}
         >
           <Grid container>
-            <Grid
-              item
-              xs={6}
-              style={{
-                paddingRight: 5,
-                paddingLeft: 5,
-                boxSizing: "border-box"
-              }}
-            >
+            <Grid item xs={6}>
+              <FavoriteOutlinedIcon
+                style={{ fontSize: "35px", cursor: "pointer" }}
+                onClick={funcDelete}
+              ></FavoriteOutlinedIcon>
+
+              <a
+                style={{ color: s.primary }}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                target="_blank"
+              >
+                <FacebookIcon
+                  color="primary"
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></FacebookIcon>
+              </a>
+              <a
+                style={{ color: s.primary }}
+                href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
+                target="_blank"
+              >
+                <TwitterIcon
+                  style={{
+                    fontSize: "35px",
+                    marginLeft: 20,
+                    cursor: "pointer"
+                  }}
+                ></TwitterIcon>
+              </a>
+            </Grid>
+            <Grid item xs={6}>
               <Button
+                component={Link}
+                to={`/plan/${id}`}
                 fullWidth
                 variant="contained"
-                color="primary"
-                onClick={actionOne}
+                color="secondary"
               >
-                {role === "Hiker" ? <>EDIT BOOKING</> : <>BOOKING DETAILS</>}
-              </Button>
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              style={{
-                paddingRight: 5,
-                paddingLeft: 5,
-                boxSizing: "border-box"
-              }}
-            >
-              <Button
-                fullWidth
-                variant="outlined"
-                color="primary"
-                onClick={actionTwo}
-              >
-                {role === "Hiker" ? <>CANCEL BOOKING</> : <>EDIT PLAN</>}
+                MORE INFO
               </Button>
             </Grid>
           </Grid>

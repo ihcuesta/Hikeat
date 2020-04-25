@@ -207,8 +207,7 @@ export const Signup = ({ history }) => {
                 required: {
                   value: true,
                   message: "Description required"
-                },
-                maxLength: 100
+                }
               })}
             />
             {errors.description ? (
@@ -250,11 +249,11 @@ export const Signup = ({ history }) => {
             </Button>
           </Form>
         </FormCont>
+        <FooterAlt></FooterAlt>
       </FormBg>
       <Backdrop style={{ zIndex: 1000 }} open={openspin}>
         <CircularProgress color="primary" />
       </Backdrop>
-      <FooterAlt></FooterAlt>
     </>
   );
 };

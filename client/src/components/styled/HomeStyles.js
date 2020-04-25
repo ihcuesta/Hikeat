@@ -4,17 +4,26 @@ import divider from "../../images/gray-divider.png";
 import { s } from "../styled/globalStyles";
 
 export const Hero = styled.div`
-  width: 100%;
-  background-image: url(${heroImg});
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  @media (min-width: 960px) {
+    margin: 50px auto;
+    width: 100%;
+    background-image: url(${heroImg});
+    background-position: top center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 `;
 
 export const ContHead = styled.div`
-  max-width: 400px;
-  padding: 70px 0px;
-  margin: auto;
+  width: 100%;
+  padding: 5%;
+  box-sizing: border-box;
+
+  @media (min-width: 960px) {
+    max-width: 400px;
+    padding: 70px 0px;
+    margin: auto;
+  }
 `;
 
 export const Divider = styled.div`

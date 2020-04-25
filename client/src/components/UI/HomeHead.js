@@ -7,10 +7,6 @@ import FilterHdrOutlinedIcon from "@material-ui/icons/FilterHdrOutlined";
 import RestaurantOutlinedIcon from "@material-ui/icons/RestaurantOutlined";
 import { s } from "../styled/globalStyles";
 import ScrollIntoView from "react-scroll-into-view";
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-// ..
-AOS.init();
 
 export const HomeHead = ({ scrollPlans }) => {
   return (
@@ -37,10 +33,10 @@ export const HomeHead = ({ scrollPlans }) => {
                 data-aos-easing="ease-in-out"
                 data-aos-delay="50"
               >
-                <h3 style={{ color: s.dark }}>
+                <h3 style={{ color: s.dark, fontWeight: 400, fontSize: 25 }}>
                   Is there anything better than a<br />
                   <b style={{ color: s.primary }}>good meal</b> after a{" "}
-                  <b>hiking trail</b>?
+                  <b>hike</b>?
                 </h3>
                 <p>
                   No one better than the local restaurants to give you advice.
@@ -70,7 +66,7 @@ export const HomeHead = ({ scrollPlans }) => {
                   </Grid>
                   <Grid item xs={10}>
                     <p style={{ marginTop: 0 }}>
-                      Enjoy & share a morning of hiking with other hikers.
+                      Enjoy & share a morning hike with other hikers.
                     </p>
                   </Grid>
                 </Grid>

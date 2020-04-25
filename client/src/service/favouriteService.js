@@ -5,9 +5,9 @@ const favouriteService = axios.create({
   withCredentials: true
 });
 
-export const newFavourite = async id => {
+export const newFavourite = async planid => {
   try {
-    const { data } = await favouriteService.post(`${id}/new`, {});
+    const { data } = await favouriteService.post(`/new/${planid}`, {});
     console.log(data);
     return data;
   } catch (error) {
@@ -18,11 +18,20 @@ export const newFavourite = async id => {
 
 export const deleteFavourite = async id => {
   try {
-    const { data } = await favouriteService.post(`${id}/delete`, {});
+    const { data } = await favouriteService.post(`/delete/${id}`, {});
     console.log(data);
     return data;
   } catch (error) {
     console.log(error);
+    return error;
+  }
+};
+
+export const getAllFavourites = async () => {
+  try {
+    const { data } = await favouriteService.get(`/all`, {});
+    return data.getFav;
+  } catch (error) {
     return error;
   }
 };

@@ -24,12 +24,13 @@ const restaurantSchema = new mongoose.Schema(
     region: String,
     city: String,
     address: String,
-    pics: Array,
-    opinions: Array,
     allergenCard: Boolean,
     dogs: Boolean,
     terrace: Boolean,
-    kids: Boolean
+    kids: Boolean,
+    rateAv: Number,
+    totalRate: Number,
+    totalComments: Number
   },
   {
     timestamps: true

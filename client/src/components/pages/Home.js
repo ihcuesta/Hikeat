@@ -6,7 +6,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { HomeHead } from "../UI/HomeHead";
 import { Divider, SearcherCont, BgHome, NotFound } from "../styled/HomeStyles";
 import { provincias } from "../../service/regions";
-import { ContBody } from "../styled/globalStyles";
+import { ContBody, changeFormat } from "../styled/globalStyles";
 import {
   getAllPlans,
   getByRegion,
@@ -15,6 +15,7 @@ import {
   getPlansPageRegion,
   getTotalRegion
 } from "../../service/planService";
+import { MapLeaflet } from "../UI/map";
 import { CardHome } from "../UI/Cards";
 import { FooterHome } from "../UI/Footer";
 import error from "../../images/error.svg";
@@ -132,9 +133,12 @@ export const Home = () => {
               </NotFound>
             )}
             {plans && plans.length === 0 && !search ? (
+<<<<<<< HEAD
               // <Backdrop style={{ zIndex: 1000 }} open={true}>
               //   <CircularProgress color="primary" />
               // </Backdrop>
+=======
+>>>>>>> 881b3b69186b1bfd62e60838b73911919b29fdf4
               <p>No plans found</p>
             ) : (
               plans &&
@@ -151,6 +155,11 @@ export const Home = () => {
                     time={plan.startTime}
                     descr={plan.shortDescr}
                     restid={plan.restaurant && plan.restaurant._id}
+                    rate={plan.restaurant && plan.restaurant.rateAv}
+                    totalComments={
+                      plan.restaurant && plan.restaurant.totalComments
+                    }
+                    price={changeFormat(plan.price)}
                   ></CardHome>
                 );
               })
@@ -158,7 +167,9 @@ export const Home = () => {
           </Grid>
           {!search ? (
             <>
-              <p>Page {numPage}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPage}
+              </p>
               <Pagination
                 count={pages}
                 color="primary"
@@ -169,7 +180,9 @@ export const Home = () => {
             </>
           ) : (
             <>
-              <p>Page {numPageReg}</p>
+              <p style={{ marginLeft: 20, marginTop: 20, marginBottom: -20 }}>
+                Page {numPageReg}
+              </p>
               <Pagination
                 count={pagesReg}
                 color="primary"

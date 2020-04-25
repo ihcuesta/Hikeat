@@ -8,7 +8,8 @@ import {
   NavRight,
   NavLeft,
   ImRestaurant,
-  WelcomeMsg
+  WelcomeMsg,
+  LogoLeft
 } from "../styled/Nav";
 import { Button, Box, Avatar } from "@material-ui/core";
 import { s } from "../styled/globalStyles";
@@ -38,14 +39,16 @@ export const Header = () => {
         <Nav>
           <NavLeft>
             <Button component={Link} color="primary" to="/">
-              Home
+              <LogoLeft>
+                Hik<span style={{ color: s.primary }}>eat</span>
+              </LogoLeft>
             </Button>
-            <Button component={Link} pr={10} color="primary" to="/signup">
+            {/* <Button component={Link} pr={10} color="primary" to="/signup">
               About
             </Button>
             <Button component={Link} pr={10} color="primary" to="/signup">
               Contact
-            </Button>
+            </Button> */}
           </NavLeft>
           <NavRight>
             {!session && (
@@ -57,9 +60,9 @@ export const Header = () => {
                     pr={10}
                     variant="contained"
                     color={"primary"}
-                    to="/login"
+                    to="/signup"
                   >
-                    I'm a restaurant
+                    I'm restaurant owner
                   </Button>
                 </ImRestaurant>
                 <Button component={Link} mr={10} color="primary" to="/login">
@@ -111,7 +114,7 @@ export const Header = () => {
                   onClick={
                     session.user.role === "Hiker"
                       ? () => history.push("/hiker/admin")
-                      : () => history.push("/restaurant/admin")
+                      : () => history.push("/owner/admin")
                   }
                   color="primary"
                   to="#"

@@ -13,6 +13,18 @@ export const s = {
   }
 };
 
+export const changeFormat = price => {
+  price = String(price);
+  if (price.includes(".")) {
+    price = price.split(".");
+    price[1] = price[1].padEnd(2, "0");
+    price = price.join(",");
+  } else {
+    price = price + ",00";
+  }
+  return price;
+};
+
 export const GlobalStyles = styled.div`
   @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap");
   font-family: "Montserrat", sans-serif;
@@ -24,6 +36,13 @@ export const txtField = {
   style: {
     color: s.dark,
     marginBottom: "7%"
+  }
+};
+
+export const fabStyle = {
+  style: {
+    width: 40,
+    height: 40
   }
 };
 

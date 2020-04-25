@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import { useUser } from "../../service/authService";
+import "./../../App.css";
 import {
   Head,
   ImgCont,
@@ -21,7 +23,8 @@ import {
   DialogContentText,
   DialogTitle,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  Avatar
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import {
@@ -33,7 +36,11 @@ import {
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import FilterHdrRoundedIcon from "@material-ui/icons/FilterHdrRounded";
 import { CardRestaurant } from "../UI/Cards";
-import { fetchSinglePlan, checkIfManager } from "../../service/planService";
+import {
+  fetchSinglePlan,
+  checkIfManager,
+  deletePlan
+} from "../../service/planService";
 import {
   NameRest,
   Hike,
@@ -55,7 +62,8 @@ import {
   Booking,
   BookButton,
   Legend,
-  IconsCont
+  IconsCont,
+  Price
 } from "../styled/PlanDetailStyled";
 import infographic from "../../images/infographic.svg";
 import RestaurantMenuOutlinedIcon from "@material-ui/icons/RestaurantMenuOutlined";
@@ -63,7 +71,7 @@ import veggies from "../../images/veggies.svg";
 import gluten from "../../images/gluten.svg";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import QueryBuilderRoundedIcon from "@material-ui/icons/QueryBuilderRounded";
-import { s } from "../styled/globalStyles";
+import { s, changeFormat } from "../styled/globalStyles";
 import { Gap } from "../styled/globalStyles";
 import { RestaurantCard } from "../UI/RestaurantCard";
 import { TitleRest } from "../styled/PlanDetailStyled";
@@ -77,20 +85,26 @@ import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import { getComments } from "../../service/commentService";
-import { SheetsRegistry } from "jss";
+import { getLatLong } from "../../service/geocodeService";
+import { MapContainer } from "../styled/RestDetailStyled";
+import { MapLeaflet } from "../UI/map";
 
 export const PlanDetail = props => {
+  const session = useUser();
   const history = useHistory();
   const [info, setInfo] = useState([]);
-  const [numhikers, setNumhikers] = useState(0);
+  const [numhikers, setNumhikers] = useState(1);
   const [comments, setComments] = useState();
   const [planid, setPlanid] = useState();
   const [restid, setRestid] = useState();
   const [validated, setValidated] = useState(false);
   const [open, setOpen] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
   const [newbooking, setNewbooking] = useState();
   const [ismanager, setIsmanager] = useState();
   const [allComments, setAllComments] = useState();
+  const [pos, setPos] = useState();
+  const [totPrice, setTotPrice] = useState();
 
   useEffect(() => {
     const id = props.match.params.id;
@@ -98,10 +112,16 @@ export const PlanDetail = props => {
     fetchSinglePlan(id).then(plan => {
       setPlanid(plan.planId._id);
       setInfo(plan.planId);
+      setTotPrice(plan.planId.price);
       setRestid(plan.planId.restaurant._id);
       getComments(plan.planId.restaurant._id).then(comments => {
         console.log(comments);
         setAllComments(comments);
+      });
+      getLatLong(plan.planId.restaurant._id).then(coords => {
+        console.log(coords.data);
+        setPos(coords.data);
+        console.log(pos);
       });
     });
 
@@ -118,6 +138,21 @@ export const PlanDetail = props => {
         return comment.comment;
       })
   );
+
+  const handleClickOpenDel = () => {
+    setOpenDel(true);
+  };
+
+  const handleCloseDel = () => {
+    setOpenDel(false);
+  };
+
+  const handleDelete = id => {
+    deletePlan(id).then(del => {
+      console.log(del);
+    });
+    history.push("/owner/admin");
+  };
 
   const handleClickOpen = isNewBooking => {
     if (isNewBooking) {
@@ -141,6 +176,7 @@ export const PlanDetail = props => {
         comments
       });
       if (response) {
+        console.log(response.isNewBooking);
         handleClickOpen(response.isNewBooking); //mostrar pop up
       } else {
         console.log("Algo ha fallado");
@@ -172,21 +208,61 @@ export const PlanDetail = props => {
         <ImgCont>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6} md={6} lg={6}>
-              <img src={info.image1} width="100%" height="auto" />
+              <img
+                src={info.image1 ? info.image1 : "/placeholder4.jpg"}
+                width="100%"
+                height="auto"
+                data-aos="fade-down"
+                data-aos-duration="500"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="0"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <Grid container>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image2} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6}>
+                  <img
+                    src={info.image2 ? info.image2 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="100"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image3} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6}>
+                  <img
+                    src={info.image3 ? info.image3 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="200"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image4} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
+                  <img
+                    src={info.image4 ? info.image4 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="300"
+                  />
                 </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6}>
-                  <img src={info.image5} width="100%" height="auto" />
+                <Grid item xs={6} sm={6} md={6} lg={6} className="imgMov">
+                  <img
+                    src={info.image5 ? info.image5 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                    data-aos="fade-down"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in-out"
+                    data-aos-delay="400"
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -195,7 +271,12 @@ export const PlanDetail = props => {
 
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="100"
+            >
               <HikeTitle>
                 <FilterHdrRoundedIcon></FilterHdrRoundedIcon>
               </HikeTitle>
@@ -213,7 +294,12 @@ export const PlanDetail = props => {
                   );
                 })}
             </Hike>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="200"
+            >
               <Infographic>
                 <p>{info.startTime}</p>
                 <p>
@@ -227,13 +313,22 @@ export const PlanDetail = props => {
                 <img src={infographic} width="100%" height="auto" />
               </InfographImg>
             </Hike>
-            <Hike>
+            <Hike
+              data-aos="fade-right"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="300"
+            >
               {info.breakfast && (
                 <Chip
                   icon={<FreeBreakfastIcon />}
                   label="Breakfast"
                   color={s.dark}
-                  style={{ padding: "20px 5px", marginRight: 10 }}
+                  style={{
+                    padding: "20px 5px",
+                    marginRight: 10,
+                    marginBottom: 5
+                  }}
                 />
               )}
 
@@ -242,7 +337,11 @@ export const PlanDetail = props => {
                   icon={<FastfoodIcon />}
                   label="Snacks"
                   color={s.dark}
-                  style={{ padding: "20px 5px", marginRight: 10 }}
+                  style={{
+                    padding: "20px 5px",
+                    marginRight: 10,
+                    marginBottom: 5
+                  }}
                 />
               )}
 
@@ -250,13 +349,22 @@ export const PlanDetail = props => {
                 icon={<MapIcon />}
                 label="Guidance"
                 color={s.dark}
-                style={{ padding: "20px 5px", marginRight: 10 }}
+                style={{
+                  padding: "20px 5px",
+                  marginRight: 10,
+                  marginBottom: 5
+                }}
               />
             </Hike>
           </Grid>
 
           <Grid item xs={12} sm={12} md={4} lg={4}>
-            <Menu>
+            <Menu
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="400"
+            >
               <MenuTitle>
                 <RestaurantMenuOutlinedIcon></RestaurantMenuOutlinedIcon>
               </MenuTitle>
@@ -342,7 +450,7 @@ export const PlanDetail = props => {
               <Legend>
                 <div>
                   <img src={veggies} width="20" height="auto" />
-                  <p>* Appropiate for vegans</p>
+                  <p>* Vegan friendly</p>
                 </div>
                 <div>
                   <img src={gluten} width="20" height="auto" />
@@ -372,14 +480,27 @@ export const PlanDetail = props => {
                     textAlign: "center",
                     marginTop: 15
                   }}
+                  onClick={handleClickOpenDel}
                 >
                   Delete
                 </Button>
               </EditCont>
             )}
-            <Contact>
+            <Contact
+              data-aos="fade-left"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="500"
+            >
               <Owner>
-                <img src={info.owner && info.owner.image} />
+                <Avatar
+                  style={{
+                    width: 50,
+                    height: 50
+                  }}
+                  src={info.owner && info.owner.image}
+                ></Avatar>
+
                 <OwnerTexts>
                   <p>
                     <i>Organizer</i>
@@ -425,7 +546,7 @@ export const PlanDetail = props => {
                   ></LocationOnIcon>
                   <DateText>
                     <p>
-                      <b>Start Point</b>
+                      <b>Starting Point</b>
                     </p>
                     <p>{info.restaurant && info.restaurant.name}</p>
                     <p>
@@ -436,25 +557,47 @@ export const PlanDetail = props => {
                   </DateText>
                 </Location>
               </DetailsContact>
+              <MapContainer>
+                {pos && (
+                  <MapLeaflet
+                    lat={pos.Latitude}
+                    long={pos.Longitude}
+                  ></MapLeaflet>
+                )}
+              </MapContainer>
             </Contact>
 
-            <Paper elevation={5} style={{ padding: "5%" }}>
+            <Paper
+              elevation={5}
+              style={{ padding: "5%" }}
+              data-aos="fade-left"
+              data-aos-duration="500"
+              data-aos-easing="ease-in-out"
+              data-aos-delay="500"
+            >
               <TitleBooking>BOOKING</TitleBooking>
               <form
                 onSubmit={e => {
                   e.preventDefault();
-                  handleSubmit(planid, restid, numhikers, comments);
+                  if (session) {
+                    handleSubmit(planid, restid, numhikers, comments);
+                  } else {
+                    history.push("/login");
+                  }
                 }}
               >
                 <TextField
                   name="numhikers"
                   id="outlined-basic"
-                  label="Persons"
+                  label="Guests"
                   variant="outlined"
                   type="number"
                   fullWidth
                   value={numhikers}
-                  onChange={e => setNumhikers(e.target.value)}
+                  onChange={e => {
+                    setNumhikers(e.target.value);
+                    setTotPrice(e.target.value * info.price);
+                  }}
                   error={numhikers === 0 && validated}
                   helperText={
                     numhikers === 0 && validated
@@ -462,7 +605,7 @@ export const PlanDetail = props => {
                       : " "
                   }
                 />
-                <Gap></Gap>
+
                 <TextField
                   name="comments"
                   id="outlined-basic"
@@ -477,10 +620,11 @@ export const PlanDetail = props => {
                 />
                 <Gap></Gap>
                 <BookButton>
+                  <Price>{changeFormat(totPrice)} € </Price>
                   <Button
                     color="secondary"
                     variant="contained"
-                    style={{ width: 150 }}
+                    style={{ width: 150, padding: 0 }}
                     type="submit"
                   >
                     BOOK
@@ -488,7 +632,7 @@ export const PlanDetail = props => {
                 </BookButton>
               </form>
             </Paper>
-            <IconsCont>
+            {/* <IconsCont>
               <FavoriteBorderOutlinedIcon
                 color="primary"
                 style={{ fontSize: "35px" }}
@@ -497,7 +641,7 @@ export const PlanDetail = props => {
                 color="primary"
                 style={{ fontSize: "35px", marginLeft: 20, marginRight: 20 }}
               ></ShareIcon>
-            </IconsCont>
+            </IconsCont> */}
           </Grid>
         </Grid>
         <TitleRest>THE RESTAURANT</TitleRest>
@@ -517,6 +661,8 @@ export const PlanDetail = props => {
             website={info.restaurant && info.restaurant.website}
             email={info.restaurant && info.restaurant.email}
             comments={allComments}
+            rate={info.restaurant && info.restaurant.rateAv}
+            totalComments={info.restaurant && info.restaurant.totalComments}
           ></RestaurantCard>
         )}
       </ContBody>
@@ -567,12 +713,47 @@ export const PlanDetail = props => {
               Close
             </Button>
             <Button
-              onClick={() => history.push("/admin")}
+              onClick={() => history.push("/hiker/admin")}
               color="secondary"
               variant="contained"
               autoFocus
             >
               Admin
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+
+      <div>
+        <Dialog
+          open={openDel}
+          onClose={handleCloseDel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <>
+            <DialogTitle id="alert-dialog-title" style={{ color: s.dark }}>
+              {"Confirm delete"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure that you want to delete this plan?<br></br>
+                This action is irreversible.
+              </DialogContentText>
+            </DialogContent>
+          </>
+
+          <DialogActions>
+            <Button onClick={handleCloseDel} color="primary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => handleDelete(id)}
+              color="secondary"
+              variant="contained"
+              autoFocus
+            >
+              Delete
             </Button>
           </DialogActions>
         </Dialog>

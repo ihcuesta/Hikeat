@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Paper, Box } from "@material-ui/core";
+import { Grid, Paper, Box, Avatar } from "@material-ui/core";
 import { s, BodyLight } from "../styled/globalStyles";
 import rest1 from "../../images/rest/rest1.jpg";
 import rest2 from "../../images/rest/rest2.jpg";
@@ -37,27 +37,47 @@ export const RestaurantCard = ({
   phone,
   website,
   email,
-  comments
+  comments,
+  rate,
+  totalComments
 }) => {
   return (
     <>
-      <Paper elevation={1}>
+      <Paper
+        elevation={1}
+        data-aos="fade-up"
+        data-aos-duration="500"
+        data-aos-easing="ease-in-out"
+        data-aos-delay="400"
+      >
         <BgRestCard>
-          <Grid container spacing={3}>
-            <Grid item xs={4} sm={4} md={4} lg={4}>
-              <img src={img1} width="100%" height="auto" />
-              <Grid container>
+          <Grid container spacing={1}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <img
+                src={img1 ? img1 : "/placeholder4.jpg"}
+                width="100%"
+                height="auto"
+              />
+              {/* <Grid container>
                 <Grid item xs={6}>
-                  <img src={img2} width="100%" height="auto" />
+                  <img
+                    src={img2 ? img2 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <img src={img3} width="100%" height="auto" />
+                  <img
+                    src={img3 ? img3 : "/placeholder4.jpg"}
+                    width="100%"
+                    height="auto"
+                  />
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
 
-            <Grid item xs={4} sm={4} md={4} lg={4}>
-              <div style={{ color: s.dark }}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
+              <div style={{ color: s.dark, padding: "0% 5%" }}>
                 <p style={{ marginBottom: 5, fontSize: 14 }}>
                   <i>{kind}</i>
                 </p>
@@ -86,9 +106,12 @@ export const RestaurantCard = ({
                 <Rates
                   style={{
                     marginLeft: 0,
-                    width: 245,
+                    width: "100%",
+                    display: "flex",
+                    flexFlow: "row wrap",
+                    justifyContent: "flex-start",
                     marginTop: -5,
-                    marginBottom: -10
+                    marginBottom: 30
                   }}
                 >
                   <Box
@@ -97,11 +120,11 @@ export const RestaurantCard = ({
                     component="fieldset"
                     borderColor="transparent"
                   >
-                    <Rating name="read-only" value="5" readOnly />
+                    <Rating name="read-only" value={rate} readOnly />
                   </Box>
-                  <p>23 opinions</p>
+                  <p>{totalComments} comments</p>
                 </Rates>
-                <BodyLight style={{ marginBottom: 30 }}>{descr}</BodyLight>
+                {/* <BodyLight style={{ marginBottom: 30 }}>{descr}</BodyLight> */}
                 <InfoBullets>
                   <Grid container>
                     <Grid item xs={3} align="center">
@@ -134,31 +157,47 @@ export const RestaurantCard = ({
                 </InfoBullets>
               </div>
             </Grid>
-            <Grid item xs={4} sm={4} md={4} lg={4}>
+            <Grid item xs={12} sm={12} md={4} lg={4}>
               <OpinionsBox>
-                {comments.map(comment => {
-                  return (
-                    <Opinion>
-                      <Owner>
-                        <img src={comment.user.image}></img>
-                        <RateOp>
-                          <p>{comment.user.username}</p>
-                          <RatesOp>
-                            <Box component="fieldset" borderColor="transparent">
-                              <Rating name="read-only" value="4" readOnly />
-                            </Box>
-                            <p>
-                              <i>{comment.date}</i>
-                            </p>
-                          </RatesOp>
-                        </RateOp>
-                      </Owner>
-                      <OpText>
-                        <BodyLight>{comment.comment}</BodyLight>
-                      </OpText>
-                    </Opinion>
-                  );
-                })}
+                {comments && comments.length === 0 ? (
+                  <p style={{ marginTop: 20, marginLeft: 20 }}>
+                    <i>No comments yet</i>
+                  </p>
+                ) : (
+                  comments &&
+                  comments.map(comment => {
+                    return (
+                      <Opinion>
+                        <Owner>
+                          <Avatar
+                            style={{
+                              width: 50,
+                              height: 50
+                            }}
+                            src={comment.user.image}
+                          ></Avatar>
+                          <RateOp>
+                            <p>{comment.user.username}</p>
+                            <RatesOp>
+                              <Box
+                                component="fieldset"
+                                borderColor="transparent"
+                              >
+                                <Rating name="read-only" value="4" readOnly />
+                              </Box>
+                              <p>
+                                <i>{comment.date}</i>
+                              </p>
+                            </RatesOp>
+                          </RateOp>
+                        </Owner>
+                        <OpText>
+                          <BodyLight>{comment.comment}</BodyLight>
+                        </OpText>
+                      </Opinion>
+                    );
+                  })
+                )}
               </OpinionsBox>
             </Grid>
           </Grid>

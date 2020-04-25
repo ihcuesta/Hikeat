@@ -172,3 +172,10 @@ export const IconsCont = styled.div`
   flex-flow: row wrap;
   justify-content: flex-end;
 `;
+
+export const Price = styled.p`
+  color: ${s.textSecondary};
+  font-size: 23px;
+  margin: 7px 50px 7px 0px;
+  padding: 0px;
+`;

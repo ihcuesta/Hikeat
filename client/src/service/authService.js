@@ -41,7 +41,8 @@ export const doSignup = async ({
   password,
   role,
   description,
-  image
+  image,
+  fav
 }) => {
   try {
     const { data } = await authService.post("/signup", {
@@ -49,7 +50,8 @@ export const doSignup = async ({
       password,
       role,
       description,
-      image
+      image,
+      fav
     });
     return data;
   } catch (error) {
@@ -69,6 +71,19 @@ export const doLogout = async () => {
 
 export const whoami = async () => {
   const { data } = await authService.get("/whoami");
+  return data;
+};
 
+export const editUser = async () => {
+  const { data } = await authService.get("/profile/edit");
+  return data.userToEdit;
+};
+
+export const editUserUpdate = async (image, description, fav) => {
+  const { data } = await authService.put("/profile/edit", {
+    image,
+    description,
+    fav
+  });
   return data;
 };

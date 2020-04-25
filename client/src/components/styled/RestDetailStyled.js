@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { s } from "../styled/globalStyles";
 
 export const Rates = styled.div`
-  max-width: 270px;
+  max-width: 280px;
   margin: -30px auto 20px auto;
   display: flex;
   flex-flow: row wrap;
@@ -13,8 +13,16 @@ export const Rates = styled.div`
   }
 `;
 
+export const ContImgResp = styled.div`
+  display: none;
+
+  @media (min-width: 700px) {
+    display: block;
+  }
+`;
+
 export const Head = styled.div`
-  margin-top: 100px;
+  margin-top: 80px;
   text-align: center;
   margin-bottom: -20px;
   && p {
@@ -50,14 +58,11 @@ export const Contact = styled.div`
 export const Owner = styled.div`
   display: flex;
   flex-flow: row wrap;
-
-  && img {
-    margin-right: 20px;
-  }
+  align-items: center;
 `;
 
 export const OwnerTexts = styled.div`
-  margin-top: 5px;
+  margin-left: 20px;
 
   && p:first-child {
     font-size: 14px;
@@ -76,9 +81,13 @@ export const InfoBullets = styled.div`
 
 export const Opinion = styled.div`
   margin-bottom: 10px;
+  padding: 5px 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
 `;
 
 export const RateOp = styled.div`
+  margin-left: 20px;
   && p {
   }
 `;
@@ -86,7 +95,7 @@ export const RateOp = styled.div`
 export const RatesOp = styled.div`
   max-width: 270px;
   margin-top: -22px;
-  margin-left: -16px;
+  margin-left: -18px;
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -135,4 +144,9 @@ export const ContBtnComment = styled.div`
   flex-direction: row wrap;
   justify-content: flex-end;
   margin-top: -10px;
+`;
+
+export const MapContainer = styled.div`
+  width: 100%;
+  margin-top: 20px;
 `;
