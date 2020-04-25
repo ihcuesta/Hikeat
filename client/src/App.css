@@ -1,0 +1,14 @@
+.leaflet-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.imgMov {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .imgMov {
+    display: block;
+  }
+}
