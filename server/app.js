@@ -14,7 +14,7 @@ const cors = require("cors");
 const axios = require("axios");
 
 mongoose
-  .connect(process.env.DB_ALT, { useNewUrlParser: true })
+  .connect(process.env.DB, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -63,7 +63,7 @@ app.use(
     secret: "keyboard cat",
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({ url: process.env.DB_ALT })
+    store: new MongoStore({ url: process.env.DB })
   })
 );
 require("./config/passport")(app);
