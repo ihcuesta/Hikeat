@@ -133,12 +133,6 @@ export const Home = () => {
               </NotFound>
             )}
             {plans && plans.length === 0 && !search ? (
-<<<<<<< HEAD
-              // <Backdrop style={{ zIndex: 1000 }} open={true}>
-              //   <CircularProgress color="primary" />
-              // </Backdrop>
-=======
->>>>>>> 881b3b69186b1bfd62e60838b73911919b29fdf4
               <p>No plans found</p>
             ) : (
               plans &&
