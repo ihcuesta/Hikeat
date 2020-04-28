@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const cloudiService = axios.create({
-  baseURL: "http://localhost:4000/cloudinary",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/cloudinary`,
   withCredentials: true
 });
 

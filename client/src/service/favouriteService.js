@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const favouriteService = axios.create({
-  baseURL: "http://localhost:4000/favourite",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/favourite`,
   withCredentials: true
 });
 
