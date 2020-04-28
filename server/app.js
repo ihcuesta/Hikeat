@@ -13,6 +13,7 @@ const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
 const axios = require("axios");
 
+console.log(process.env.DB);
 mongoose
   .connect(process.env.DB, { useNewUrlParser: true })
   .then(x => {
