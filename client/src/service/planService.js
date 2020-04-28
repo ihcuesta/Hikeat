@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const planService = axios.create({
-  baseURL: "http://localhost:4000/plan",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/plan`,
   withCredentials: true
 });
 

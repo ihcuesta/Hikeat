@@ -13,8 +13,9 @@ const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
 const axios = require("axios");
 
+console.log(process.env.DB);
 mongoose
-  .connect("mongodb://localhost/hike", { useNewUrlParser: true })
+  .connect(process.env.DB, { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
@@ -32,7 +33,12 @@ const debug = require("debug")(
 const app = express();
 
 // Cross Domain CORS setup
-const whitelist = ["http://localhost:4000", "http://localhost:3000"];
+const whitelist = [
+  process.env.URL_BACK,
+  process.env.URL_FRONT,
+  process.env.URL_BACK2,
+  process.env.URL_FRONT2
+];
 const corsOptions = {
   origin: function(origin, callback) {
     console.log(`Origin: ${origin}`);
@@ -58,7 +64,7 @@ app.use(
     secret: "keyboard cat",
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
+    store: new MongoStore({ url: process.env.DB })
   })
 );
 require("./config/passport")(app);

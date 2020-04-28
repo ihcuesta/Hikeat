@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useUser } from "../../service/authService";
 import { Link } from "react-router-dom";
 import { Grid, TextField, Backdrop, CircularProgress } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -26,6 +27,7 @@ import "aos/dist/aos.css"; // You can also use <link> for styles
 AOS.init();
 
 export const Home = () => {
+  const session = useUser();
   const [search, setSearch] = useState(false);
   const [plans, setPlans] = useState([]);
   const [numPage, setNumPage] = useState(1);
@@ -55,12 +57,8 @@ export const Home = () => {
     });
   }, []);
 
-  console.log(total);
-  console.log(pages);
-
   const cPages = total => {
     let pages = Math.floor(total / 6);
-    console.log(pages);
     if (total % 6 > 0) pages++;
     return pages;
   };

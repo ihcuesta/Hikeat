@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const geocodingService = axios.create({
-  baseURL: "http://localhost:4000/geocode",
+  baseURL: `${process.env.REACT_APP_URL_BACK}/geocode`,
   withCredentials: true
 });
 
