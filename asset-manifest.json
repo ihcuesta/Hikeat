@@ -1,0 +1,40 @@
+{
+  "files": {
+    "main.css": "/hike/static/css/main.3e9d064a.chunk.css",
+    "main.js": "/hike/static/js/main.231a6332.chunk.js",
+    "main.js.map": "/hike/static/js/main.231a6332.chunk.js.map",
+    "runtime-main.js": "/hike/static/js/runtime-main.69237dc5.js",
+    "runtime-main.js.map": "/hike/static/js/runtime-main.69237dc5.js.map",
+    "static/css/2.f2da4d2c.chunk.css": "/hike/static/css/2.f2da4d2c.chunk.css",
+    "static/js/2.8b463dc1.chunk.js": "/hike/static/js/2.8b463dc1.chunk.js",
+    "static/js/2.8b463dc1.chunk.js.map": "/hike/static/js/2.8b463dc1.chunk.js.map",
+    "index.html": "/hike/index.html",
+    "precache-manifest.729629f4c6b5aaec7c1d9eba2aef742d.js": "/hike/precache-manifest.729629f4c6b5aaec7c1d9eba2aef742d.js",
+    "service-worker.js": "/hike/service-worker.js",
+    "static/css/2.f2da4d2c.chunk.css.map": "/hike/static/css/2.f2da4d2c.chunk.css.map",
+    "static/css/main.3e9d064a.chunk.css.map": "/hike/static/css/main.3e9d064a.chunk.css.map",
+    "static/js/2.8b463dc1.chunk.js.LICENSE.txt": "/hike/static/js/2.8b463dc1.chunk.js.LICENSE.txt",
+    "static/media/error.svg": "/hike/static/media/error.53a50566.svg",
+    "static/media/footer-img.png": "/hike/static/media/footer-img.1e2a401f.png",
+    "static/media/form-bg.jpg": "/hike/static/media/form-bg.9bab29b7.jpg",
+    "static/media/gluten.svg": "/hike/static/media/gluten.14fcc99e.svg",
+    "static/media/hero-img2.jpg": "/hike/static/media/hero-img2.722ee280.jpg",
+    "static/media/infographic.svg": "/hike/static/media/infographic.b198e5d9.svg",
+    "static/media/loading.gif": "/hike/static/media/loading.142750c6.gif",
+    "static/media/logo.svg": "/hike/static/media/logo.5d5d9eef.svg",
+    "static/media/index.css": "/hike/static/media/montserrat-latin-900italic.a8ec4957.woff",
+    "static/media/placeholder-profile.jpg": "/hike/static/media/placeholder-profile.ceb6bb6a.jpg",
+    "static/media/placeholder.jpg": "/hike/static/media/placeholder.6e4bb9e4.jpg",
+    "static/media/rest1.jpg": "/hike/static/media/rest1.78bc6c66.jpg",
+    "static/media/rest2.jpg": "/hike/static/media/rest2.49a43f2f.jpg",
+    "static/media/rest3.jpg": "/hike/static/media/rest3.1997ed24.jpg",
+    "static/media/veggies.svg": "/hike/static/media/veggies.738c26a3.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.69237dc5.js",
+    "static/css/2.f2da4d2c.chunk.css",
+    "static/js/2.8b463dc1.chunk.js",
+    "static/css/main.3e9d064a.chunk.css",
+    "static/js/main.231a6332.chunk.js"
+  ]
+}
