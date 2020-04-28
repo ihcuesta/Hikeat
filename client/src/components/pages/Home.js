@@ -124,7 +124,7 @@ export const Home = () => {
           </SearcherCont>
 
           <Grid container spacing={2}>
-            {plans && plans.length === 0 && search && (
+            {/* {plans && plans.length === 0 && search && (
               <NotFound>
                 <img src={error} />
                 <p>No plan found in this region</p>
@@ -132,8 +132,8 @@ export const Home = () => {
             )}
             {plans && plans.length === 0 && !search ? (
               <p>No plans found</p>
-            ) : (
-              plans &&
+            ) : ( */}
+            {plans &&
               plans.map(plan => {
                 return (
                   <CardHome
@@ -154,8 +154,7 @@ export const Home = () => {
                     price={changeFormat(plan.price)}
                   ></CardHome>
                 );
-              })
-            )}
+              })}
           </Grid>
           {!search ? (
             <>
