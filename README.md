@@ -23,4 +23,7 @@ Hikeat's maps are built on the Leaflet library, which uses Open Street Maps; in 
 <br/><br/>
 <b>Link to Hikeat:</b> https://hikeat-client.herokuapp.com/ 
 <br/><br/>
-<i>Hikeat was presented as a final project of the Iron Hack Web Development Bootcamp and was selected to compete in the Hackshow. Thanks to my 23 classmates and all the Iron Hack staff.</i>
+<i>Hikeat was presented as my final project of the Iron Hack Web Development Bootcamp and was selected to compete in the Hackshow. Thanks to my 23 classmates and all the Iron Hack staff.</i>
+<br/><br/>
+Iván Herranz Cuesta
+https://www.linkedin.com/in/ivanherranzcuesta/
