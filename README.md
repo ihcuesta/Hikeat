@@ -7,7 +7,7 @@ Hikeat is a web application that connect mountain village restaurants with lover
 
 The underlying idea is to encourage ecotourism and offer to local restaurants in mountain towns a tool to get more guests.
 <br/>
-<img src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588172917/hikeat/static/gif-scroll_bm1zfn.gif"/>
+<img style="margin: auto; display: block; text-align: center;" src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588172917/hikeat/static/gif-scroll_bm1zfn.gif"/>
 
 <br/>
 <b>Technology</b>
@@ -18,6 +18,7 @@ It uses several components of the Material UI library, designed expressly for Re
 
 Hikeat's maps are built on the Leaflet library, which uses Open Street Maps; in combination with the API REST Here, which allows the conversion of postal addresses to geographic coordinates.
 
-<img width="200" height="auto" style="margin: auto; display: block;" src="https://github.com/ihcuesta/hike/blob/master/client/public/mern-img.png"/>
+
+<img width="200" height="auto" style="margin: auto; display: block; text-align: center;" src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588174665/hikeat/static/mern-img_piifxm.png"/>
 
 
