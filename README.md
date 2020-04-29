@@ -18,7 +18,7 @@ It uses several components of the Material UI library, designed expressly for Re
 
 Hikeat's maps are built on the Leaflet library, which uses Open Street Maps; in combination with the API REST Here, which allows the conversion of postal addresses to geographic coordinates.
 
-<div style="margin: auto; display: block; width: 200px;">
+<div width="200" style="margin: auto; display: block;">
 <img width="100%" height="auto"  src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588174665/hikeat/static/mern-img_piifxm.png"/>
 </div>
 
