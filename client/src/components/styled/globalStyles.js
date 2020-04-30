@@ -88,6 +88,7 @@ export const ContBody = styled.div`
   max-width: 1400px;
   margin: auto;
   padding: 0 5%;
+  overflow-x: hidden;
 `;
 
 export const Error = styled.p`
@@ -129,7 +130,7 @@ export const EditContBar = styled.div`
   padding: 0px 30px;
   box-sizing: border-box;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   position: fixed;
   bottom: 0px;

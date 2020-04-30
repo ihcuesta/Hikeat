@@ -17,10 +17,7 @@ export const FormTitle = styled.h1`
   color: ${s.primary};
   font-size: 36px;
   text-align: center;
-  margin-top: 40px;
-  @media (min-width: 600px) {
-    margin-top: 100px;
-  }
+  margin-top: 100px;
 `;
 
 export const FormCont = styled.div`
