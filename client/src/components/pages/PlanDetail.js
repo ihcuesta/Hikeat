@@ -31,7 +31,8 @@ import {
   ContBody,
   BodyText,
   BodyLight,
-  EditCont
+  EditCont,
+  EditContBar
 } from "../styled/globalStyles";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import FilterHdrRoundedIcon from "@material-ui/icons/FilterHdrRounded";
@@ -192,6 +193,30 @@ export const PlanDetail = props => {
     </Backdrop>
   ) : (
     <>
+      <EditContBar>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ minWidth: 150, margin: "auto", display: "block" }}
+          onClick={() => history.push(`/plan/${id}/edit`)}
+        >
+          Edit
+        </Button>
+        <Button
+          component={Link}
+          style={{
+            minWidth: 150,
+            color: s.error,
+            margin: "auto",
+            display: "block",
+            textAlign: "center",
+            marginTop: 15
+          }}
+          onClick={handleClickOpenDel}
+        >
+          Delete
+        </Button>
+      </EditContBar>
       <ContBody>
         <Head>
           <p>
@@ -515,30 +540,34 @@ export const PlanDetail = props => {
                   </RestContact>
                 </OwnerTexts>
               </Owner>
-              <DetailsContact>
-                <Date>
-                  <CalendarTodayIcon
-                    style={{ color: s.dark, width: 35, height: "auto" }}
-                  ></CalendarTodayIcon>
-                  <DateText>
-                    <p>
-                      <b>Date</b>
-                    </p>
-                    <p>{info.date}</p>
-                  </DateText>
-                </Date>
-                <Time>
-                  <QueryBuilderRoundedIcon
-                    style={{ color: s.dark, width: 35, height: "auto" }}
-                  ></QueryBuilderRoundedIcon>
-                  <DateText>
-                    <p>
-                      <b>Time</b>
-                    </p>
-                    <p>{info.startTime}</p>
-                  </DateText>
-                </Time>
-              </DetailsContact>
+              <Grid container style={{ marginTop: 10 }}>
+                <Grid xs={12} sm={6} md={6} lg={6}>
+                  <Date>
+                    <CalendarTodayIcon
+                      style={{ color: s.dark, width: 35, height: "auto" }}
+                    ></CalendarTodayIcon>
+                    <DateText>
+                      <p>
+                        <b>Date</b>
+                      </p>
+                      <p>{info.date}</p>
+                    </DateText>
+                  </Date>
+                </Grid>
+                <Grid xs={12} sm={6} md={6} lg={6}>
+                  <Time>
+                    <QueryBuilderRoundedIcon
+                      style={{ color: s.dark, width: 35, height: "auto" }}
+                    ></QueryBuilderRoundedIcon>
+                    <DateText>
+                      <p>
+                        <b>Time</b>
+                      </p>
+                      <p>{info.startTime}</p>
+                    </DateText>
+                  </Time>
+                </Grid>
+              </Grid>
               <DetailsContact>
                 <Location>
                   <LocationOnIcon

@@ -22,7 +22,7 @@ export const ContImgResp = styled.div`
 `;
 
 export const Head = styled.div`
-  margin-top: 80px;
+  margin-top: 40px;
   text-align: center;
   margin-bottom: -20px;
   && p {
@@ -34,6 +34,9 @@ export const Head = styled.div`
     font-size: 30px;
     margin-top: -10px;
     color: ${s.dark};
+  }
+  @media (min-width: 600px) {
+    margin-top: 80px;
   }
 `;
 

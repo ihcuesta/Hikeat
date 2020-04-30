@@ -14,6 +14,7 @@ import {
 import { s, txtField } from "../styled/globalStyles";
 import { FooterAlt } from "../UI/Footer";
 import { Error, Gap } from "../styled/globalStyles";
+import { Link } from "react-router-dom";
 
 export const Login = ({ history }) => {
   const [open, setOpen] = useState(false);
@@ -54,7 +55,6 @@ export const Login = ({ history }) => {
               inputRef={register({ required: true })}
             />
             <Gap></Gap>
-            <Gap></Gap>
 
             <TextField
               required
@@ -75,7 +75,6 @@ export const Login = ({ history }) => {
             ) : (
               ""
             )} */}
-            <Gap></Gap>
 
             <Button
               variant="contained"
@@ -85,8 +84,22 @@ export const Login = ({ history }) => {
             >
               LOG IN
             </Button>
+            <p style={{ marginTop: 30 }}>
+              Don't have an account yet?<br></br>
+              <Link
+                to="/signup"
+                style={{
+                  color: s.secondary,
+                  textDecoration: "none",
+                  fontWeight: 600
+                }}
+              >
+                Sign up
+              </Link>
+            </p>
           </Form>
         </FormCont>
+
         <FooterAlt></FooterAlt>
       </FormBg>
 

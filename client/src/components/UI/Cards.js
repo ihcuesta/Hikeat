@@ -122,7 +122,8 @@ export const CardHome = ({
                 padding: "20px 5px",
                 color: s.dark,
                 backgroundColor: s.light,
-                marginRight: 5
+                marginRight: 5,
+                marginBottom: 5
               }}
               size="medium"
               icon={<CalendarTodayIcon style={{ color: s.primary }} />}
@@ -134,7 +135,8 @@ export const CardHome = ({
                 padding: "20px 5px",
                 color: s.dark,
                 backgroundColor: s.light,
-                marginRight: 5
+                marginRight: 5,
+                marginBottom: 5
               }}
               size="medium"
               icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
@@ -145,7 +147,8 @@ export const CardHome = ({
               style={{
                 padding: "20px 5px",
                 color: s.dark,
-                backgroundColor: s.light
+                backgroundColor: s.light,
+                marginBottom: 5
               }}
               size="medium"
               icon={<EuroRoundedIcon style={{ color: s.primary }} />}
@@ -195,13 +198,13 @@ export const CardHome = ({
                 href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
                 target="_blank"
               >
-                <TwitterIcon
+                {/* <TwitterIcon
                   style={{
                     fontSize: "35px",
                     marginLeft: 20,
                     cursor: "pointer"
                   }}
-                ></TwitterIcon>
+                ></TwitterIcon> */}
               </a>
             </Grid>
             <Grid item xs={6}>

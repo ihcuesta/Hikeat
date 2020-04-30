@@ -27,6 +27,11 @@ export const HomeHead = ({ scrollPlans }) => {
               >
                 <span style={{ color: s.dark }}>Hik</span>eat
               </Typography>
+              {/* <img
+                width="380"
+                height="auto"
+                src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588172715/hikeat/static/Hikeat_fbv3u3.svg"
+              /> */}
               <div
                 data-aos="fade-left"
                 data-aos-duration="400"

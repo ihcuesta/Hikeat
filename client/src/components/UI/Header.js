@@ -76,6 +76,11 @@ export const Header = () => {
               <Button component={Link} color="primary" to="/">
                 <LogoLeft>
                   Hik<span style={{ color: s.primary }}>eat</span>
+                  {/* <img
+                    width="100"
+                    height="auto"
+                    src="https://res.cloudinary.com/dnmktvry5/image/upload/v1588172715/hikeat/static/Hikeat_fbv3u3.svg"
+                  /> */}
                 </LogoLeft>
               </Button>
               {/* <Button component={Link} pr={10} color="primary" to="/signup">
@@ -170,7 +175,7 @@ export const Header = () => {
         </Box>
       </DesktopHeader>
       <MobileHeader>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar
             style={{
               display: "flex",
@@ -188,7 +193,9 @@ export const Header = () => {
               <IconButton edge="start" color="inherit" aria-label="menu">
                 <MenuIcon />
               </IconButton>
-              <h3>Hikeat</h3>
+              <Link to="/" style={{ color: "#FFF", textDecoration: "none" }}>
+                <h3>Hikeat</h3>
+              </Link>
             </div>
             {session ? (
               <div>
