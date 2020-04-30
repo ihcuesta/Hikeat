@@ -95,20 +95,20 @@ export const RestContact = styled.p`
 export const DetailsContact = styled.div`
   display: flex;
   flex-flow: row wrap;
-  width: 95%;
-  margin: 15px auto 30px auto;
+  /* width: 95%;
+  margin: 15px auto 30px auto; */
 `;
 
 export const Date = styled.div`
   display: flex;
   flex-flow: row wrap;
-  width: 50%;
+  margin-bottom: 30px;
 `;
 
 export const Time = styled.div`
   display: flex;
   flex-flow: row wrap;
-  width: 50%;
+  /* margin-bottom: 30px; */
 `;
 
 export const DateText = styled.div`
@@ -122,7 +122,7 @@ export const DateText = styled.div`
 export const Location = styled.div`
   display: flex;
   flex-flow: row;
-  width: 100%;
+  /* width: 100%; */
 `;
 
 export const TitleBooking = styled.p`
@@ -148,11 +148,11 @@ export const TitleRest = styled.h3`
 `;
 
 export const Legend = styled.div`
-  width: "100%";
+  width: 135px;
   color: #fff;
   font-size: 14px;
   font-weight: 200;
-  margin: 30px 0px 15px;
+  margin: 30px auto 15px auto;
 
   && div {
     display: flex;

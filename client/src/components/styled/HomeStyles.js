@@ -32,7 +32,12 @@ export const Divider = styled.div`
   background-position: top right;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 150px;
+  height: 70px;
+  margin-top: 50px;
+
+  @media (min-width: 600px) {
+    height: 150px;
+  }
 `;
 
 export const SearcherCont = styled.div`

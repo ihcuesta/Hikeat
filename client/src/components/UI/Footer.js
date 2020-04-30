@@ -7,8 +7,8 @@ import footerImg from "../../images/footer-img.png";
 
 const FooterCont = styled(Box)`
   width: 100%;
-  height: 50px;
-  padding: 30px;
+  /* height: 50px; */
+  /* padding: 30px; */
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -19,23 +19,45 @@ const FooterCont = styled(Box)`
 
 const FooterImg = styled.div`
   width: 100%;
-  height: 235px;
+  height: 150px;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom right;
   background-image: url(${footerImg});
   color: #fff;
+  @media (min-width: 780px) {
+    height: 235px;
+  }
 `;
 
 const FooterImgH = styled.div`
   width: 100%;
-  height: 235px;
+  height: 150px;
   background-color: #eee;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: bottom right;
   background-image: url(${footerImg});
   color: #fff;
+  @media (min-width: 780px) {
+    height: 235px;
+  }
+`;
+
+const FooterDesktop = styled.p`
+  display: none;
+  @media (min-width: 600px) {
+    display: block;
+  }
+`;
+
+const FooterMobile = styled.p`
+  display: block;
+  text-align: center;
+  line-height: 25px;
+  @media (min-width: 600px) {
+    display: none;
+  }
 `;
 
 export const Footer = () => {
@@ -43,11 +65,18 @@ export const Footer = () => {
     <footer>
       <FooterImg></FooterImg>
       <FooterCont>
-        <p color="primary">
+        <FooterDesktop color="primary">
           &copy; Hikeat | Made with{" "}
           <FavoriteIcon style={{ fontSize: "16px" }}></FavoriteIcon> by Iván
           Herranz
-        </p>
+        </FooterDesktop>
+        <FooterMobile color="primary">
+          &copy; Hikeat<br></br>
+          Made with <FavoriteIcon
+            style={{ fontSize: "16px" }}
+          ></FavoriteIcon>{" "}
+          by Iván Herranz
+        </FooterMobile>
       </FooterCont>
     </footer>
   );
@@ -58,11 +87,18 @@ export const FooterHome = () => {
     <footer>
       <FooterImgH></FooterImgH>
       <FooterCont>
-        <p color="primary">
+        <FooterDesktop color="primary">
           &copy; Hikeat | Made with{" "}
           <FavoriteIcon style={{ fontSize: "16px" }}></FavoriteIcon> by Iván
           Herranz
-        </p>
+        </FooterDesktop>
+        <FooterMobile color="primary">
+          &copy; Hikeat<br></br>
+          Made with <FavoriteIcon
+            style={{ fontSize: "16px" }}
+          ></FavoriteIcon>{" "}
+          by Iván Herranz
+        </FooterMobile>
       </FooterCont>
     </footer>
   );
@@ -72,11 +108,18 @@ export const FooterAlt = () => {
   return (
     <footer>
       <FooterCont>
-        <p color="primary">
+        <FooterDesktop color="primary">
           &copy; Hikeat | Made with{" "}
           <FavoriteIcon style={{ fontSize: "16px" }}></FavoriteIcon> by Iván
           Herranz
-        </p>
+        </FooterDesktop>
+        <FooterMobile color="primary">
+          &copy; Hikeat<br></br>
+          Made with <FavoriteIcon
+            style={{ fontSize: "16px" }}
+          ></FavoriteIcon>{" "}
+          by Iván Herranz
+        </FooterMobile>
       </FooterCont>
     </footer>
   );
