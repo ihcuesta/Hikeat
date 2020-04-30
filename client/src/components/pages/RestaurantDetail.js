@@ -46,7 +46,8 @@ import {
   BodyLight,
   s,
   Error,
-  EditCont
+  EditCont,
+  EditContBar
 } from "../styled/globalStyles";
 import CloseIcon from "@material-ui/icons/Close";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -228,6 +229,30 @@ export const RestaurantDetail = props => {
     </Backdrop>
   ) : (
     <>
+      <EditContBar>
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ minWidth: 150, margin: "auto", display: "block" }}
+          onClick={() => history.push(`/plan/${id}/edit`)}
+        >
+          Edit
+        </Button>
+        <Button
+          component={Link}
+          style={{
+            minWidth: 150,
+            color: s.error,
+            margin: "auto",
+            display: "block",
+            textAlign: "center",
+            marginTop: 15
+          }}
+          onClick={handleClickOpenDel}
+        >
+          Delete
+        </Button>
+      </EditContBar>
       <ContBody>
         <Head>
           <p>

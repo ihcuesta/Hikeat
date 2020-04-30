@@ -112,10 +112,33 @@ export const BodyLight = styled.p`
 `;
 
 export const EditCont = styled.div`
+  display: none;
   width: 100%;
   padding: 25px 5%;
   box-sizing: border-box;
   border-radius: 5px;
   background-color: #eee;
   margin-bottom: 10px;
+
+  @media (min-width: 960px) {
+    display: block;
+  }
+`;
+
+export const EditContBar = styled.div`
+  padding: 0px 30px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 900;
+  background-color: #eeeeee;
+  width: 100%;
+
+  @media (min-width: 960px) {
+    display: none;
+  }
 `;
