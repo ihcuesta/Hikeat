@@ -12,3 +12,35 @@
     display: block;
   }
 }
+
+/* .contframe {
+  width: 55%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  z-index: 200;
+  height: 600px;
+}
+
+.framehome {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+}
+
+.pichome {
+  top: 15px;
+  left: 0px;
+  width: 100%;
+  position: absolute;
+  z-index: 900;
+  -moz-transform: scale(1.2) translateX(0px) translateY(30px);
+  -webkit-transform: scale(1.2) translateX(0px) translateY(30px);
+  -o-transform: scale(1.2) translateX(0px) translateY(30px);
+  -ms-transform: scale(1.2) translateX(0px) translateY(30px);
+  transform: scale(1.2) translateX(0px) translateY(30px);
+} */

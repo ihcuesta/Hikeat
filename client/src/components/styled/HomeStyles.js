@@ -6,10 +6,10 @@ import { s } from "../styled/globalStyles";
 export const Hero = styled.div`
   @media (min-width: 960px) {
     margin: 50px auto;
-    width: 100%;
+    max-width: 1500px;
     background-image: url(${heroImg});
-    background-position: top center;
-    background-size: cover;
+    background-position: top left;
+    background-size: auto 100%;
     background-repeat: no-repeat;
   }
 `;

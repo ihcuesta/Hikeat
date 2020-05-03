@@ -40,7 +40,9 @@ import {
   ContClose,
   Descr,
   RoleWrap,
-  MessageBookingsDetail
+  MessageBookingsDetail,
+  IconRole,
+  BtnEditRestaurant
 } from "../styled/Admin";
 
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
@@ -145,7 +147,7 @@ export const AdminRest = props => {
           !session && history.push("/login")
         )}
         {session && (
-          <ContBody>
+          <>
             <HeaderAdmin data-aos="fade-right">
               <Grid container>
                 <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
@@ -179,21 +181,23 @@ export const AdminRest = props => {
                           </Button>
                         </span>
                         {/* <span>
-                          {" "}
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            style={{ color: "#FFF" }}
-                          >
-                            Delete
-                          </Button>
-                        </span> */}
+             {" "}
+             <Button
+               variant="outlined"
+               size="small"
+               style={{ color: "#FFF" }}
+             >
+               Delete
+             </Button>
+           </span> */}
                       </Name>
                       <Role>
                         <RoleWrap>
-                          <RestaurantRoundedIcon
-                            style={{ color: "#FFF" }}
-                          ></RestaurantRoundedIcon>
+                          <IconRole>
+                            <RestaurantRoundedIcon
+                              style={{ color: "#FFF" }}
+                            ></RestaurantRoundedIcon>
+                          </IconRole>
                           <h3>Restaurant owner</h3>
                         </RoleWrap>
                       </Role>
@@ -225,8 +229,8 @@ export const AdminRest = props => {
                           </>
 
                           {/* <TextAlign>
-                            <p style={{ color: "#FFF" }}>LEVEL 1</p>
-                          </TextAlign> */}
+               <p style={{ color: "#FFF" }}>LEVEL 1</p>
+             </TextAlign> */}
                           <Level>Newie</Level>
                         </ContFav>
                       </Grid>
@@ -236,20 +240,293 @@ export const AdminRest = props => {
               </Grid>
             </HeaderAdmin>
 
-            <TitBookings>NEXT PLANS</TitBookings>
-            <Grid container spacing={2}>
-              {allPlans && allPlans.length === 0 ? (
-                <Grid xs={12}>
+            <ContBody>
+              <TitBookings>NEXT PLANS</TitBookings>
+              <Grid container spacing={2}>
+                {allPlans && allPlans.length === 0 ? (
+                  <Grid xs={12}>
+                    <p
+                      style={{
+                        textAlign: "center",
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        display: "block"
+                      }}
+                    >
+                      You don't have plans. It's the moment to create the first
+                      one!
+                    </p>
+                    <Button
+                      style={{
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        display: "block"
+                      }}
+                      variant="contained"
+                      color="secondary"
+                      onClick={
+                        infoRest && infoRest.length === 0
+                          ? () => history.push(`/restaurant/new`)
+                          : () => history.push(`/plan/new`)
+                      }
+                    >
+                      Create plan
+                    </Button>
+                  </Grid>
+                ) : (
+                  allPlans &&
+                  allPlans.map((plan, i) => {
+                    return (
+                      <>
+                        <Grid item xs={12} sm={12} md={6} lg={4}>
+                          <Card data-aos="fade-up" elevation={3}>
+                            <Link to={`/plan/${plan._id}`}>
+                              <CardMedia
+                                style={{ height: 200 }}
+                                image={plan.image1}
+                              />
+                            </Link>
+                            <CardContent>
+                              <LocationCont>
+                                <LocationOnOutlinedIcon
+                                  style={{ width: 20, height: 20 }}
+                                ></LocationOnOutlinedIcon>
+                                <p>
+                                  {plan.restaurant.city},{" "}
+                                  {plan.restaurant.region}
+                                </p>
+                              </LocationCont>
+
+                              <Typography
+                                gutterBottom
+                                variant="h3"
+                                component="h3"
+                              >
+                                {plan.name}
+                              </Typography>
+                              <RestCont
+                                to={`/restaurant/${plan.restaurant._id}`}
+                              >
+                                <RestaurantMenuOutlinedIcon
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    color: s.primary
+                                  }}
+                                ></RestaurantMenuOutlinedIcon>
+                                <p>{plan.restaurant.name}</p>
+                              </RestCont>
+                              <ContChips>
+                                <Chip
+                                  style={{
+                                    padding: "20px 5px",
+                                    color: s.dark,
+                                    backgroundColor: s.light,
+                                    marginRight: 5,
+                                    marginBottom: 5
+                                  }}
+                                  size="medium"
+                                  icon={
+                                    <CalendarTodayIcon
+                                      style={{ color: s.primary }}
+                                    />
+                                  }
+                                  label={plan.date}
+                                />
+
+                                <Chip
+                                  style={{
+                                    padding: "20px 5px",
+                                    color: s.dark,
+                                    backgroundColor: s.light,
+                                    marginRight: 5,
+                                    marginBottom: 5
+                                  }}
+                                  size="medium"
+                                  icon={
+                                    <WatchLaterOutlinedIcon
+                                      style={{ color: s.primary }}
+                                    />
+                                  }
+                                  label={plan.startTime}
+                                />
+
+                                <Chip
+                                  style={{
+                                    padding: "20px 5px",
+                                    color: s.dark,
+                                    backgroundColor: s.light,
+                                    marginBottom: 5
+                                  }}
+                                  size="medium"
+                                  icon={
+                                    <EuroRoundedIcon
+                                      style={{ color: s.primary }}
+                                    />
+                                  }
+                                  label={changeFormat(plan.price)}
+                                />
+                              </ContChips>
+
+                              <BodyCard>{plan.shortDescr}</BodyCard>
+                            </CardContent>
+                            <NumHikers>
+                              <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
+                              <p>{plan.counterBookings} guests</p>
+                            </NumHikers>
+                            <CardActions
+                              style={{
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                                paddingBottom: 10,
+                                backgroundColor: "#EEE"
+                              }}
+                            >
+                              <Grid container style={{ width: "100%" }}>
+                                <Grid
+                                  item
+                                  xs={6}
+                                  style={{
+                                    paddingRight: 5,
+                                    paddingLeft: 5,
+                                    boxSizing: "border-box"
+                                  }}
+                                >
+                                  <Button
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    value={plan._id}
+                                    onClick={e =>
+                                      retrieveBookingsDetail(
+                                        e.currentTarget.value
+                                      )
+                                    }
+                                  >
+                                    BOOKINGS
+                                  </Button>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={6}
+                                  style={{
+                                    paddingRight: 5,
+                                    paddingLeft: 5,
+                                    boxSizing: "border-box"
+                                  }}
+                                >
+                                  <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={() =>
+                                      history.push(`/plan/${plan._id}/edit`)
+                                    }
+                                  >
+                                    EDIT
+                                  </Button>
+                                </Grid>
+                              </Grid>
+                            </CardActions>
+                          </Card>
+                        </Grid>
+
+                        <Dialog open={open} onClose={handleClose}>
+                          <DialogCont>
+                            <ContClose>
+                              <Tooltip title="Close" onClick={handleClose}>
+                                <IconButton aria-label="close">
+                                  <CloseRoundedIcon style={{ color: "#FFF" }} />
+                                </IconButton>
+                              </Tooltip>
+                            </ContClose>
+                            {bookingDetail && bookingDetail.length === 0 && (
+                              <MessageBookingsDetail>
+                                <p>
+                                  There are not bookings yet, but there will be
+                                  soon 😉
+                                </p>
+                                <img
+                                  src="/mountain.gif"
+                                  width="50"
+                                  height="auto"
+                                />
+                              </MessageBookingsDetail>
+                            )}
+                            {bookingDetail &&
+                              bookingDetail.map(book => {
+                                return (
+                                  <GrayCont>
+                                    <Grid container>
+                                      <Grid
+                                        xs={12}
+                                        sm={4}
+                                        md={4}
+                                        lg={4}
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "flex-start",
+                                          alignItems: "center"
+                                        }}
+                                      >
+                                        <Avatar
+                                          src={book.user.image}
+                                          style={{ marginRight: 10 }}
+                                        />
+                                        <p>{book.user.username}</p>
+                                      </Grid>
+
+                                      <Grid
+                                        xs={12}
+                                        sm={3}
+                                        md={3}
+                                        lg={3}
+                                        style={{
+                                          display: "flex",
+                                          justifyContent: "flex-start",
+                                          alignItems: "center"
+                                        }}
+                                      >
+                                        <PeopleAltRoundedIcon sixe="small"></PeopleAltRoundedIcon>
+                                        <p style={{ marginLeft: 10 }}>
+                                          {book.numhikers}
+                                        </p>
+                                      </Grid>
+                                      <Grid xs={12} sm={5} md={5} lg={5}>
+                                        {book.comments === "" ? (
+                                          <p
+                                            style={{
+                                              color: "#999",
+                                              fontWeight: 100
+                                            }}
+                                          >
+                                            <i>No comments</i>
+                                          </p>
+                                        ) : (
+                                          <p>{book.comments}</p>
+                                        )}
+                                      </Grid>
+                                    </Grid>
+                                  </GrayCont>
+                                );
+                              })}
+                          </DialogCont>
+                        </Dialog>
+                      </>
+                    );
+                  })
+                )}
+              </Grid>
+
+              <TitBookings>RESTAURANT</TitBookings>
+              {infoRest && infoRest.length === 0 ? (
+                <>
                   <p
                     style={{
-                      textAlign: "center",
-                      marginRight: "auto",
-                      marginLeft: "auto",
-                      display: "block"
+                      textAlign: "center"
                     }}
                   >
-                    You don't have plans. It's the moment to create the first
-                    one!
+                    You haven't include your restaurant yet.
                   </p>
                   <Button
                     style={{
@@ -259,314 +536,51 @@ export const AdminRest = props => {
                     }}
                     variant="contained"
                     color="secondary"
-                    onClick={
-                      infoRest && infoRest.length === 0
-                        ? () => history.push(`/restaurant/new`)
-                        : () => history.push(`/plan/new`)
-                    }
+                    onClick={() => history.push("/restaurant/new")}
                   >
-                    Create plan
+                    Create restaurant
                   </Button>
-                </Grid>
+                </>
               ) : (
-                allPlans &&
-                allPlans.map((plan, i) => {
-                  return (
-                    <>
-                      <Grid item xs={12} sm={12} md={6} lg={4}>
-                        <Card data-aos="fade-up" elevation={3}>
-                          <Link to={`/plan/${plan._id}`}>
-                            <CardMedia
-                              style={{ height: 200 }}
-                              image={plan.image1}
-                            />
-                          </Link>
-                          <CardContent>
-                            <LocationCont>
-                              <LocationOnOutlinedIcon
-                                style={{ width: 20, height: 20 }}
-                              ></LocationOnOutlinedIcon>
-                              <p>
-                                {plan.restaurant.city}, {plan.restaurant.region}
-                              </p>
-                            </LocationCont>
-
-                            <Typography
-                              gutterBottom
-                              variant="h3"
-                              component="h3"
-                            >
-                              {plan.name}
-                            </Typography>
-                            <RestCont to={`/restaurant/${plan.restaurant._id}`}>
-                              <RestaurantMenuOutlinedIcon
-                                style={{
-                                  width: 20,
-                                  height: 20,
-                                  color: s.primary
-                                }}
-                              ></RestaurantMenuOutlinedIcon>
-                              <p>{plan.restaurant.name}</p>
-                            </RestCont>
-                            <ContChips>
-                              <Chip
-                                style={{
-                                  padding: "20px 5px",
-                                  color: s.dark,
-                                  backgroundColor: s.light,
-                                  marginRight: 5
-                                }}
-                                size="medium"
-                                icon={
-                                  <CalendarTodayIcon
-                                    style={{ color: s.primary }}
-                                  />
-                                }
-                                label={plan.date}
-                              />
-
-                              <Chip
-                                style={{
-                                  padding: "20px 5px",
-                                  color: s.dark,
-                                  backgroundColor: s.light,
-                                  marginRight: 5
-                                }}
-                                size="medium"
-                                icon={
-                                  <WatchLaterOutlinedIcon
-                                    style={{ color: s.primary }}
-                                  />
-                                }
-                                label={plan.startTime}
-                              />
-
-                              <Chip
-                                style={{
-                                  padding: "20px 5px",
-                                  color: s.dark,
-                                  backgroundColor: s.light
-                                }}
-                                size="medium"
-                                icon={
-                                  <EuroRoundedIcon
-                                    style={{ color: s.primary }}
-                                  />
-                                }
-                                label={changeFormat(plan.price)}
-                              />
-                            </ContChips>
-
-                            <BodyCard>{plan.shortDescr}</BodyCard>
-                          </CardContent>
-                          <NumHikers>
-                            <PeopleAltRoundedIcon></PeopleAltRoundedIcon>
-                            <p>{plan.counterBookings} guests</p>
-                          </NumHikers>
-                          <CardActions
-                            style={{
-                              paddingLeft: 5,
-                              paddingRight: 5,
-                              paddingBottom: 10,
-                              backgroundColor: "#EEE"
-                            }}
-                          >
-                            <Grid container style={{ width: "100%" }}>
-                              <Grid
-                                item
-                                xs={6}
-                                style={{
-                                  paddingRight: 5,
-                                  paddingLeft: 5,
-                                  boxSizing: "border-box"
-                                }}
-                              >
-                                <Button
-                                  fullWidth
-                                  variant="contained"
-                                  color="primary"
-                                  value={plan._id}
-                                  onClick={e =>
-                                    retrieveBookingsDetail(
-                                      e.currentTarget.value
-                                    )
-                                  }
-                                >
-                                  VIEW BOOKINGS
-                                </Button>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={6}
-                                style={{
-                                  paddingRight: 5,
-                                  paddingLeft: 5,
-                                  boxSizing: "border-box"
-                                }}
-                              >
-                                <Button
-                                  fullWidth
-                                  variant="outlined"
-                                  color="primary"
-                                  onClick={() =>
-                                    history.push(`/plan/${plan._id}/edit`)
-                                  }
-                                >
-                                  EDIT PLAN
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-
-                      <Dialog open={open} onClose={handleClose}>
-                        <DialogCont>
-                          <ContClose>
-                            <Tooltip title="Close" onClick={handleClose}>
-                              <IconButton aria-label="close">
-                                <CloseRoundedIcon style={{ color: "#FFF" }} />
-                              </IconButton>
-                            </Tooltip>
-                          </ContClose>
-                          {bookingDetail && bookingDetail.length === 0 && (
-                            <MessageBookingsDetail>
-                              <p>
-                                There are not bookings yet, but there will be
-                                soon 😉
-                              </p>
-                              <img
-                                src="/mountain.gif"
-                                width="50"
-                                height="auto"
-                              />
-                            </MessageBookingsDetail>
-                          )}
-                          {bookingDetail &&
-                            bookingDetail.map(book => {
-                              return (
-                                <GrayCont>
-                                  <Grid container>
-                                    <Grid
-                                      xs={12}
-                                      sm={4}
-                                      md={4}
-                                      lg={4}
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        alignItems: "center"
-                                      }}
-                                    >
-                                      <Avatar
-                                        src={book.user.image}
-                                        style={{ marginRight: 10 }}
-                                      />
-                                      <p>{book.user.username}</p>
-                                    </Grid>
-
-                                    <Grid
-                                      xs={12}
-                                      sm={3}
-                                      md={3}
-                                      lg={3}
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "flex-start",
-                                        alignItems: "center"
-                                      }}
-                                    >
-                                      <PeopleAltRoundedIcon sixe="small"></PeopleAltRoundedIcon>
-                                      <p style={{ marginLeft: 10 }}>
-                                        {book.numhikers}
-                                      </p>
-                                    </Grid>
-                                    <Grid xs={12} sm={5} md={5} lg={5}>
-                                      {book.comments === "" ? (
-                                        <p
-                                          style={{
-                                            color: "#999",
-                                            fontWeight: 100
-                                          }}
-                                        >
-                                          <i>No comments</i>
-                                        </p>
-                                      ) : (
-                                        <p>{book.comments}</p>
-                                      )}
-                                    </Grid>
-                                  </Grid>
-                                </GrayCont>
-                              );
-                            })}
-                        </DialogCont>
-                      </Dialog>
-                    </>
-                  );
-                })
+                <>
+                  <RestaurantCard
+                    id={infoRest && infoRest._id}
+                    img1={infoRest && infoRest.image1}
+                    img2={infoRest && infoRest.image2}
+                    img3={infoRest && infoRest.image3}
+                    kind={infoRest && infoRest.kind}
+                    name={infoRest && infoRest.name}
+                    address={infoRest && infoRest.address}
+                    city={infoRest && infoRest.city}
+                    region={infoRest && infoRest.region}
+                    descr={infoRest && infoRest.descr}
+                    phone={infoRest && infoRest.phone}
+                    website={infoRest && infoRest.website}
+                    email={infoRest && infoRest.email}
+                    comments={allComments && allComments}
+                  ></RestaurantCard>
+                  <BtnEditRestaurant>
+                    <Button
+                      style={{
+                        marginRight: "auto",
+                        marginLeft: "auto",
+                        display: "block"
+                      }}
+                      variant="contained"
+                      color="secondary"
+                      onClick={() =>
+                        history.push(`/restaurant/${infoRest._id}/edit`)
+                      }
+                    >
+                      Edit restaurant
+                    </Button>
+                  </BtnEditRestaurant>
+                </>
               )}
-            </Grid>
-
-            <TitBookings>RESTAURANT</TitBookings>
-            {infoRest && infoRest.length === 0 ? (
-              <>
-                <p
-                  style={{
-                    textAlign: "center"
-                  }}
-                >
-                  You haven't include your restaurant yet.
-                </p>
-                <Button
-                  style={{
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    display: "block"
-                  }}
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => history.push("/restaurant/new")}
-                >
-                  Create restaurant
-                </Button>
-              </>
-            ) : (
-              <>
-                <RestaurantCard
-                  id={infoRest && infoRest._id}
-                  img1={infoRest && infoRest.image1}
-                  img2={infoRest && infoRest.image2}
-                  img3={infoRest && infoRest.image3}
-                  kind={infoRest && infoRest.kind}
-                  name={infoRest && infoRest.name}
-                  address={infoRest && infoRest.address}
-                  city={infoRest && infoRest.city}
-                  region={infoRest && infoRest.region}
-                  descr={infoRest && infoRest.descr}
-                  phone={infoRest && infoRest.phone}
-                  website={infoRest && infoRest.website}
-                  email={infoRest && infoRest.email}
-                  comments={allComments && allComments}
-                ></RestaurantCard>
-                <Button
-                  style={{
-                    marginTop: -20,
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    display: "block"
-                  }}
-                  variant="contained"
-                  color="secondary"
-                  onClick={() =>
-                    history.push(`/restaurant/${infoRest._id}/edit`)
-                  }
-                >
-                  Edit restaurant
-                </Button>
-              </>
-            )}
-          </ContBody>
+            </ContBody>
+          </>
         )}
+
         <Footer></Footer>
       </BgAdmin>
     </>
