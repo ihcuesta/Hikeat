@@ -15,11 +15,30 @@ export const HeaderAdmin = styled.div`
   }
 `;
 
+export const IconRole = styled.div`
+  display: none;
+
+  @media (min-width: 600px) {
+    display: block;
+  }
+`;
+
+export const BtnEditRestaurant = styled.div`
+  display: "block";
+  width: 100%;
+  margin-top: 10px;
+
+  @media (min-width: 960px) {
+    margin-top: -20px;
+  }
+`;
+
 export const Pic = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   padding-top: 40px;
+  margin-top: 50px;
 
   @media (min-width: 960px) {
     display: block;
@@ -38,6 +57,10 @@ export const Pic = styled.div`
   @media (min-width: 910px) {
     background-size: contain;
   }
+
+  @media (min-width: 700px) {
+    margin-top: 0px;
+  }
 `;
 
 export const Name = styled.h2`
@@ -47,7 +70,7 @@ export const Name = styled.h2`
 `;
 
 export const Role = styled.div`
-  width: 100px;
+  width: 100%;
   margin: auto;
   display: block;
 
@@ -64,12 +87,22 @@ export const Role = styled.div`
 `;
 
 export const RoleWrap = styled.div`
-  display: flex;
-  flex-direction: row wrap;
-  align-items: center;
-  margin-top: -30px;
-  width: 100px;
-  justify-content: space-between;
+  text-align: center;
+  display: block;
+  width: 100%;
+
+  @media (min-width: 600px) {
+    display: flex;
+    flex-direction: row wrap;
+    align-items: center;
+    margin-top: -30px;
+    justify-content: flex-start;
+  }
+
+  /* @media (min-width: 600px) {
+    margin: -40px 0px 0px 0px;
+    justify-content: flex-start;
+  } */
 `;
 
 export const Fav = styled.div`

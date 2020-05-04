@@ -92,13 +92,6 @@ export const RestContact = styled.p`
   cursor: pointer;
 `;
 
-export const DetailsContact = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  /* width: 95%;
-  margin: 15px auto 30px auto; */
-`;
-
 export const Date = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -108,7 +101,7 @@ export const Date = styled.div`
 export const Time = styled.div`
   display: flex;
   flex-flow: row wrap;
-  /* margin-bottom: 30px; */
+  margin-bottom: 30px;
 `;
 
 export const DateText = styled.div`

@@ -193,30 +193,32 @@ export const PlanDetail = props => {
     </Backdrop>
   ) : (
     <>
-      <EditContBar>
-        <Button
-          variant="contained"
-          color="secondary"
-          style={{ minWidth: 150, margin: "auto", display: "block" }}
-          onClick={() => history.push(`/plan/${id}/edit`)}
-        >
-          Edit
-        </Button>
-        <Button
-          component={Link}
-          style={{
-            minWidth: 150,
-            color: s.error,
-            margin: "auto",
-            display: "block",
-            textAlign: "center",
-            marginTop: 15
-          }}
-          onClick={handleClickOpenDel}
-        >
-          Delete
-        </Button>
-      </EditContBar>
+      {ismanager && (
+        <EditContBar>
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ minWidth: 150, margin: "auto", display: "block" }}
+            onClick={() => history.push(`/plan/${id}/edit`)}
+          >
+            Edit
+          </Button>
+          <Button
+            component={Link}
+            style={{
+              minWidth: 150,
+              color: s.error,
+              margin: "auto",
+              display: "block",
+              textAlign: "center",
+              marginTop: 15
+            }}
+            onClick={handleClickOpenDel}
+          >
+            Delete
+          </Button>
+        </EditContBar>
+      )}
       <ContBody>
         <Head>
           <p>
@@ -568,24 +570,24 @@ export const PlanDetail = props => {
                   </Time>
                 </Grid>
               </Grid>
-              <DetailsContact>
-                <Location>
-                  <LocationOnIcon
-                    style={{ color: s.dark, width: 35, height: "auto" }}
-                  ></LocationOnIcon>
-                  <DateText>
-                    <p>
-                      <b>Starting Point</b>
-                    </p>
-                    <p>{info.restaurant && info.restaurant.name}</p>
-                    <p>
-                      {info.restaurant && info.restaurant.address}.{" "}
-                      {info.restaurant && info.restaurant.city},{" "}
-                      {info.restaurant && info.restaurant.region}.
-                    </p>
-                  </DateText>
-                </Location>
-              </DetailsContact>
+
+              <Location>
+                <LocationOnIcon
+                  style={{ color: s.dark, width: 35, height: "auto" }}
+                ></LocationOnIcon>
+                <DateText>
+                  <p>
+                    <b>Starting Point</b>
+                  </p>
+                  <p>{info.restaurant && info.restaurant.name}</p>
+                  <p>
+                    {info.restaurant && info.restaurant.address}.{" "}
+                    {info.restaurant && info.restaurant.city},{" "}
+                    {info.restaurant && info.restaurant.region}.
+                  </p>
+                </DateText>
+              </Location>
+
               <MapContainer>
                 {pos && (
                   <MapLeaflet
