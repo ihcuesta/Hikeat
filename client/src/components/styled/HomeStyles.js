@@ -4,13 +4,30 @@ import divider from "../../images/gray-divider.png";
 import { s } from "../styled/globalStyles";
 
 export const Hero = styled.div`
-  @media (min-width: 960px) {
-    margin: 50px auto;
-    max-width: 1500px;
-    background-image: url(${heroImg});
-    background-position: top left;
-    background-size: auto 100%;
+  margin: 50px auto;
+  max-width: 1600px;
+
+  @media (min-width: 700px) {
+    background-image: url("https://res.cloudinary.com/dnmktvry5/image/upload/v1588554734/hikeat/static/home-ipad_cwbw5f.jpg");
+    background-size: 350px auto;
+    background-position: 110% -50%;
     background-repeat: no-repeat;
+  }
+
+  @media (min-width: 960px) {
+    background-image: none;
+  }
+`;
+
+export const PicHome = styled.div`
+  display: none;
+
+  @media (min-width: 960px) {
+    max-width: 900px;
+    height: 620px;
+    position: relative;
+    overflow: hidden;
+    display: block;
   }
 `;
 
@@ -26,7 +43,7 @@ export const ContHead = styled.div`
 
   @media (min-width: 960px) {
     max-width: 400px;
-    padding: 70px 0px;
+    padding: 50px 0px 0px;
     margin: auto;
   }
 `;
@@ -38,7 +55,7 @@ export const Divider = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   height: 70px;
-  margin-top: 50px;
+  margin-top: 0px;
 
   @media (min-width: 600px) {
     height: 150px;

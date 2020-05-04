@@ -1,3 +1,17 @@
+@keyframes header {
+  0% {
+    transform: scale(0.9) translateX(800px) translateY(150px);
+  }
+
+  50% {
+    transform: scale(0.6) translateX(1050px) translateY(410px);
+  }
+
+  100% {
+    transform: scale(0.9) translateX(800px) translateY(150px);
+  }
+}
+
 .leaflet-container {
   width: 100vw;
   height: 100vh;
@@ -21,26 +35,22 @@
   overflow: hidden;
   z-index: 200;
   height: 600px;
-}
+} */
 
 .framehome {
-  top: 0px;
-  left: 0px;
+  bottom: 0px;
+  right: 0px;
   width: 100%;
+  border: 1px solid #fff;
   position: absolute;
-  z-index: 1000;
-  height: 100%;
+  z-index: 800;
 }
 
 .pichome {
-  top: 15px;
-  left: 0px;
-  width: 100%;
+  bottom: 0px;
+  right: 0px;
+  overflow: hidden;
   position: absolute;
-  z-index: 900;
-  -moz-transform: scale(1.2) translateX(0px) translateY(30px);
-  -webkit-transform: scale(1.2) translateX(0px) translateY(30px);
-  -o-transform: scale(1.2) translateX(0px) translateY(30px);
-  -ms-transform: scale(1.2) translateX(0px) translateY(30px);
-  transform: scale(1.2) translateX(0px) translateY(30px);
-} */
+  z-index: 700;
+  animation: header 50s infinite;
+}
