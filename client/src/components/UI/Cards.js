@@ -181,7 +181,7 @@ export const CardHome = ({
 
               <a
                 style={{ color: s.primary }}
-                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.REACT_APP_URL_FRONT}/plan/${id}`}
+                href={`http://www.facebook.com/sharer.php?s=100&p[title]=${name}&p[summary]=Take a look of this plan in Hikeat!&p[url]=${process.env.REACT_APP_URL_FRONT}&p[images][0]=${image}`}
                 target="_blank"
               >
                 <FacebookIcon
