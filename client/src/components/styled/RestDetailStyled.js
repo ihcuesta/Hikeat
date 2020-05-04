@@ -35,9 +35,10 @@ export const Head = styled.div`
     margin-top: -10px;
     color: ${s.dark};
   }
-  /* @media (min-width: 600px) {
-    margin-top: 80px;
-  } */
+
+  @media (min-width: 960px) {
+    margin-top: 50px;
+  }
 `;
 
 export const ImgCont = styled.div`

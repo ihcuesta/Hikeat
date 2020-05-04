@@ -35,11 +35,7 @@ export const ContHead = styled.div`
   width: 100%;
   padding: 5%;
   box-sizing: border-box;
-  margin-top: 70px;
-
-  @media (min-width: 760px) {
-    margin-top: 0px;
-  }
+  margin-top: 30px;
 
   @media (min-width: 960px) {
     max-width: 400px;
