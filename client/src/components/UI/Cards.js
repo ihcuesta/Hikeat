@@ -274,7 +274,8 @@ export const CardFav = ({
                 padding: "20px 5px",
                 color: s.dark,
                 backgroundColor: s.light,
-                marginRight: 5
+                marginRight: 5,
+                marginBottom: 5
               }}
               size="medium"
               icon={<CalendarTodayIcon style={{ color: s.primary }} />}
@@ -286,7 +287,8 @@ export const CardFav = ({
                 padding: "20px 5px",
                 color: s.dark,
                 backgroundColor: s.light,
-                marginRight: 5
+                marginRight: 5,
+                marginBottom: 5
               }}
               size="medium"
               icon={<WatchLaterOutlinedIcon style={{ color: s.primary }} />}
@@ -297,7 +299,8 @@ export const CardFav = ({
               style={{
                 padding: "20px 5px",
                 color: s.dark,
-                backgroundColor: s.light
+                backgroundColor: s.light,
+                marginBottom: 5
               }}
               size="medium"
               icon={<EuroRoundedIcon style={{ color: s.primary }} />}
@@ -335,7 +338,7 @@ export const CardFav = ({
                   }}
                 ></FacebookIcon>
               </a>
-              <a
+              {/* <a
                 style={{ color: s.primary }}
                 href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
                 target="_blank"
@@ -347,7 +350,7 @@ export const CardFav = ({
                     cursor: "pointer"
                   }}
                 ></TwitterIcon>
-              </a>
+              </a> */}
             </Grid>
             <Grid item xs={6}>
               <Button

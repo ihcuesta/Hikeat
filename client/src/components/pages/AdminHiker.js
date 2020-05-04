@@ -38,7 +38,8 @@ import {
   EditBookingBg,
   NumHikers,
   Descr,
-  RoleWrap
+  RoleWrap,
+  IconRole
 } from "../styled/Admin";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined";
@@ -166,40 +167,39 @@ export const AdminHiker = () => {
         )}
         {session && (
           <>
-            <ContBody>
-              <HeaderAdmin data-aos="fade-right">
-                <Grid container>
-                  <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
-                    <Pic>
-                      <Avatar
-                        style={{
-                          width: 250,
-                          height: 250
-                        }}
-                        src={session.user.image}
-                      ></Avatar>
-                    </Pic>
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={8}>
-                    <WrapperResp>
-                      <ContTit>
-                        <Name>
-                          {session.user.username}
-                          <span>
-                            {" "}
-                            <Button
-                              variant="contained"
-                              size="small"
-                              onClick={() => history.push("/profile/edit")}
-                              style={{
-                                color: s.primary,
-                                backgroundColor: "#FFF"
-                              }}
-                            >
-                              Edit Profile
-                            </Button>
-                          </span>
-                          {/* <span>
+            <HeaderAdmin data-aos="fade-right">
+              <Grid container>
+                <Grid item xs={12} sm={12} md={4} style={{ minHeight: 300 }}>
+                  <Pic>
+                    <Avatar
+                      style={{
+                        width: 250,
+                        height: 250
+                      }}
+                      src={session.user.image}
+                    ></Avatar>
+                  </Pic>
+                </Grid>
+                <Grid item xs={12} sm={12} md={8}>
+                  <WrapperResp>
+                    <ContTit>
+                      <Name>
+                        {session.user.username}
+                        <span>
+                          {" "}
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={() => history.push("/profile/edit")}
+                            style={{
+                              color: s.primary,
+                              backgroundColor: "#FFF"
+                            }}
+                          >
+                            Edit Profile
+                          </Button>
+                        </span>
+                        {/* <span>
                           {" "}
                           <Button
                             variant="outlined"
@@ -209,55 +209,58 @@ export const AdminHiker = () => {
                             Delete
                           </Button>
                         </span> */}
-                        </Name>
+                      </Name>
 
-                        <Role>
-                          <RoleWrap>
+                      <Role>
+                        <RoleWrap>
+                          <IconRole>
                             <FilterHdrIcon
                               style={{ color: "#FFF" }}
                             ></FilterHdrIcon>
-                            <h3>Hiker</h3>
-                          </RoleWrap>
-                        </Role>
-                      </ContTit>
-                      <Grid container>
-                        <Grid item xs={12} sm={6} md={6} spacing={10}>
-                          <Descr>{session.user.description}</Descr>
+                          </IconRole>
+                          <h3>Hiker</h3>
+                        </RoleWrap>
+                      </Role>
+                    </ContTit>
+                    <Grid container>
+                      <Grid item xs={12} sm={6} md={6} spacing={10}>
+                        <Descr>{session.user.description}</Descr>
 
+                        <>
+                          <TextAlign>
+                            <p style={{ color: "#FFF" }}>Favourite hike:</p>
+                            <p style={{ marginTop: -15, color: "#FFF" }}>
+                              <i>{session.user.fav}</i>
+                            </p>
+                          </TextAlign>
+                        </>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={6} spacing={10}>
+                        <ContFav>
                           <>
-                            <TextAlign>
-                              <p style={{ color: "#FFF" }}>Favourite hike:</p>
-                              <p style={{ marginTop: -15, color: "#FFF" }}>
-                                <i>{session.user.fav}</i>
-                              </p>
-                            </TextAlign>
+                            <Fav>
+                              <ExploreIcon></ExploreIcon>
+                              <p>{getKms(allBookings)} kms</p>
+                            </Fav>
+                            <Fav>
+                              <RestaurantIcon></RestaurantIcon>
+                              <p>{allBookings.length} plans</p>
+                            </Fav>
                           </>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6} spacing={10}>
-                          <ContFav>
-                            <>
-                              <Fav>
-                                <ExploreIcon></ExploreIcon>
-                                <p>{getKms(allBookings)} kms</p>
-                              </Fav>
-                              <Fav>
-                                <RestaurantIcon></RestaurantIcon>
-                                <p>{allBookings.length} plans</p>
-                              </Fav>
-                            </>
 
-                            {/* <TextAlign>
+                          {/* <TextAlign>
                             <p style={{ color: "#FFF" }}>LEVEL 1</p>
                           </TextAlign> */}
-                            <Level>Newie</Level>
-                          </ContFav>
-                        </Grid>
+                          <Level>Newie</Level>
+                        </ContFav>
                       </Grid>
-                    </WrapperResp>
-                  </Grid>
+                    </Grid>
+                  </WrapperResp>
                 </Grid>
-              </HeaderAdmin>
+              </Grid>
+            </HeaderAdmin>
 
+            <ContBody>
               <TitBookings>NEXT BOOKINGS</TitBookings>
               <Grid container spacing={2}>
                 {allBookings && allBookings.length === 0 ? (
@@ -319,7 +322,8 @@ export const AdminHiker = () => {
                                     padding: "20px 5px",
                                     color: s.dark,
                                     backgroundColor: s.light,
-                                    marginRight: 5
+                                    marginRight: 5,
+                                    marginBottom: 5
                                   }}
                                   size="medium"
                                   icon={
@@ -335,7 +339,8 @@ export const AdminHiker = () => {
                                     padding: "20px 5px",
                                     color: s.dark,
                                     backgroundColor: s.light,
-                                    marginRight: 5
+                                    marginRight: 5,
+                                    marginBottom: 5
                                   }}
                                   size="medium"
                                   icon={
@@ -350,7 +355,8 @@ export const AdminHiker = () => {
                                   style={{
                                     padding: "20px 5px",
                                     color: s.dark,
-                                    backgroundColor: s.light
+                                    backgroundColor: s.light,
+                                    marginBottom: 5
                                   }}
                                   size="medium"
                                   icon={
@@ -395,7 +401,7 @@ export const AdminHiker = () => {
                                       retrieveEdit(e.currentTarget.value)
                                     }
                                   >
-                                    EDIT BOOKING
+                                    EDIT
                                   </Button>
                                 </Grid>
                                 <Grid
@@ -419,7 +425,7 @@ export const AdminHiker = () => {
                                       setBookingToDelete(e.currentTarget.value);
                                     }}
                                   >
-                                    CANCEL BOOKING
+                                    CANCEL
                                   </Button>
                                 </Grid>
                               </Grid>
