@@ -12,6 +12,33 @@
   }
 }
 
+@keyframes dish {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+  11.11% {
+    transform: translateY(650px) rotate(180deg);
+    opacity: 1;
+  }
+
+  22.22% {
+    transform: translateY(650px) rotate(180deg);
+    opacity: 1;
+  }
+
+  45% {
+    transform: translateX(700px) translateY(650px) rotate(0deg);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(700px) translateY(650px) rotate(0deg);
+    opacity: 0;
+  }
+}
+
 .leaflet-container {
   width: 100vw;
   height: 100vh;
@@ -26,16 +53,6 @@
     display: block;
   }
 }
-
-/* .contframe {
-  width: 55%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  overflow: hidden;
-  z-index: 200;
-  height: 600px;
-} */
 
 .framehome {
   bottom: 0px;
@@ -53,4 +70,42 @@
   position: absolute;
   z-index: 700;
   animation: header 50s infinite;
+}
+
+/* Images landing */
+.dish {
+  width: 100%;
+  height: auto;
+  position: absolute;
+}
+
+.dish1 {
+  top: -650px;
+  right: 0px;
+  animation: dish 30s infinite;
+  z-index: 400;
+}
+
+.dish2 {
+  top: -650px;
+  right: 0px;
+  animation: dish 30s infinite 10s;
+  z-index: 500;
+}
+
+.dish3 {
+  top: -650px;
+  right: 0px;
+  animation: dish 30s infinite 20s;
+  z-index: 300;
+}
+
+/*Typing Effect*/
+.weare {
+  display: block;
+  margin: auto;
+  width: 100px;
+  padding-top: 100px;
+  font-size: 40px;
+  color: #303841;
 }
