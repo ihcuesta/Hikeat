@@ -89,6 +89,7 @@ export const ContBody = styled.div`
   margin: auto;
   padding: 0 5%;
   overflow-x: hidden;
+  overflow-y: hidden;
 `;
 
 export const Error = styled.p`

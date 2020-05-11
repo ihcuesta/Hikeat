@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Grid, Typography, Button } from "@material-ui/core";
-import { ContHead, Hero, PicHome } from "../styled/HomeStyles";
+import {
+  ContHead,
+  Hero,
+  PicHome,
+  SubtitleDesktop,
+  SubtitleMob
+} from "../styled/HomeStyles";
 import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import FilterHdrOutlinedIcon from "@material-ui/icons/FilterHdrOutlined";
 import RestaurantOutlinedIcon from "@material-ui/icons/RestaurantOutlined";
@@ -56,11 +62,16 @@ export const HomeHead = ({ scrollPlans }) => {
               data-aos-easing="ease-in-out"
               data-aos-delay="50"
             >
-              <h3 style={{ color: s.dark, fontWeight: 400, fontSize: 25 }}>
+              <SubtitleDesktop>
                 Is there anything better than a<br />
                 <b style={{ color: s.primary }}>good meal</b> after a{" "}
                 <b>hike</b>?
-              </h3>
+              </SubtitleDesktop>
+              <SubtitleMob>
+                Is there anything better than a
+                <b style={{ color: s.primary }}> good meal</b> after a{" "}
+                <b>hike</b>?
+              </SubtitleMob>
               <p>
                 No one better than the local restaurants to give you advice.
               </p>

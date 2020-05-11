@@ -181,7 +181,7 @@ export const CardHome = ({
 
               <a
                 style={{ color: s.primary }}
-                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                href={`http://www.facebook.com/sharer.php?s=100&p[title]=${name}&p[summary]=Take a look of this plan in Hikeat!&p[url]=${process.env.REACT_APP_URL_FRONT}&p[images][0]=${image}`}
                 target="_blank"
               >
                 <FacebookIcon
@@ -193,19 +193,19 @@ export const CardHome = ({
                   }}
                 ></FacebookIcon>
               </a>
-              <a
+              {/* <a
                 style={{ color: s.primary }}
-                href={`https://twitter.com/home?status=${process.env.URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
+                href={`https://twitter.com/home?status=${process.env.REACT_APP_URL_FRONT}/plan/${id} Take a look of this Hikeat plan!`}
                 target="_blank"
-              >
-                {/* <TwitterIcon
+              > */}
+              {/* <TwitterIcon
                   style={{
                     fontSize: "35px",
                     marginLeft: 20,
                     cursor: "pointer"
                   }}
                 ></TwitterIcon> */}
-              </a>
+              {/* </a> */}
             </Grid>
             <Grid item xs={6}>
               <Button
@@ -326,7 +326,7 @@ export const CardFav = ({
 
               <a
                 style={{ color: s.primary }}
-                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.URL_FRONT}/plan/${id}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${process.env.REACT_APP_URL_FRONT}/plan/${id}`}
                 target="_blank"
               >
                 <FacebookIcon

@@ -19,6 +19,28 @@ export const Hero = styled.div`
   }
 `;
 
+export const SubtitleDesktop = styled.h3`
+  display: none;
+  color: ${s.dark};
+  font-weight: 400;
+  font-size: 25px;
+
+  @media (min-width: 500px) {
+    display: block;
+  }
+`;
+
+export const SubtitleMob = styled.h3`
+  display: block;
+  color: ${s.dark};
+  font-weight: 400;
+  font-size: 25px;
+
+  @media (min-width: 500px) {
+    display: none;
+  }
+`;
+
 export const PicHome = styled.div`
   display: none;
 
@@ -35,11 +57,7 @@ export const ContHead = styled.div`
   width: 100%;
   padding: 5%;
   box-sizing: border-box;
-  margin-top: 70px;
-
-  @media (min-width: 760px) {
-    margin-top: 0px;
-  }
+  margin-top: 30px;
 
   @media (min-width: 960px) {
     max-width: 400px;

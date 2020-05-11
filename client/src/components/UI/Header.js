@@ -83,12 +83,12 @@ export const Header = () => {
                   /> */}
                 </LogoLeft>
               </Button>
-              {/* <Button component={Link} pr={10} color="primary" to="/signup">
-              About
-            </Button>
-            <Button component={Link} pr={10} color="primary" to="/signup">
-              Contact
-            </Button> */}
+              <Button component={Link} pr={10} color="primary" to="/about-us">
+                About Us
+              </Button>
+              <Button component={Link} pr={10} color="primary" to="/signup">
+                Contact
+              </Button>
             </NavLeft>
             <NavRight>
               {!session && (
@@ -100,7 +100,7 @@ export const Header = () => {
                       pr={10}
                       variant="contained"
                       color={"primary"}
-                      to="/signup"
+                      to="/landing"
                     >
                       I'm restaurant owner
                     </Button>
