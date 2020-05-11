@@ -29,17 +29,20 @@
     "react-router-scroll-memory": "^2.0.5",
     "react-scripts": "3.4.1",
     "react-scroll-into-view": "^1.8.1",
+    "react-typist": "^2.0.5",
+    "react-vivus": "0.0.2",
     "serve": "^11.3.0",
     "styled-components": "^5.0.1",
     "sweet-scroll": "^4.0.0",
-    "typeface-montserrat": "0.0.75"
+    "typeface-montserrat": "0.0.75",
+    "vivus": "^0.4.5"
   },
   "engines": {
     "node": "13.6.0",
     "npm": "6.13.4"
   },
   "scripts": {
-    "start": "serve",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
