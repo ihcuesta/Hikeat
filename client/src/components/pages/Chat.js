@@ -25,8 +25,22 @@ import { FooterAlt } from "../UI/Footer";
 import { FormBg } from "../styled/Forms";
 import { s, searchContact } from "../styled/globalStyles";
 import SearchIcon from "@material-ui/icons/Search";
+import { Form } from "../styled/Forms";
+import io from "socket.io-client";
 
 export const Chat = () => {
+  const [msg, setMsg] = useState("");
+
+  // useEffect(() => {
+
+  //   }, []);
+
+  const handleSubmit = msg => {
+    const socket = io(process.env.REACT_APP_URL_BACK);
+    socket.emit("chat message", msg);
+    setMsg("");
+  };
+
   return (
     <>
       <FormBg>
@@ -84,10 +98,22 @@ export const Chat = () => {
                     </UserMsgCont>
                   </WrapperChatMsg>
                 </Messages>
-                <SectionType>
-                  <TypeInput></TypeInput>
-                  <Send>SEND</Send>
-                </SectionType>
+
+                <Form
+                  onSubmit={e => {
+                    e.preventDefault();
+                    handleSubmit(msg);
+                  }}
+                >
+                  <SectionType>
+                    <TypeInput
+                      value={msg}
+                      onChange={e => setMsg(e.target.value)}
+                    />
+
+                    <Send type="submit" value="SEND" />
+                  </SectionType>
+                </Form>
               </ChatMessages>
             </Grid>
             <Grid item xs={12} lg={2}>

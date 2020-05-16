@@ -141,7 +141,7 @@ export const TypeInput = styled.input`
   padding-left: 10px;
 `;
 
-export const Send = styled.button`
+export const Send = styled.input`
   width: 80px;
   border-radius: 0px 5px 5px 0px;
   background-color: ${s.primary};
