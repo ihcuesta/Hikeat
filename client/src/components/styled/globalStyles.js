@@ -39,6 +39,13 @@ export const txtField = {
   }
 };
 
+export const searchContact = {
+  style: {
+    height: "10px",
+    color: "red"
+  }
+};
+
 export const fabStyle = {
   style: {
     width: 40,
