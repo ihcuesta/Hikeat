@@ -25,11 +25,13 @@ let server = http.createServer(app);
 
 let io = require("socket.io")(server);
 
+// Socket.io
 io.on("connection", socket => {
   socket.on("chat message", msg => {
     console.log("message: " + msg);
   });
 });
+// -----------
 
 server.on("error", error => {
   if (error.syscall !== "listen") {

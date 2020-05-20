@@ -31,16 +31,14 @@ import io from "socket.io-client";
 export const Chat = () => {
   const [msg, setMsg] = useState("");
 
-  // useEffect(() => {
-
-  //   }, []);
-
+  // Chat message
   const handleSubmit = msg => {
     const socket = io();
     console.log(msg);
     socket.emit("chat message", msg);
     setMsg("");
   };
+  // --------
 
   return (
     <>
