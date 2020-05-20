@@ -10,7 +10,7 @@ export const FormBg = styled.div`
   background-position: center center;
   background-repeat: no-repeat;
   background-color: ${s.primary};
-  min-height: 100vh;
+  min-height: calc(100vh - 50px);
 `;
 
 export const FormTitle = styled.h1`
