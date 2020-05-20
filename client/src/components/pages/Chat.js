@@ -36,7 +36,8 @@ export const Chat = () => {
   //   }, []);
 
   const handleSubmit = msg => {
-    const socket = io(process.env.REACT_APP_URL_BACK);
+    const socket = io();
+    console.log(msg);
     socket.emit("chat message", msg);
     setMsg("");
   };
