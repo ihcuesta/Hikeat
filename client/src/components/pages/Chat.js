@@ -27,17 +27,23 @@ import { s, searchContact } from "../styled/globalStyles";
 import SearchIcon from "@material-ui/icons/Search";
 import { Form } from "../styled/Forms";
 import io from "socket.io-client";
+let socket = io("http://localhost:4000");
 
 export const Chat = () => {
   const [msg, setMsg] = useState("");
 
+  useEffect(() => {
+    socket.on("chat message", msg => {
+      console.log("mensaje del socket: ", msg);
+    });
+  }, []);
+
   // Chat message
   const handleSubmit = msg => {
-    var socket = io();
-    console.log(msg);
     socket.emit("chat message", msg);
     setMsg("");
   };
+
   // --------
 
   return (
