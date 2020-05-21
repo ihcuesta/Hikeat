@@ -33,7 +33,7 @@ export const Chat = () => {
 
   // Chat message
   const handleSubmit = msg => {
-    const socket = io();
+    var socket = io();
     console.log(msg);
     socket.emit("chat message", msg);
     setMsg("");
@@ -69,7 +69,7 @@ export const Chat = () => {
                     }}
                   ></Avatar>
                   <TextsContact>
-                    <NameContact>Giorgio</NameContact>
+                    <NameContact>Pepe</NameContact>
                     <LastMsgContact>Have a good weekend...</LastMsgContact>
                   </TextsContact>
                 </Contact>

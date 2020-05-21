@@ -23,14 +23,16 @@ app.use((err, req, res, next) => {
 
 let server = http.createServer(app);
 
+// Socket.io
 let io = require("socket.io")(server);
 
-// Socket.io
-io.on("connection", socket => {
-  socket.on("chat message", msg => {
+io.on("connection", function(socket) {
+  console.log("se conecta");
+  socket.on("chat message", function(msg) {
     console.log("message: " + msg);
   });
 });
+
 // -----------
 
 server.on("error", error => {
