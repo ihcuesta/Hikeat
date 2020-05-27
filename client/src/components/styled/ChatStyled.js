@@ -67,48 +67,13 @@ export const Messages = styled.div`
 export const WrapperChatMsg = styled.div`
   position: absolute;
   bottom: 0px;
-`;
-
-export const ContactMsgCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
   width: 100%;
-`;
-
-export const ContactMsg = styled.div`
-  padding: 15px;
-  width: 70%;
-  background-color: #eee;
-  margin-left: 25px;
-  position: relative;
-  border-radius: 0px 5px 5px 5px;
-  margin-bottom: 20px;
 `;
 
 export const QuoteContact = styled.img`
   position: absolute;
   top: 0px;
   left: -20px;
-`;
-
-export const UserMsgCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  width: 100%;
-`;
-
-export const UserMsg = styled.div`
-  padding: 15px;
-  width: 70%;
-  justify-content: flex-end;
-  background-color: ${s.primary};
-  margin-right: 25px;
-  position: relative;
-  border-radius: 5px 0px 5px 5px;
-  margin-bottom: 20px;
-  color: #fff;
 `;
 
 export const QuoteUser = styled.img`
@@ -153,4 +118,37 @@ export const Send = styled.input`
   &:hover {
     background-color: #009fa6;
   }
+`;
+
+export const ContainerContact = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`;
+
+export const ContainerUser = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`;
+
+export const ContactMsg = styled.div`
+  padding: 15px;
+  max-width: 70%;
+  background-color: #eee;
+  margin-left: 25px;
+  position: relative;
+  border-radius: 0px 5px 5px 5px;
+  margin-bottom: 20px;
+`;
+
+export const UserMsg = styled.div`
+  padding: 15px;
+  max-width: 70%;
+  background-color: ${s.primary};
+  margin-right: 25px;
+  position: relative;
+  border-radius: 5px 0px 5px 5px;
+  margin-bottom: 20px;
+  color: #fff;
 `;

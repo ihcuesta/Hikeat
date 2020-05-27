@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useUser } from "../../service/authService";
 import { Grid, OutlinedInput, InputAdornment, Avatar } from "@material-ui/core";
 import {
   ChatCont,
@@ -21,6 +22,7 @@ import {
   Messages,
   WrapperChatMsg
 } from "../styled/ChatStyled";
+import { ContactMessage, UserMessage } from "../UI/ChatMessages";
 import { FooterAlt } from "../UI/Footer";
 import { FormBg } from "../styled/Forms";
 import { s, searchContact } from "../styled/globalStyles";
@@ -30,18 +32,28 @@ import io from "socket.io-client";
 let socket = io("http://localhost:4000");
 
 export const Chat = () => {
-  const [msg, setMsg] = useState("");
+  const session = useUser();
+  const [msg, setMsg] = useState({});
+  const [allmsg, setAllmsg] = useState([]);
+
+  const { message } = msg;
+
+  const createMessage = e => {
+    setMsg({ user: session.user.id, message: e.target.value });
+  };
 
   useEffect(() => {
     socket.on("chat message", msg => {
       console.log("mensaje del socket: ", msg);
+      setAllmsg([...allmsg, msg]);
+      console.log(allmsg);
     });
-  }, []);
+  }, [allmsg]);
 
   // Chat message
   const handleSubmit = msg => {
     socket.emit("chat message", msg);
-    setMsg("");
+    setMsg({ user: session.user.id, message: "" });
   };
 
   // --------
@@ -75,7 +87,7 @@ export const Chat = () => {
                     }}
                   ></Avatar>
                   <TextsContact>
-                    <NameContact>Pepe</NameContact>
+                    <NameContact>Pedro</NameContact>
                     <LastMsgContact>Have a good weekend...</LastMsgContact>
                   </TextsContact>
                 </Contact>
@@ -85,22 +97,13 @@ export const Chat = () => {
               <ChatMessages>
                 <Messages>
                   <WrapperChatMsg>
-                    <ContactMsgCont>
-                      <ContactMsg>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Dolore facere quisquam quibusdam est quaerat
-                        accusantium ipsum alias?
-                        <QuoteContact src="quotes.svg"></QuoteContact>
-                      </ContactMsg>
-                    </ContactMsgCont>
-                    <UserMsgCont>
-                      <UserMsg>
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Dolore facere quisquam quibusdam est quaerat
-                        accusantium ipsum alias?
-                        <QuoteUser src="quote-user.svg"></QuoteUser>
-                      </UserMsg>
-                    </UserMsgCont>
+                    {allmsg.map(ms => {
+                      if (ms.user === session.user.id) {
+                        return <UserMessage textMessage={ms.message} />;
+                      } else {
+                        return <ContactMessage textMessage={ms.message} />;
+                      }
+                    })}
                   </WrapperChatMsg>
                 </Messages>
 
@@ -112,8 +115,9 @@ export const Chat = () => {
                 >
                   <SectionType>
                     <TypeInput
-                      value={msg}
-                      onChange={e => setMsg(e.target.value)}
+                      name="message"
+                      value={message}
+                      onChange={createMessage}
                     />
 
                     <Send type="submit" value="SEND" />

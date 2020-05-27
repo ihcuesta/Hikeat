@@ -109,3 +109,17 @@
   font-size: 40px;
   color: #303841;
 }
+
+.user-message {
+  justify-content: flex-end;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.contact-message {
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
